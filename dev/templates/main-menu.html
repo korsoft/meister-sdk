@@ -5,7 +5,12 @@
       </md-toolbar>
 
       <md-content style="">
-        
+        <md-menu-content width="4">
+          <md-menu-item>
+          <md-button ui-sref="home">
+            <md-icon ng-bind="'home'"></md-icon> Home
+          </md-button>
+        </md-menu-item>
         <md-menu-content width="4">
           <md-menu-item ng-if="user_type() == SYSTEM_ADMIN">
           <md-button ui-sref="clients">
