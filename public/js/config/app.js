@@ -50,6 +50,11 @@ meister.constant('CLIENT_USER',29);
             templateUrl: 'partials/users-partial.html',
             controller: 'UserController'
         })
+        .state('edit-profile', {
+            url: '/edit-profile',
+            templateUrl: 'partials/edit-profile-partial.html',
+            controller: 'EditProfileController'
+        })
         .state('about', {
             url: '/about',
             templateUrl: 'partials/about-partial.html',

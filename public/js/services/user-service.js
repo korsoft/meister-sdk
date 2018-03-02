@@ -28,6 +28,10 @@
             return $http.get(SERVER_BASE_URL + '/api/types');
         }
 
+        service.update_my_user = function(id, data){
+            return $http.put(SERVER_BASE_URL + '/api/users/'+id+'/update_my_user', data);
+        }
+
         return service;
     }]);
 })(meister);

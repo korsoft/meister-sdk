@@ -1,0 +1,52 @@
+<div ng-cloak ng-init="init()">
+
+<main-menu></main-menu>
+<main-toolbar></main-toolbar>
+
+
+<md-content>
+
+  <md-card>
+    <md-toolbar class="md-table-toolbar md-default" >
+      <div class="md-toolbar-tools">
+        <h2 class="md-title">Edit Profile</h2>
+        <div flex="" class="flex"></div>  
+      </div>
+    </md-toolbar>
+
+       <md-card-content>
+        <form name="frmEditProfile">
+        <md-input-container class="md-block">
+              <label>Email</label>
+              <input ng-model="user.email" type="email" required>
+            </md-input-container>
+            <md-input-container class="md-block">
+              <label>First Name</label>
+              <input ng-model="user.first_name" type="text" required>
+            </md-input-container>
+            <md-input-container class="md-block">
+              <label>Last Name</label>
+              <input ng-model="user.last_name" type="text" required>
+            </md-input-container>
+
+            <md-input-container class="md-block">
+              <label>Password</label>
+              <input ng-model="user.password" type="password">
+            </md-input-container>
+
+             <md-input-container class="md-block">
+              <label>Re-password</label>
+              <input ng-model="repassword" type="password">
+              <span style="color: red" ng-if="user.password != repassword">Please put the same password</span>
+            </md-input-container>
+            
+            <md-button ng-disabled="frmEditProfile.$invalid || user.password != repassword" ng-click="update()" class="md-raised md-primary">Login</md-button>
+          </form>
+      </md-card-content>
+
+</md-card>
+
+    
+</md-content>
+
+</div>

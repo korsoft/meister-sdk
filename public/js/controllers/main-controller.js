@@ -52,6 +52,16 @@
 		 	return -1;
 		 };
 
+		 $rootScope.user_id = function(){
+		 	var token_data = $cookies.get('meister-sdk-token');
+		 	if(token_data){
+		 		token_data = angular.fromJson(token_data);
+		 		return token_data.user_id;
+		 	}
+
+		 	return 0;
+		 };
+
 	    $rootScope.transition = 'fade-in';
 	}]);
 })(meister);

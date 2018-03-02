@@ -5,6 +5,7 @@
       </md-toolbar>
 
       <md-content style="">
+        
         <md-menu-content width="4">
           <md-menu-item ng-if="user_type() == SYSTEM_ADMIN">
           <md-button ui-sref="clients">
@@ -19,6 +20,11 @@
         <md-menu-item>
           <md-button>
             <md-icon ng-bind="'build'"></md-icon> Configurations
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ui-sref="edit-profile">
+            <md-icon ng-bind="'account_circle'"></md-icon> Edit your profile
           </md-button>
         </md-menu-item>
         <md-menu-item>
