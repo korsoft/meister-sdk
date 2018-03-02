@@ -1,0 +1,97 @@
+<div ng-cloak ng-init="init()">
+
+<main-menu></main-menu>
+<main-toolbar></main-toolbar>
+
+
+<md-content>
+
+  <md-card>
+    <md-toolbar class="md-table-toolbar md-default" ng-if="filter.show == false">
+  <div class="md-toolbar-tools">
+    <h2 class="md-title">Users</h2>
+    <div flex="" class="flex"></div>
+    <md-button class="md-icon-button" aria-label="Settings" ng-click="filter.show = true" title="Search">
+         <md-icon ng-bind="'find_in_page'"></md-icon>
+    </md-button>
+    <md-button class="md-icon-button" aria-label="Settings" ng-click="add($event, null)" title="Add User">
+         <md-icon ng-bind="'note_add'"></md-icon>
+    </md-button>
+    
+  </div>
+</md-toolbar>
+
+<md-toolbar class="md-table-toolbar md-default ng-hide" ng-show="filter.show && !selected.length" >
+  <div class="md-toolbar-tools" >
+    <form name="filter.form" style="padding-top: 30px">
+      <div layout-gt-sm="row" layout-sm="column">
+      
+          <md-input-container class="md-block" flex-gt-sm>
+             <md-icon ng-bind="'find_in_page'"></md-icon>
+            <input type="text" ng-model="query.filterByEmail"  placeholder="Search by Email">
+            <md-icon ng-bind="'highlight_off'" ng-click="removeFilter()" hide-gt-xs   style="cursor: pointer;"></md-icon>
+            
+          </md-input-container>
+
+          <md-input-container class="md-block" flex-gt-sm  hide-xs>
+           <input type="text" ng-model="query.filterByFirstName"  placeholder="Search by First Name">
+          </md-input-container>
+
+          <md-input-container class="md-block" flex-gt-sm hide-xs>
+             <input type="text" ng-model="query.filterByLastName"  placeholder="Search by Last Name">
+             <md-icon ng-bind="'highlight_off'" ng-click="removeFilter()" style="cursor: pointer;"></md-icon>
+          </md-input-container>
+        </div>
+
+  </form>
+    
+  </div>
+</md-toolbar>
+
+<md-table-container>
+
+  <table md-table ng-model="selected" md-progress="promise">
+              <thead md-head md-order="query.order">
+                <tr md-row >
+                  <th md-column>ID</th>
+                  <th md-column >First Name</th>
+                  <th md-column >Last Name</th>
+                  <th md-column >Email</th>
+                  <th md-column >Client</th>
+                  <th md-column >Type</th>
+                  <th md-column>Actions</th>
+                </tr>
+              </thead>
+              <tbody md-body style="font-weight: bold">
+                <tr md-row class="with-hover" ng-repeat="u in users | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit | filter:{email:query.filterByEmail} | filter:{first_name:query.filterByFirstName} | filter:{last_name:query.filterByLastName}" md-auto-select>
+                  <td md-cell>{{u.id}}</td>
+                  <td md-cell>{{u.first_name}}</td>
+                  <td md-cell>{{u.last_name}}</td>
+                  <td md-cell>{{u.email}}</td>
+                  <td md-cell>{{u.client.name}}</td>
+                  <td md-cell>{{type(u.type)}}</td>
+                  <td md-cell >
+                    <md-button class="md-icon-button" aria-label="Settings" ng-click="edit($event, u)" title="Edit">
+                      <md-icon ng-bind="'mode_edit'"></md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Settings" ng-click="delete($event, u)" title="Delete">
+                      <md-icon ng-bind="'delete'"></md-icon>
+                    </md-button>
+                  </td>
+                  
+                </tr>
+              </tbody>
+            </table>
+  
+</md-table-container>
+
+<md-table-pagination md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page" md-total="{{users.length}}" md-page-select></md-table-pagination>
+
+
+</md-card>
+
+    
+   
+</md-content>
+
+</div>

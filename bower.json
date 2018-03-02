@@ -1,0 +1,32 @@
+{
+  "name": "yeoman-generator-angular-material",
+  "homepage": "https://github.com/iansawyerva/generator-angular-material",
+  "authors": [
+    "Ian Sawyer"
+  ],
+  "description": "Google's Angular Material Yeoman Generator",
+  "main": "",
+  "keywords": [
+    "Angular",
+    "Material",
+    "Yeoman",
+    "Google"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-cookies": "1.6.1",
+    "angular-material-data-table": "^0.10.10",
+    "underscore": "^1.8.3",
+    "angular-sanitize": "1.6.1",
+    "chart.js": "^2.7.1",
+    "angular-recursion": "^1.0.5"
+  }
+}

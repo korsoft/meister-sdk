@@ -1,0 +1,31 @@
+<md-dialog aria-label="Clients" style="width:800px">
+  <form id="frmClient" name="frmClient" ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Add/Edit a Client</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()" title="close">
+          <md-icon ng-bind="'highlight_off'"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+             <md-input-container class="md-block">
+              <label>Name</label>
+              <input ng-model="client.name" required>
+            </md-input-container>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button class="md-raised md-primary" ng-click="save()" ng-disabled="frmClient.$invalid">
+       Save
+      </md-button>
+      <md-button class="md-raised" ng-click="cancel()">
+        Cancel
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

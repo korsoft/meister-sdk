@@ -1,0 +1,220 @@
+<div ng-cloak id="popupContainer" ng-init="init()">
+
+<md-toolbar class="md-hue-2">
+
+	  <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" aria-label="Settings" ng-click="gotoHome()">
+         <md-icon ng-bind="'home'"></md-icon>
+        </md-button>
+
+        <h2 flex md-truncate>Meister Demo</h2>
+
+    
+         <md-menu>
+       <md-button class="md-icon-button" aria-label="More" ng-click="openMenu($mdOpenMenu,$event)">
+          <md-icon md-menu-origin ng-bind="'more_vert'"></md-icon>
+        </md-button>
+      <md-menu-content width="4" ng-mouseleave="close()">
+        <md-menu-item>
+          <md-button>
+            <md-icon ng-bind="'info'"></md-icon> About
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button>
+            <md-icon ng-bind="'perm_identity'"></md-icon> User preferences
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button>
+           <md-icon ng-bind="'power_settings_new'"></md-icon> Logout
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+
+      </div>
+
+    </md-toolbar>
+
+    <md-toolbar class="md-table-toolbar md-default">
+
+    <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" aria-label="Settings" ng-click="gotoClaims()">
+         <md-icon ng-bind="'keyboard_backspace'"></md-icon>
+        </md-button>
+
+        <h2 flex md-truncate style="font-size: 12px"> Claim {{claim.CLAIM}} Details</h2>
+
+    
+           <md-button class="md-raised md-primary md-button md-ink-ripple" style="color:white" ng-click="aproveConfirm($event)">
+            Approve
+            </md-button>
+
+             <md-button class="md-raised md-warn md-button md-ink-ripple" style="color:white" ng-disabled="tabSelected != 2" ng-click="simulate()">
+            Simulate
+            </md-button>
+      </div>
+
+    </md-toolbar>
+
+        
+      <div layout="row" layout-xs="column">
+        
+        <div flex >
+           <h4>Cost Information</h4>
+           <table>
+              <tr>
+                <td style="text-align: right;color:gray">Estimated:</td>
+                <td>{{claim.COSTS.ESTIMATED | currency}}</td>
+              </tr>
+              <tr>
+                <td style="text-align: right;color:gray">Required:</td>
+                <td>{{claim.COSTS.REQUIRED | currency}}</td>
+              </tr>
+              <tr>
+                <td style="text-align: right;color:gray">Accepted:</td>
+                <td>{{claim.COSTS.ACCEPTED | currency}}</td>
+              </tr>
+           </table>
+        </div>
+        <div flex>
+          <h4>Appraisal Data</h4>
+          <table>
+              <tr>
+                <td style="text-align: right;color:gray">Project:</td>
+                <td>{{claim.APPRAISAL.PROJECT}}</td>
+              </tr>
+              <tr>
+                <td style="text-align: right;color:gray">WBS:</td>
+                <td>{{claim.APPRAISAL.WBS}}</td>
+              </tr>
+              <tr>
+                <td style="text-align: right;color:gray">Code Tex:</td>
+                <td>{{claim.APPRAISAL.CODE_TEXT}}</td>
+              </tr>
+               <tr>
+                <td style="text-align: right;color:gray">Cause:</td>
+                <td>{{claim.APPRAISAL.CAUSE}}</td>
+              </tr>
+               <tr>
+                <td style="text-align: right;color:gray">Start Date:</td>
+                <td>{{claim.APPRAISAL.START_DATE}}</td>
+              </tr>
+               <tr>
+                <td style="text-align: right;color:gray">End Date:</td>
+                <td>{{claim.APPRAISAL.END_DATE}}</td>
+              </tr>
+           </table>
+        </div>
+      </div>
+        <div layout="row" flex="100">
+
+          <md-tabs md-border-bottom flex="100" md-dynamic-height md-border-bottom>
+      <md-tab label="Cost Matrix" ng-click="tabSelected = 1">
+        <md-content class="md-padding" flex="70" flex-xs="100"> 
+          <h4 >Cost Matrix</h4>
+          <md-table-container >
+            <table md-table >
+              <thead md-head>
+                <tr md-row>
+                  <th md-column>Item No.</th>
+                  <th md-column>Category</th>
+                  <th md-column hide-xs>Cost Object</th>
+                  <th md-column hide-xs>Plant</th>
+                  <th md-column>Total Price</th>
+                </tr>
+              </thead>
+              <tbody md-body style="font-weight: bold">
+                <tr md-row class="with-hover" ng-repeat="cost in claim.COSTS.COST_MATRIX">
+                  <td md-cell>{{cost.ITEM_NO}}</td>
+                  <td md-cell>{{cost.CATEGORY}}</td>
+                  <td md-cell hide-xs>{{cost.COST_OBJECT}}</td>
+                  <td md-cell hide-xs>{{cost.PLANT}}</td>
+                  <td md-cell>{{cost.TOTAL_PRICE | currency}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </md-table-container>
+        </md-content>
+      </md-tab>
+      <md-tab label="Budget Matrix" ng-click="tabSelected = 2">
+        <md-content  class="md-padding"  flex="100" layout="row" layout-xs="column">
+        <div flex="45" flex-xs="100">
+          <h4 ng-if="!is_simulated">Budget Matrix</h4>
+          <h4 ng-if="is_simulated">Before</h4>
+            <md-toolbar class="md-table-toolbar md-default"  ng-repeat-start="b in claim.BUDGETS">
+              <div class="md-toolbar-tools">
+               <md-button class="md-icon-button" aria-label="Settings" 
+                  ng-click="b.$show = !b.$show">
+                <md-icon ng-bind="b.$show == true ? 'keyboard_arrow_down' : 'keyboard_arrow_right'" ></md-icon>
+              </md-button>
+
+                 <h2 flex md-truncate>{{b.WBS_ELEMENT}}</h2>
+              </div>
+            </md-toolbar>
+              <md-table-container ng-repeat-end ng-if="b.$show">
+            <table md-table>
+              <thead md-head>
+                <tr md-row>
+                  <th md-column>Year</th>
+                  <th md-column>Cost Plan</th>
+                  <th md-column>Distributed</th>
+                  <th md-column>Distributable</th>
+                </tr>
+              </thead>
+              <tbody md-body style="font-weight: bold">
+                <tr md-row class="with-hover" ng-repeat="c in b.COST">
+                  <td md-cell>{{$last ? 'Overall' : ( (b.COST.length-2) == $index) ? 'Total' : c.YEAR}}</td>
+                  <td md-cell>{{c.COST_PLAN_TCUR | currency}}</td>
+                  <td md-cell>{{c.DISTRIBUTED_TCUR | currency}}</td>
+                  <td md-cell>{{c.DISTRIBUTABLE_TCUR | currency}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </md-table-container>
+   
+        </div>
+
+        <div flex="10" flex-xs="100" style="height: 10px"></div>
+
+         <div flex="45" flex-xs="100" ng-if="is_simulated">
+          <h4>After</h4>
+            <md-toolbar class="md-table-toolbar md-default"  ng-repeat-start="b in simulations">
+              <div class="md-toolbar-tools">
+               <md-button class="md-icon-button" aria-label="Settings" 
+                  ng-click="b.$show = !b.$show">
+                <md-icon ng-bind="b.$show == true ? 'keyboard_arrow_down' : 'keyboard_arrow_right'" ></md-icon>
+              </md-button>
+
+                 <h2 flex md-truncate>{{b.WBS_ELEMENT}}</h2>
+              </div>
+            </md-toolbar>
+              <md-table-container ng-repeat-end ng-if="b.$show">
+            <table md-table>
+              <thead md-head>
+                <tr md-row>
+                  <th md-column>Year</th>
+                  <th md-column>Cost Plan</th>
+                  <th md-column>Distributed</th>
+                  <th md-column>Distributable</th>
+                </tr>
+              </thead>
+              <tbody md-body style="font-weight: bold">
+                <tr md-row ng-repeat="c in b.COST" class="with-hover">
+                  <td md-cell>{{$last ? 'Overall' : ( (b.COST.length-2) == $index) ? 'Total' : c.YEAR}}</td>
+                  <td md-cell><span ng-class="{'color-red':claim.BUDGETS[$parent.$index].COST[$index].COST_PLAN_TCUR != c.COST_PLAN_TCUR}">{{c.COST_PLAN_TCUR | currency}}</span></td>
+                  <td md-cell><span ng-class="{'color-red':claim.BUDGETS[$parent.$index].COST[$index].DISTRIBUTED_TCUR != c.DISTRIBUTED_TCUR}">{{c.DISTRIBUTED_TCUR | currency}}</span></td>
+                  <td md-cell><span ng-class="{'color-red':claim.BUDGETS[$parent.$index].COST[$index].DISTRIBUTABLE_TCUR != c.DISTRIBUTABLE_TCUR}">{{c.DISTRIBUTABLE_TCUR | currency}}</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </md-table-container>
+        </div>
+      </md-content>
+      </md-tab>
+    </md-tabs>
+
+        </div>
+     
+</div>

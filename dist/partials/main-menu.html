@@ -1,0 +1,33 @@
+<md-sidenav class="md-sidenav-left" md-component-id="left">
+
+      <md-toolbar class="md-theme-indigo">
+        <h1 class="md-toolbar-tools">Meister SDK Engine</h1>
+      </md-toolbar>
+
+      <md-content style="">
+        <md-menu-content width="4">
+          <md-menu-item ng-if="user_type() == SYSTEM_ADMIN">
+          <md-button>
+            <md-icon ng-bind="'work'"></md-icon> Clients
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button>
+            <md-icon ng-bind="'supervisor_account'"></md-icon> Users
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button>
+            <md-icon ng-bind="'build'"></md-icon> Configurations
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="logout()">
+           <md-icon ng-bind="'power_settings_new'" ></md-icon> Logout
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+        
+      </md-content>
+
+</md-sidenav>

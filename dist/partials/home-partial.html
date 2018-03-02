@@ -1,0 +1,75 @@
+<div ng-cloak>
+
+<main-menu></main-menu>
+<main-toolbar></main-toolbar>
+
+    <md-content>
+    <div flex-xs flex-gt-xs="100" layout="column">
+
+    <md-card md-theme-watch>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Gateway List</span>
+          </md-card-title-text>
+          <md-card-title-media>
+            <div class="md-media-xs card-media"></div>
+          </md-card-title-media>
+        </md-card-title>
+        <md-card-content>
+           
+           <md-select ng-model="armor" placeholder="Select the Gateway" style="width:80%">
+          <md-option value="cloth">Cloth</md-option>
+          <md-option value="leather">Leather</md-option>
+          <md-option value="chain">Chainmail</md-option>
+          <md-option value="plate">Plate</md-option>
+        </md-select>
+        
+         
+        </md-card-content>
+      </md-card>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+   
+       <md-card md-theme-watch flex>
+        <md-card-title>
+          <md-card-title-text>
+            <div layout="row">
+                <span class="md-subhead">Meister Catalog</span>
+                <div style="text-align: right;width: 80%">
+                  <md-button class="md-icon-button" aria-label="Refresh" title="Refresh">
+                     <md-icon ng-bind="'cached'"></md-icon>
+                  </md-button>
+                  <md-button class="md-icon-button" aria-label="Edit" title="Edit Catalog">
+                     <md-icon ng-bind="'create'"></md-icon>
+                  </md-button>
+                </div>
+            </div>
+          </md-card-title-text>
+          <md-card-title-media>
+            <div class="md-media-xs card-media"></div>
+          </md-card-title-media>
+        </md-card-title>
+       <md-card-content>
+        <tree nodes='basicTree' options='treeOptions'></tree>
+       </md-card-content>
+      </md-card>
+   
+
+   
+      <md-card md-theme-watch flex>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-subhead">Properties</span>
+          </md-card-title-text>
+          <md-card-title-media>
+            <div class="md-media-xs card-media"></div>
+          </md-card-title-media>
+        </md-card-title>
+        
+      </md-card>
+
+   </div>
+ </md-content>
+</div>

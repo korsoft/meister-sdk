@@ -1,0 +1,75 @@
+<div ng-cloak ng-init="init()">
+
+<main-menu></main-menu>
+<main-toolbar></main-toolbar>
+
+
+<md-content>
+
+  <md-card>
+    <md-toolbar class="md-table-toolbar md-default" aria-hidden="false" ng-if="filter.show == false">
+  <div class="md-toolbar-tools">
+    <h2 class="md-title">Clients</h2>
+    <div flex="" class="flex"></div>
+    <md-button class="md-icon-button" aria-label="Settings" ng-click="filter.show = true" title="Search">
+         <md-icon ng-bind="'find_in_page'"></md-icon>
+    </md-button>
+    <md-button class="md-icon-button" aria-label="Settings" ng-click="add($event, null)" title="Add Client">
+         <md-icon ng-bind="'note_add'"></md-icon>
+    </md-button>
+    
+  </div>
+</md-toolbar>
+
+<md-toolbar class="md-table-toolbar md-default ng-hide" ng-show="filter.show && !selected.length" aria-hidden="false">
+  <div class="md-toolbar-tools">
+    <form flex="" name="filter.form" style="padding-top:30px">
+       <md-input-container class="md-icon-float md-icon-right md-block">
+     <md-icon ng-bind="'find_in_page'"></md-icon>
+      <input type="text" ng-model="query.filter"  placeholder="Search">
+      <md-icon ng-bind="'highlight_off'" ng-click="removeFilter()" style="cursor: pointer;"></md-icon>
+    </md-input-container>
+  </form>
+    
+  </div>
+</md-toolbar>
+
+<md-table-container>
+
+  <table md-table ng-model="selected" md-progress="promise">
+              <thead md-head md-order="query.order">
+                <tr md-row >
+                  <th md-column>ID</th>
+                  <th md-column >Name</th>
+                  <th md-column>Actions</th>
+                </tr>
+              </thead>
+              <tbody md-body style="font-weight: bold">
+                <tr md-row class="with-hover" ng-repeat="c in clients | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit | filter:{name:query.filter}" md-auto-select>
+                  <td md-cell>{{c.id}}</td>
+                  <td md-cell>{{c.name}}</td>
+                  <td md-cell >
+                    <md-button class="md-icon-button" aria-label="Settings" ng-click="edit($event, c)" title="Edit">
+                      <md-icon ng-bind="'mode_edit'"></md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Settings" ng-click="delete($event, c)" title="Delete">
+                      <md-icon ng-bind="'delete'"></md-icon>
+                    </md-button>
+                  </td>
+                  
+                </tr>
+              </tbody>
+            </table>
+  
+</md-table-container>
+
+<md-table-pagination md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page" md-total="{{clients.length}}" md-page-select></md-table-pagination>
+
+
+</md-card>
+
+    
+   
+</md-content>
+
+</div>
