@@ -24,6 +24,10 @@
             return $http.delete(SERVER_BASE_URL + '/api/clientgateways/'+id);
         }
 
+        service.test_connection = function(id){
+            return $http.get(SERVER_BASE_URL + '/api/clientgateways/'+id+'/test_connection');
+        };
+
         return service;
     }]);
 })(meister);

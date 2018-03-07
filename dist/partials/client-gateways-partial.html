@@ -40,27 +40,30 @@
 
 <md-table-container>
 
-  <table md-table ng-model="selected" md-progress="promise">
+  <table md-table ng-model="selected" md-progress="promise" style="table-layout: fixed">
               <thead md-head md-order="query.order">
                 <tr md-row >
-                  <th md-column>ID</th>
+                  <th md-column >ID</th>
                   <th md-column >Name</th>
-                  <th md-column >Url</th>
+                  <th md-column>Url</th>
                   <th md-column >Client</th>
                   <th md-column >Auth Type</th>
                   <th md-column>Actions</th>
                 </tr>
               </thead>
               <tbody md-body style="font-weight: bold">
-                <tr md-row class="with-hover" ng-repeat="g in gateways | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit | filter:{email:query.filterByName}" md-auto-select>
+                <tr md-row class="with-hover" ng-repeat="g in gateways | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit | filter:{name:query.filterByName}" md-auto-select>
                   <td md-cell>{{g.id}}</td>
                   <td md-cell>{{g.name}}</td>
-                  <td md-cell>{{g.url}}</td>
+                  <td md-cell style="text-overflow:ellipsis;overflow:hidden;">{{g.url}}</td>
                   <td md-cell>{{g.client.name}}</td>
-                  <td md-cell>{{g.auth_type}}</td>
-                  <td md-cell >
+                  <td md-cell>{{type(g.auth_type)}}</td>
+                  <td md-cell>
                     <md-button class="md-icon-button" aria-label="Settings" ng-click="edit($event, g)" title="Edit">
                       <md-icon ng-bind="'mode_edit'"></md-icon>
+                    </md-button>
+                     <md-button class="md-icon-button" aria-label="Settings" ng-click="test_connection($event, g)" title="Test connection">
+                      <md-icon ng-bind="'play_arrow'"></md-icon>
                     </md-button>
                     <md-button class="md-icon-button" aria-label="Settings" ng-click="delete($event, g)" title="Delete">
                       <md-icon ng-bind="'delete'"></md-icon>

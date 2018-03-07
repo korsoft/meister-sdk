@@ -60,6 +60,18 @@
               });
          };
 
+         $scope.type = function(type){
+            if(type == 0)
+              return "BASIC";
+            else if(type == 1)
+              return "FORM";
+            else if(type == 2)
+              return "DIGEST";
+            else if(type == 3)
+              return "OAUTH";
+            return "";
+         };
+
          $scope.edit = function(ev, gateway) {
               $mdDialog.show({
                 controller: 'ClientGatewayDialogController',
@@ -104,6 +116,18 @@
             });
          };
 
+         $scope.test_connection = function(evt, gateway){
+            $scope.promise = GatewayService.test_connection(gateway.id);
+
+            $scope.promise.then(
+                function(result){
+                  MessageUtil.showInfo("Connection successful");
+                },
+                function(error){
+                   MessageUtil.showError(error.data.message);
+                }
+              );
+         };
         
     }]);
 })(meister);

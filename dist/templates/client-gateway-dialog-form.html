@@ -1,0 +1,63 @@
+<md-dialog aria-label="Users" style="width: 800px">
+  <form id="frmGateway" name="frmGateway" ng-cloak >
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Add/Edit a Gateway</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()" title="close">
+          <md-icon ng-bind="'highlight_off'"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content >
+      <div class="md-dialog-content">
+           <md-input-container class="md-block">
+              <label>Name</label>
+              <input ng-model="gateway.name" type="text" required>
+            </md-input-container>
+            <md-input-container class="md-block">
+              <label>Url</label>
+              <input ng-model="gateway.url" type="url" required>
+            </md-input-container>
+            <md-input-container class="md-block">
+              <label>Username</label>
+              <input ng-model="gateway.username" type="text" required>
+            </md-input-container>
+            <md-input-container class="md-block">
+              <label>Password</label>
+              <input ng-model="gateway.password" type="password" required>
+            </md-input-container>
+            <md-input-container class="md-block">
+              <label>Auth Type</label>
+              <md-select ng-model="gateway.auth_type" ng-click="changeAuthType(gateway.auth_type)">
+                <md-option ng-repeat="t in types" ng-value="t.id">
+                  {{t.name}}
+                </md-option>
+              </md-select>
+            </md-input-container>
+            <md-input-container class="md-block" ng-if="gateway.auth_type == 2">
+              <label>Digest</label>
+              <textarea ng-model="gateway.digest" required></textarea>
+            </md-input-container>
+            <md-input-container class="md-block" ng-if="($root.user_type() == $root.SYSTEM_ADMIN)">
+              <label>Client</label>
+              <md-select ng-model="gateway.client_id" required>
+                <md-option ng-repeat="c in clients" ng-value="c.id">
+                  {{c.name}}
+                </md-option>
+              </md-select>
+            </md-input-container>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button class="md-raised md-primary" ng-click="save()" ng-disabled="frmGateway.$invalid">
+       Save
+      </md-button>
+      <md-button class="md-raised" ng-click="cancel()">
+        Cancel
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
