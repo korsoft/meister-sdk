@@ -22,9 +22,9 @@
             <md-icon ng-bind="'supervisor_account'"></md-icon> Users
           </md-button>
         </md-menu-item>
-        <md-menu-item>
-          <md-button>
-            <md-icon ng-bind="'build'"></md-icon> Configurations
+        <md-menu-item ng-if="user_type() == SYSTEM_ADMIN || user_type() == CLIENT_ADMIN">
+          <md-button ui-sref="gateways">
+            <md-icon ng-bind="'build'"></md-icon> Gateways
           </md-button>
         </md-menu-item>
         <md-menu-item>

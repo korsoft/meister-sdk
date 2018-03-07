@@ -55,43 +55,10 @@ meister.constant('CLIENT_USER',29);
             templateUrl: 'partials/edit-profile-partial.html',
             controller: 'EditProfileController'
         })
-        .state('about', {
-            url: '/about',
-            templateUrl: 'partials/about-partial.html',
-            controller: 'AboutController'
-        })
-        .state('claims', {
-            url: '/claims',
-            templateUrl: 'partials/claims-partial.html',
-            controller: 'ClaimsController',
-            params: {
-                filters: []
-            }
-        })
-        .state('reports', {
-            url: '/reports',
-            templateUrl: 'partials/reports-partial.html',
-            controller: 'ReportsController',
-            params: {
-                filters: []
-            }
-        })
-        .state('claim-details', {
-            url: '/claims-details',
-            templateUrl: 'partials/claim-details-partial.html',
-            controller: 'ClaimDetailsController',
-            params: {
-                claimno: ''
-            }
-        })
-        .state('reports-summary', {
-            url: '/reports-summary',
-            templateUrl: 'partials/reports-summary-partial.html',
-            controller: 'ReportSummaryController',
-            params: {
-                PKY: '',
-                reportName: ''
-            }
+        .state('gateways', {
+            url: '/gateways',
+            templateUrl: 'partials/client-gateways-partial.html',
+            controller: 'ClientGatewayController'
         });
 
     }]).run(['$rootScope', '$location','$mdToast','OAuth',
