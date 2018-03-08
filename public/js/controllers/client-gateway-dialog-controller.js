@@ -26,7 +26,6 @@
           $scope.gateway.digest = "";
         } else {
           $scope.gateway = angular.copy(gateway);
-          $scope.gateway.client_id = Number($scope.gateway.client_id);
         }
 
         console.log("gateway", gateway);

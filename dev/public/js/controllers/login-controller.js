@@ -11,7 +11,12 @@
             $scope.promise.then(
                   function(result) { 
                       console.log("Login",result);
-                       $location.path('/');
+                      if(result.data && result.data.access_token)
+                        $location.path('/');
+                      else {
+                        $cookies.remove('meister-sdk-token');
+                        MessageUtil.showError('The user credentials were incorrect');
+                      }
                   },
                   function(errorPayload) {
                       console.log('failure login', errorPayload);
