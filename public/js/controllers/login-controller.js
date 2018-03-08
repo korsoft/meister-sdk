@@ -12,7 +12,7 @@
                   function(result) { 
                       console.log("Login",result);
                       if(result.data && result.data.access_token)
-                        $location.path('/');
+                        $location.path('/home');
                       else {
                         $cookies.remove('meister-sdk-token');
                         MessageUtil.showError('The user credentials were incorrect');

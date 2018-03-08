@@ -1,10 +1,10 @@
-<div ng-cloak ng-init="init()">
+<div ng-cloak>
 
 <main-menu></main-menu>
 <main-toolbar></main-toolbar>
 
 
-<md-content>
+<md-content  ng-init="init()">
 
   <md-card>
     <md-toolbar class="md-table-toolbar md-default" ng-if="filter.show == false">

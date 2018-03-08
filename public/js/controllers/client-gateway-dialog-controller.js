@@ -9,7 +9,8 @@
           {id:0,name:"BASIC"},
           {id:1,name:"FORM"},
           {id:2,name:"DIGEST"},
-          {id:3,name:"OAUTH"}
+          {id:3,name:"OAUTH"},
+          {id:4,name:"OAUTH2"}
         ];
         $scope.promise = null;
 
@@ -24,6 +25,13 @@
           $scope.gateway.password = "";
           $scope.gateway.auth_type = 0;
           $scope.gateway.digest = "";
+          $scope.gateway.consumer_key = "";
+          $scope.gateway.consumer_secret = "";
+          $scope.gateway.token = "";
+          $scope.gateway.token_secret = "";
+          $scope.gateway.client_id_for_oauth2 = "";
+          $scope.gateway.client_secret_for_oauth2 = "";
+          $scope.gateway.auth_url_for_oauth2 = "";
         } else {
           $scope.gateway = angular.copy(gateway);
         }
@@ -47,6 +55,22 @@
 
         $scope.changeAuthType = function(type){
           $scope.gateway.auth_type = type;
+          if(type != 2){
+            $scope.gateway.digest = "";
+          }
+          if(type != 3){
+            $scope.gateway.consumer_key = "";
+            $scope.gateway.consumer_secret = "";
+            $scope.gateway.token = "";
+            $scope.gateway.token_secret = "";
+            $scope.gateway.username = "";
+            $scope.gateway.password = "";
+          }
+          if(type != 4){
+            $scope.gateway.client_id_for_oauth2 = "";
+            $scope.gateway.client_secret_for_oauth2 = "";
+            $scope.gateway.auth_url_for_oauth2 = "";
+          }
         };
 
         $scope.save = function(){

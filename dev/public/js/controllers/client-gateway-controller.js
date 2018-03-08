@@ -69,6 +69,8 @@
               return "DIGEST";
             else if(type == 3)
               return "OAUTH";
+            else if(type == 4)
+              return "OAUTH2";
             return "";
          };
 

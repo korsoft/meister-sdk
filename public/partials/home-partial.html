@@ -1,9 +1,9 @@
-<div ng-cloak>
+<div ng-cloak >
 
 <main-menu></main-menu>
 <main-toolbar></main-toolbar>
 
-    <md-content>
+    <md-content ng-init="init()">
     <div flex-xs flex-gt-xs="100" layout="column">
 
     <md-card md-theme-watch>
@@ -16,15 +16,12 @@
           </md-card-title-media>
         </md-card-title>
         <md-card-content>
-           
-           <md-select ng-model="armor" placeholder="Select the Gateway" style="width:80%">
-          <md-option value="cloth">Cloth</md-option>
-          <md-option value="leather">Leather</md-option>
-          <md-option value="chain">Chainmail</md-option>
-          <md-option value="plate">Plate</md-option>
+          <md-select ng-model="gatewaySelectedId" placeholder="Select the Gateway" style="width:80%" ng-change="changeGateway(gatewaySelectedId)">
+             <md-option ng-repeat="g in gateways" ng-value="g.id">
+                  {{g.name}} --> {{g.client.name}}
+              </md-option>
         </md-select>
         
-         
         </md-card-content>
       </md-card>
 
@@ -32,11 +29,11 @@
 
     <div layout="row" layout-xs="column">
    
-       <md-card md-theme-watch flex>
+       <md-card md-theme-watch flex ng-if="gatewaySelected!=null">
         <md-card-title>
           <md-card-title-text>
             <div layout="row">
-                <span class="md-subhead">Meister Catalog</span>
+                <span class="md-subhead">{{gatewaySelected.name}}</span>
                 <div style="text-align: right;width: 80%">
                   <md-button class="md-icon-button" aria-label="Refresh" title="Refresh">
                      <md-icon ng-bind="'cached'"></md-icon>
@@ -58,7 +55,7 @@
    
 
    
-      <md-card md-theme-watch flex>
+      <md-card md-theme-watch flex ng-if="gatewaySelected!=null">
         <md-card-title>
           <md-card-title-text>
             <span class="md-subhead">Properties</span>

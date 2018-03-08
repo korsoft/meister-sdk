@@ -27,7 +27,7 @@ meister.constant('CLIENT_USER',29);
               revokePath: '/api/logout'
         });
 
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/home');
 
         $stateProvider.state('login', {
 		url: '/login',
@@ -36,7 +36,7 @@ meister.constant('CLIENT_USER',29);
 	})
 
 	.state('home', {
-            url: '/',
+            url: '/home',
             templateUrl: 'partials/home-partial.html',
             controller: 'HomeController'
         })

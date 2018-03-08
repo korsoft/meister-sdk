@@ -18,12 +18,6 @@
 	      };
 	    }
 
-	    $rootScope.gotoHome = function(){
-	    	$rootScope.transition = 'fade-in';
-	    	$state.go('home');
-	    };
-
-	   
 	     $rootScope.openMenu = function($mdOpenMenu,ev) {
 		      $mdOpenMenu(ev);
 		 };
