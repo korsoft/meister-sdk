@@ -73,6 +73,7 @@ meister.constant('CLIENT_USER',29);
         });
 
         $rootScope.$on('oauth:error', function(event, rejection) {
+          console.log("oauth:error--->");
           // Ignore `invalid_grant` error - should be catched on `LoginController`.
           if ('invalid_grant' === rejection.data.error) {
             return;
@@ -82,8 +83,6 @@ meister.constant('CLIENT_USER',29);
           if ('invalid_token' === rejection.data.error) {
             return OAuth.getRefreshToken();
           }
-
-          console.log("oauth:error", rejection.data.error);
 
           $mdToast.show(
                           $mdToast.simple()
@@ -97,4 +96,24 @@ meister.constant('CLIENT_USER',29);
           return $location.path('/login');
         });
     }]);
+
+    app.factory('httpResponseInterceptor', ['$q', '$rootScope', '$location','$cookies', 
+      function($q, $rootScope, $location, $cookies) {
+        return {
+            responseError: function(rejection) {
+              console.log("rejection------------------>");
+                if (rejection.status === 401) {
+                    // Something like below:
+                    console.log("401 ERROR");
+                    $cookies.remove('meister-sdk-token');
+                    $location.path('/login');
+                }
+                return $q.reject(rejection);
+            }
+        };
+    }]);
+
+    app.config(function($httpProvider) {
+      $httpProvider.interceptors.push('httpResponseInterceptor');
+  });
 })(meister);
