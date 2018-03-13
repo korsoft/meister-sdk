@@ -69,8 +69,8 @@
                     </thead>
                     <tbody md-body>
                       <tr md-row class="with-hover" ng-repeat="(key, value) in nodeSelected.source">
-                        <td md-cell style="text-overflow:ellipsis;overflow:hidden;padding:0px">{{key}}</td>
-                        <td md-cell style="text-overflow:ellipsis;overflow:hidden;padding:0px"><span ng-if="!nodeSelected.source[key+$index].$edit">{{isArray(value) ? '(Collection)' : value}}</span>
+                        <td md-cell style="text-overflow:ellipsis;overflow:hidden;padding:0px"><span title="{{key}}">{{key}}</span></td>
+                        <td md-cell style="text-overflow:ellipsis;overflow:hidden;padding:0px"><span ng-if="!nodeSelected.source[key+$index].$edit" title="{{isArray(value) ? '(Collection)' : value}}">{{isArray(value) ? '(Collection)' : value}}</span>
                           <md-input-container class="md-block" ng-if="nodeSelected.source[key+$index].$edit">
                             <label>{{key}}</label>
                           <input type="text" ng-model="nodeSelected.source[key]" >
