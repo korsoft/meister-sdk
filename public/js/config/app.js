@@ -6,7 +6,8 @@ meister.constant('CLIENT_SECRET_KEY',"GzkU62Ruwo29riFgJHVDPw377k8hYu5dXXYxgYSR")
 meister.constant('SYSTEM_ADMIN',99);
 meister.constant('CLIENT_ADMIN',49);
 meister.constant('CLIENT_USER',29);
-
+meister.constant('COOKIE_LAST_REQUEST','meister-sdk-last-request');
+meister.constant('COOKIE_MAX_TIMEOUT_REQUEST',30); //in minutes
 
 (function(app) {
     app.config(['$stateProvider', '$urlRouterProvider','OAuthProvider','OAuthTokenProvider','SERVER_BASE_URL','CLIENT_SECRET_KEY', 
@@ -61,12 +62,15 @@ meister.constant('CLIENT_USER',29);
             controller: 'ClientGatewayController'
         });
 
-    }]).run(['$rootScope', '$location','$mdToast','OAuth',
+    }]).run(['$rootScope', '$location','$mdToast','OAuth', 
     function ($rootScope, $location,$mdToast,OAuth) {
 
+      $rootScope.OAuth = OAuth;
         
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in
+            console.log("locationChangeStart--->");
+            //$cookies.put(COOKIE_LAST_REQUEST,Date.now());
             if ($location.path() !== '/login' && !OAuth.isAuthenticated()) {
                 $location.path('/login');
             }
@@ -97,11 +101,32 @@ meister.constant('CLIENT_USER',29);
         });
     }]);
 
-    app.factory('httpResponseInterceptor', ['$q', '$rootScope', '$location','$cookies', 
-      function($q, $rootScope, $location, $cookies) {
+    app.factory('httpResponseInterceptor', ['$q', '$timeout','$rootScope', '$location','$cookies',
+      'COOKIE_LAST_REQUEST','COOKIE_MAX_TIMEOUT_REQUEST',
+      function($q, $timeout, $rootScope, $location, $cookies, COOKIE_LAST_REQUEST, COOKIE_MAX_TIMEOUT_REQUEST) {
         return {
+            request: function(config) {
+              var last_request = $cookies.get(COOKIE_LAST_REQUEST);
+              if(last_request){
+                var current_time = Date.now();
+                var difference = current_time - last_request;
+                var resultInMinutes = Math.round(difference / 60000);
+                console.log("resultInMinutes",resultInMinutes);
+                if(resultInMinutes>COOKIE_MAX_TIMEOUT_REQUEST){
+                  console.log("Revoke token authentication...");
+                  $rootScope.OAuth.revokeToken();
+                  $cookies.remove('meister-sdk-token');
+                  $cookies.remove(COOKIE_LAST_REQUEST);
+               }
+              }
+              $cookies.put(COOKIE_LAST_REQUEST,Date.now());
+              //console.log("request interceptor---->",config);
+              var deferred = $q.defer();
+              deferred.resolve(config);
+              return deferred.promise;
+            },
             responseError: function(rejection) {
-              console.log("rejection------------------>");
+              //console.log("rejection interceptor------------------>");
                 if (rejection.status === 401) {
                     // Something like below:
                     console.log("401 ERROR");

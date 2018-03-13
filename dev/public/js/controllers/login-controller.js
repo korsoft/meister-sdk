@@ -1,10 +1,12 @@
 (function(app) {
 	app.controller('LoginController',
     ['$scope', '$rootScope', '$location','$mdToast', '$cookies','AuthenticationService','MessageUtil',
-    function ($scope, $rootScope, $location, $mdToast, $cookies, AuthenticationService, MessageUtil) {
+    'COOKIE_LAST_REQUEST',
+    function ($scope, $rootScope, $location, $mdToast, $cookies, AuthenticationService, MessageUtil,
+      COOKIE_LAST_REQUEST) {
         
         $cookies.remove('meister-sdk-token');
-
+        $cookies.remove(COOKIE_LAST_REQUEST);
         $scope.login = function () {
             $scope.promise =  AuthenticationService.Login($scope.username, $scope.password);
 
