@@ -7,7 +7,7 @@ meister.constant('SYSTEM_ADMIN',99);
 meister.constant('CLIENT_ADMIN',49);
 meister.constant('CLIENT_USER',29);
 meister.constant('COOKIE_LAST_REQUEST','meister-sdk-last-request');
-meister.constant('COOKIE_MAX_TIMEOUT_REQUEST',1); //in minutes
+meister.constant('COOKIE_MAX_TIMEOUT_REQUEST',30); //in minutes
 
 (function(app) {
     app.config(['$stateProvider', '$urlRouterProvider','OAuthProvider','OAuthTokenProvider','SERVER_BASE_URL','CLIENT_SECRET_KEY', 
