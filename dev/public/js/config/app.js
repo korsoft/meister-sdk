@@ -7,7 +7,7 @@ meister.constant('SYSTEM_ADMIN',99);
 meister.constant('CLIENT_ADMIN',49);
 meister.constant('CLIENT_USER',29);
 meister.constant('COOKIE_LAST_REQUEST','meister-sdk-last-request');
-meister.constant('COOKIE_MAX_TIMEOUT_REQUEST',30); //in minutes
+meister.constant('COOKIE_MAX_TIMEOUT_REQUEST',1); //in minutes
 
 (function(app) {
     app.config(['$stateProvider', '$urlRouterProvider','OAuthProvider','OAuthTokenProvider','SERVER_BASE_URL','CLIENT_SECRET_KEY', 
@@ -114,12 +114,11 @@ meister.constant('COOKIE_MAX_TIMEOUT_REQUEST',30); //in minutes
                 console.log("resultInMinutes",resultInMinutes);
                 if(resultInMinutes>COOKIE_MAX_TIMEOUT_REQUEST){
                   console.log("Revoke token authentication...");
-                  $rootScope.OAuth.revokeToken();
-                  $cookies.remove('meister-sdk-token');
-                  $cookies.remove(COOKIE_LAST_REQUEST);
-               }
-              }
-              $cookies.put(COOKIE_LAST_REQUEST,Date.now());
+                   $rootScope.logout();
+                } 
+              } 
+              
+              $cookies.put(COOKIE_LAST_REQUEST,Date.now());  
               //console.log("request interceptor---->",config);
               var deferred = $q.defer();
               deferred.resolve(config);
