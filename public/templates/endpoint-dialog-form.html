@@ -1,0 +1,67 @@
+<md-dialog aria-label="Endpoints" style="width:800px">
+  <form id="frmEndpoint" name="frmEndpoint" ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Add/Edit a Endpoint</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()" title="close">
+          <md-icon ng-bind="'highlight_off'"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+             <md-input-container class="md-block">
+              <label>Namespace</label>
+              <input ng-model="endpoint.NAMESPACE" required>
+            </md-input-container>
+             <md-input-container class="md-block">
+              <label>Long Text</label>
+              <input ng-model="endpoint.LONG_TEXT">
+            </md-input-container>
+             <md-input-container class="md-block">
+              <label>Endpoint Main</label>
+              <input ng-model="endpoint.ENDPOINT_MAIN" required>
+            </md-input-container>
+             <md-input-container class="md-block">
+              <label>Handler</label>
+              <input ng-model="endpoint.HANDLER" required>
+            </md-input-container>
+             <md-input-container class="md-block">
+              <label>Bus Name</label>
+              <input ng-model="endpoint.BUS_NAME" >
+            </md-input-container>
+             <md-input-container class="md-block">
+              <label>Type</label>
+              <input ng-model="endpoint.TYPE" required>
+            </md-input-container>
+            <md-input-container class="md-block">
+              <label>Version</label>
+              <input ng-model="endpoint.VERSION">
+            </md-input-container>
+            <md-input-container class="md-block">
+              <label>Locked</label>
+              <input ng-model="endpoint.LOCKED">
+            </md-input-container>
+            <md-input-container class="md-block">
+              <label>Package</label>
+              <input ng-model="endpoint.PACKAGE">
+            </md-input-container>
+            <md-input-container class="md-block">
+              <label>Transport</label>
+              <input ng-model="endpoint.TRANSPORT">
+            </md-input-container>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button class="md-raised md-primary" ng-click="save()" ng-disabled="frmEndpoint.$invalid">
+       Save
+      </md-button>
+      <md-button class="md-raised" ng-click="cancel()">
+        Cancel
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

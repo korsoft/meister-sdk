@@ -6,14 +6,18 @@
 		$scope.gateways = [];
 		$scope.gatewaySelectedId = null;
 		$scope.gatewaySelected = null;
-		$scope.treeOptions = {showIcon:false,expandOnClick:true};
+		$scope.treeOptions = {showIcon:false,expandOnClick:false};
 		$scope.nodeSelected = null;
 		$scope.nodeExpanded = null;
 		var gatewayResponse = null;
+		$scope.json = null;
+
+		$scope.loading_tree = false;
 
 		$scope.init = function(){
 
 			console.log("home controller init...");
+			
 			$scope.promise = GatewayService.index();
 
 			$scope.promise.then(
@@ -32,7 +36,8 @@
 			    return Object.prototype.toString.call(what) === '[object Array]';
 		}
 
-		var build_tree = function(){
+		$scope.build_tree = function(){
+
 			$scope.basicTree = [];
 			var rootNode = {
 				name: $scope.gatewaySelected.name,
@@ -42,9 +47,9 @@
 			console.log("Building tree",gatewayResponse);
 			if(gatewayResponse && gatewayResponse.d && gatewayResponse.d.results 
 				&& gatewayResponse.d.results.length > 0){
-				var json = angular.fromJson(gatewayResponse.d.results[0].Json);
-				console.log("Json",json);
-				_.forEach(json, function(node){
+				$scope.json = angular.fromJson(gatewayResponse.d.results[0].Json);
+				console.log("Json",$scope.json);
+				_.forEach($scope.json, function(node){
 					 var nodeItem = {
 						name:node.PROJECT,
 						source:node,
@@ -84,6 +89,7 @@
 		};
 
 		$scope.changeGateway = function(id){
+			$scope.loading_tree = true;
 			$scope.gatewaySelectedId = id;
 			$scope.nodeSelected = null;
 			$scope.nodeExpanded = null;
@@ -94,12 +100,14 @@
 			$scope.promise = GatewayService.execute(id);
 			$scope.promise.then(
 				function(result){
+					$scope.loading_tree = false;
 					console.log("result",result);
                      gatewayResponse = result.data;
                       MessageUtil.showInfo("Gateway data loaded");
-                     build_tree();
+                     $scope.build_tree();
 				},
 				function(error){
+					$scope.loading_tree = false;
 					console.log('failure', error);
                      MessageUtil.showError(error.data.message);
 				}
@@ -117,6 +125,28 @@
 	        //console.log(node.expanded);
     	});
 
+	     $scope.addEndpoint = function(ev, parentNode){
+	     	$mdDialog.show({
+                controller: 'EndpointDialogController',
+                templateUrl: 'templates/endpoint-dialog-form.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:false,
+                escapeToClose: false,
+                locals: {
+                 endpoint: null,
+                 parentNode: parentNode,
+                 gateway: $scope.gatewaySelected,
+                 json: $scope.json
+               }
+              })
+              .then(function(result) {
+                MessageUtil.showInfo("Endpoint was created");
+                $scope.changeGateway($scope.gatewaySelectedId);
+              }, function() {
+               
+              });
+	     };
   
 	}]);
 })(meister);

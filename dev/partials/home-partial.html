@@ -36,16 +36,23 @@
                 <span class="md-subhead">{{gatewaySelected.name}}</span>
                 <div style="text-align: right;width: 80%">
                   <md-button class="md-icon-button" aria-label="Refresh" title="Refresh"
-                      ng-click="changeGateway(gatewaySelectedId)">
+                      ng-click="changeGateway(gatewaySelectedId)" style="padding: 0px; margin: 0px; width: 22px">
                      <md-icon ng-bind="'cached'"></md-icon>
+                  </md-button>
+                  <md-button class="md-icon-button" aria-label="Refresh" 
+                      title="Add Endpoint" 
+                      ng-if="nodeSelected && nodeSelected.source.ENDPOINTS"
+                      ng-click="addEndpoint($event, nodeSelected)" 
+                      style="padding: 0px; margin: 0px; width: 22px">
+                     <md-icon ng-bind="'note_add'"></md-icon>
                   </md-button>
                 </div>
             </div>
           </md-card-title-text>
         
         </md-card-title>
-       <md-card-content style="height: 400px; overflow-y: auto" >
-        <tree nodes='basicTree' options='treeOptions'></tree>
+       <md-card-content style="height: 400px; overflow-y: auto" ng-if="!loading_tree">
+        <tree nodes='basicTree' options='treeOptions' ></tree>
        </md-card-content>
       </md-card>
    
@@ -78,6 +85,7 @@
 
                         </td>
                         <td md-cell style="padding: 0px">
+                          <!--
                             <md-button class="md-icon-button" title="Edit" ng-click="nodeSelected.source[key+$index].$edit=true" ng-if="!nodeSelected.source[key+$index].$edit" style="padding: 0px; margin: 0px; width: 22px">
                                <md-icon ng-bind="'create'"></md-icon>
                             </md-button>
@@ -87,7 +95,7 @@
                             <md-button class="md-icon-button" title="Cancel" ng-click="nodeSelected.source[key+$index].$edit=false" ng-if="nodeSelected.source[key+$index].$edit" style="padding: 0px; margin: 0px;width: 22px">
                                <md-icon ng-bind="'clear'"></md-icon>
                             </md-button>
-
+                            -->
                         </td>
                       </tr>
                     </tbody>

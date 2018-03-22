@@ -32,6 +32,8 @@
           $scope.gateway.client_id_for_oauth2 = "";
           $scope.gateway.client_secret_for_oauth2 = "";
           $scope.gateway.auth_url_for_oauth2 = "";
+          $scope.gateway.endpoint_lookup = "";
+          $scope.gateway.endpoint_master = "";
         } else {
           $scope.gateway = angular.copy(gateway);
         }

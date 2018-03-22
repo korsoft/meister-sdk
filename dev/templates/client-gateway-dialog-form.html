@@ -28,6 +28,14 @@
               <label>Url</label>
               <input ng-model="gateway.url" type="url" required>
             </md-input-container>
+             <md-input-container class="md-block">
+              <label>Endpoint Lookup</label>
+              <input ng-model="gateway.endpoint_lookup" type="text" required>
+            </md-input-container>
+            <md-input-container class="md-block">
+              <label>Endpoint Master</label>
+              <input ng-model="gateway.endpoint_master" type="text" required>
+            </md-input-container>
             <md-input-container class="md-block">
               <label>Auth Type</label>
               <md-select ng-model="gateway.auth_type" ng-change="changeAuthType(gateway.auth_type)">

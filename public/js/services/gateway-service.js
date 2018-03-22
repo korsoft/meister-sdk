@@ -32,6 +32,44 @@
             return $http.get(SERVER_BASE_URL + '/api/clientgateways/'+id+'/execute');
         };
 
+        service.execute_changes = function(id,params){
+            return $http.post(SERVER_BASE_URL + '/api/clientgateways/'+id+'/execute',params);
+        };
+
+        service.buildJsonByNewEndpoint = function(json, parentNode, endpoint){
+            console.log("buildJsonByNewEndpoint...");
+            console.log("json",json);
+            console.log("parentNode",parentNode);
+            console.log("endpoint",endpoint);
+            var json_to_send = {};
+            _.forEach(json, function(project){
+                console.log("project",project);
+                json_to_send.PKY = project.PKY;
+                json_to_send.PROJECT = project.PROJECT;
+                json_to_send.MODULES = [];
+                var module = _.find(project.MODULES, function(m){
+                    return m.PKY == parentNode.PKY;
+                });
+                console.log("module",module);
+                if(module){
+                    var moduleItem = {
+                      PKY: module.PKY,
+                      NAME: module.NAME,
+                      DATE:module.DATE.split("-").join(""),
+                      ENDPOINTS: []
+                    };
+                    endpoint.STYLES = [
+                        //{PKY:"",DIRECTION:"O",NAME:"Default",JSON:{NUMBER:""},CLASS_NAME:""},
+                        {PKY:"",DIRECTION:"I",NAME:"Default",JSON:{NUMBER:""},CLASS_NAME:""}
+                    ];
+                    moduleItem.ENDPOINTS.push(endpoint);
+                    json_to_send.MODULES.push(moduleItem);
+                    return false;
+                }
+            });
+            return json_to_send;
+        };
+
         return service;
     }]);
 })(meister);
