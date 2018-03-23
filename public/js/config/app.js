@@ -10,9 +10,15 @@ meister.constant('COOKIE_LAST_REQUEST','meister-sdk-last-request');
 meister.constant('COOKIE_MAX_TIMEOUT_REQUEST',30); //in minutes
 
 (function(app) {
-    app.config(['$stateProvider', '$urlRouterProvider','OAuthProvider','OAuthTokenProvider','SERVER_BASE_URL','CLIENT_SECRET_KEY', 
-        function($stateProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider, SERVER_BASE_URL, CLIENT_SECRET_KEY) {
+    app.config(['$stateProvider','$compileProvider', '$mdDateLocaleProvider', '$urlRouterProvider','OAuthProvider','OAuthTokenProvider','SERVER_BASE_URL','CLIENT_SECRET_KEY', 
+        function($stateProvider, $compileProvider, $mdDateLocaleProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider, SERVER_BASE_URL, CLIENT_SECRET_KEY) {
 
+          $mdDateLocaleProvider.formatDate = function(date) {
+         return moment(date).format('YYYY-MM-DD');
+      };
+      
+      $compileProvider.preAssignBindingsEnabled(true);
+          
         OAuthTokenProvider.configure({
             name: 'meister-sdk-token',
               options: {

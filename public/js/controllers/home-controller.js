@@ -125,6 +125,29 @@
 	        //console.log(node.expanded);
     	});
 
+	     $scope.addModule = function(ev, parentNode){
+	     	$mdDialog.show({
+                controller: 'ModuleDialogController',
+                templateUrl: 'templates/module-dialog-form.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:false,
+                escapeToClose: false,
+                locals: {
+                 module: null,
+                 parentNode: parentNode,
+                 gateway: $scope.gatewaySelected,
+                 json: $scope.json
+               }
+              })
+              .then(function(result) {
+                MessageUtil.showInfo("Module was created");
+                $scope.changeGateway($scope.gatewaySelectedId);
+              }, function() {
+               
+              });
+	     };
+
 	     $scope.addEndpoint = function(ev, parentNode){
 	     	$mdDialog.show({
                 controller: 'EndpointDialogController',
@@ -148,5 +171,27 @@
               });
 	     };
   
+  		$scope.addStyle = function(ev, parentNode){
+	     	$mdDialog.show({
+                controller: 'StyleDialogController',
+                templateUrl: 'templates/style-dialog-form.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:false,
+                escapeToClose: false,
+                locals: {
+                 style: null,
+                 parentNode: parentNode,
+                 gateway: $scope.gatewaySelected,
+                 json: $scope.json
+               }
+              })
+              .then(function(result) {
+                MessageUtil.showInfo("Style was created");
+                $scope.changeGateway($scope.gatewaySelectedId);
+              }, function() {
+               
+              });
+	     };
 	}]);
 })(meister);
