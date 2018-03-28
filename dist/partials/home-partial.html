@@ -3,7 +3,7 @@
 <main-menu></main-menu>
 <main-toolbar></main-toolbar>
 
-    <md-content ng-init="init()">
+    <md-content ng-init="init()" class="md-padding">
     <div flex-xs flex-gt-xs="100" layout="column">
 
     <md-card md-theme-watch>
@@ -33,9 +33,11 @@
         <md-card-title style="-webkit-flex:none">
           <md-card-title-text>
             <div layout="row">
-                <span class="md-subhead">{{gatewaySelected.name}}</span>
-                <div style="text-align: right;width: 80%">
-                  <md-button class="md-icon-button" aria-label="Refresh" title="Refresh"
+                <span class="md-headline">{{gatewaySelected.name}}</span>
+            </div>
+          </md-card-title-text>
+        <md-actions>
+            <md-button class="md-icon-button" aria-label="Refresh" title="Refresh"
                       ng-click="changeGateway(gatewaySelectedId)" style="padding: 0px; margin: 0px; width: 22px">
                      <md-icon ng-bind="'cached'"></md-icon>
                   </md-button>
@@ -60,10 +62,7 @@
                       style="padding: 0px; margin: 0px; width: 22px">
                      <md-icon ng-bind="'note_add'"></md-icon>
                   </md-button>
-                </div>
-            </div>
-          </md-card-title-text>
-        
+        </md-actions>
         </md-card-title>
        <md-card-content style="height: 400px; overflow-y: auto" ng-if="!loading_tree">
         <tree nodes='basicTree' options='treeOptions' ></tree>
@@ -75,7 +74,7 @@
       <md-card  flex ng-if="gatewaySelected!=null" >
         <md-card-title style="-webkit-flex:none">
           <md-card-title-text>
-            <span class="md-subhead">Properties</span>
+            <span class="md-headline">Properties</span>
           </md-card-title-text>
          
         </md-card-title>

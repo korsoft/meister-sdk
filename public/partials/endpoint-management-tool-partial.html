@@ -1,0 +1,91 @@
+<div ng-cloak >
+
+<main-menu></main-menu>
+<main-toolbar></main-toolbar>
+
+    <md-content ng-init="init()" class="md-padding">
+    <div flex-xs flex-gt-xs="100" layout="column">
+
+    <md-card md-theme-watch>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">SAP Gateway FQDN</span>
+          </md-card-title-text>
+          <md-card-title-media>
+            <div class="md-media-xs card-media"></div>
+          </md-card-title-media>
+        </md-card-title>
+        <md-card-content>
+          <md-select ng-model="gatewaySelectedId" placeholder="Select the Gateway" style="width:80%" ng-change="changeGateway(gatewaySelectedId)">
+             <md-option ng-repeat="g in gateways" ng-value="g.id">
+                  {{g.name}} --> {{g.client.name}}
+              </md-option>
+        </md-select>
+        
+        </md-card-content>
+      </md-card>
+
+    </div>
+  </md-content>
+
+ <md-content class="md-padding" layout-xs="column" layout="row">
+ <div flex-xs flex-gt-xs="50" layout="column">
+      <md-card>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Endpoints</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content style="height: 300px; overflow-y: auto">
+          <tree nodes='endpointsTree' options='treeOptions' ></tree>
+        </md-card-content>
+      </md-card>
+
+      <md-card>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-subheadline">Call URL/Details</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+          <TEXTAREA style="width:100%"></TEXTAREA>
+        </md-card-content>
+      </md-card>
+      
+
+    </div>
+    
+    <div flex-xs flex-gt-xs="50" layout="column">
+      <md-card>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Call Syntax</span>
+          </md-card-title-text>
+          <md-actions>
+            <md-button class="md-raised">
+              Execute Json
+            </md-button>
+            <md-button class="md-raised">
+              Call Details
+            </md-button>
+          </md-actions>
+        </md-card-title>
+        <md-card-content style="height: 200px; overflow-y: auto">
+          <tree nodes='payloadsTree' options='treeOptions' ></tree>
+        </md-card-content>
+      </md-card>
+
+      <md-card>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-subheadline">JSON</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content style="height: 300px; overflow-y: auto">
+          <TEXTAREA style="width:100%;height: 280px"></TEXTAREA>
+        </md-card-content>
+      </md-card>
+
+    </div>
+ </md-content>
+</div>
