@@ -28,15 +28,15 @@
     </div>
   </md-content>
 
- <md-content class="md-padding" layout-xs="column" layout="row">
+ <md-content class="md-padding" layout-xs="column" layout="row" ng-if="gatewaySelected!=null">
  <div flex-xs flex-gt-xs="50" layout="column">
-      <md-card>
+      <md-card >
         <md-card-title>
           <md-card-title-text>
             <span class="md-headline">Endpoints</span>
           </md-card-title-text>
         </md-card-title>
-        <md-card-content style="height: 300px; overflow-y: auto">
+        <md-card-content style="height: 300px; overflow-y: auto"  ng-if="!loading_tree">
           <tree nodes='endpointsTree' options='treeOptions' ></tree>
         </md-card-content>
       </md-card>
@@ -47,7 +47,7 @@
             <span class="md-subheadline">Call URL/Details</span>
           </md-card-title-text>
         </md-card-title>
-        <md-card-content>
+        <md-card-content  ng-if="!loading_tree">
           <TEXTAREA style="width:100%"></TEXTAREA>
         </md-card-content>
       </md-card>
@@ -61,7 +61,7 @@
           <md-card-title-text>
             <span class="md-headline">Call Syntax</span>
           </md-card-title-text>
-          <md-actions>
+          <md-actions  ng-if="!loading_tree">
             <md-button class="md-raised">
               Execute Json
             </md-button>
@@ -70,18 +70,18 @@
             </md-button>
           </md-actions>
         </md-card-title>
-        <md-card-content style="height: 200px; overflow-y: auto">
+        <md-card-content style="height: 200px; overflow-y: auto"  ng-if="!loading_tree">
           <tree nodes='payloadsTree' options='treeOptions' ></tree>
         </md-card-content>
       </md-card>
 
-      <md-card>
+      <md-card >
         <md-card-title>
           <md-card-title-text>
             <span class="md-subheadline">JSON</span>
           </md-card-title-text>
         </md-card-title>
-        <md-card-content style="height: 300px; overflow-y: auto">
+        <md-card-content style="height: 300px; overflow-y: auto"  ng-if="!loading_tree">
           <TEXTAREA style="width:100%;height: 280px"></TEXTAREA>
         </md-card-content>
       </md-card>

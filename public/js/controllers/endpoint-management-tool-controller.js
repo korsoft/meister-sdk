@@ -47,12 +47,32 @@
 			
 			var rootNode = {
 				name: 'root',
-				children: [
-				{name:'Meister.EndPoint.LookUP',children:[]},
-				{name:'Meister.BAPI.LookUp',children:[]},
-				{name:'Meister.Report.Manager',children:[]}
-				]
+				children: []
 			};
+
+			$scope.endpointsTree.push(rootNode);
+
+			console.log("Building tree",gatewayResponse);
+			if(gatewayResponse && gatewayResponse.d && gatewayResponse.d.results 
+				&& gatewayResponse.d.results.length > 0){
+				$scope.json = angular.fromJson(gatewayResponse.d.results[0].Json);
+				console.log("Json",$scope.json);
+				_.forEach($scope.json, function(node){
+					_.forEach(node.MODULES, function(module){
+						_.forEach(module.ENDPOINTS, function(endpoint){
+							var endpointItem = {
+								name: endpoint.NAMESPACE,
+								source: endpoint,
+								expanded: false,
+								children: []
+							};
+							rootNode.children.push(endpointItem);
+						});
+					});
+				});
+				
+				
+			}
 
 			var payloadNode = {
 				name: 'Payloads',
@@ -61,14 +81,34 @@
 					{name:'Ipad', children: []}
 				]
 			};
-			$scope.endpointsTree.push(rootNode);
 			$scope.payloadsTree.push(payloadNode);
 		};
 
 		$scope.changeGateway = function(id){
 			console.log("changeGateway",id);
+			$scope.loading_tree = true;
 			$scope.gatewaySelectedId = id;
-			$scope.build_tree();
+			$scope.nodeSelected = null;
+			$scope.nodeExpanded = null;
+			console.log("Gateway selected", $scope.gatewaySelectedId);
+			$scope.gatewaySelected = _.find($scope.gateways,function(g){
+				return id == g.id;
+			});
+			$scope.promise = GatewayService.execute(id);
+			$scope.promise.then(
+				function(result){
+					$scope.loading_tree = false;
+					console.log("result",result);
+                    gatewayResponse = result.data;
+                    MessageUtil.showInfo("Gateway data loaded");
+                    $scope.build_tree();
+				},
+				function(error){
+					$scope.loading_tree = false;
+					console.log('failure', error);
+                    MessageUtil.showError(error.data.message);
+				}
+			);
 		};
 
 	     $scope.$on('selection-changed', function (e, node) {
