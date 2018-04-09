@@ -36,6 +36,12 @@
             return $http.post(SERVER_BASE_URL + '/api/clientgateways/'+id+'/execute',params);
         };
 
+        service.execute_endpoint = function(id,params){
+            return $http.post(SERVER_BASE_URL + '/api/clientgateways/'+id+'/execute_endpoint',params);
+        };
+
+        
+
         service.buildJsonByNewModule = function(json, parentNode,module){
             console.log("buildJsonByNewEndpoint...");
             console.log("json",json);

@@ -23,7 +23,7 @@
           $scope.endpoint.LOCKED = "";
           $scope.endpoint.PACKAGE = "";
           $scope.endpoint.TRANSPORT = "";
-          $scope.endpoint.STYLES = [];
+          $scope.endpoint.Payload_styles = [];
         } else {
           $scope.endpoint = angular.copy(endpoint);
         }

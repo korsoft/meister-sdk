@@ -35,7 +35,18 @@
           <md-card-title-text>
             <span class="md-headline">Endpoints</span>
           </md-card-title-text>
-        </md-card-title>
+       
+        <md-actions>
+                  <md-button class="md-icon-button" aria-label="Refresh" 
+                      title="Execute" 
+                      ng-if="nodeSelected && nodeSelected.source.STYLES && nodeSelected.source.STYLES.length==0"
+                      ng-click="execute($event, nodeSelected)" 
+                      style="padding: 0px; margin: 0px; width: 22px">
+                     <md-icon ng-bind="'send'"></md-icon>
+                  </md-button>
+
+        </md-actions>
+         </md-card-title>
         <md-card-content style="height: 300px; overflow-y: auto"  ng-if="!loading_tree">
           <tree nodes='endpointsTree' options='treeOptions' ></tree>
         </md-card-content>
@@ -71,7 +82,8 @@
           </md-actions>
         </md-card-title>
         <md-card-content style="height: 200px; overflow-y: auto"  ng-if="!loading_tree">
-          <tree nodes='payloadsTree' options='treeOptions' ></tree>
+          <!--tree nodes='payloadsTree' options='treeOptions' ></tree-->
+          <div ng-jsoneditor="onLoadJson" ng-model="payload_json.json" options="payload_json.options" style="width: 100%; height: 215px;" ng-if="payload_json.json"></div>
         </md-card-content>
       </md-card>
 
@@ -82,7 +94,8 @@
           </md-card-title-text>
         </md-card-title>
         <md-card-content style="height: 300px; overflow-y: auto"  ng-if="!loading_tree">
-          <TEXTAREA style="width:100%;height: 280px"></TEXTAREA>
+          <!--TEXTAREA style="width:100%;height: 280px"></TEXTAREA-->
+          <pre>{{pretty_payload_json(payload_json.json)}}</pre>
         </md-card-content>
       </md-card>
 
