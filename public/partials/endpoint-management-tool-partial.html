@@ -39,7 +39,7 @@
         <md-actions>
                   <md-button class="md-icon-button" aria-label="Refresh" 
                       title="Execute" 
-                      ng-if="nodeSelected && nodeSelected.source.STYLES && nodeSelected.source.STYLES.length==0"
+                      ng-if="nodeSelected && nodeSelected.source.STYLES"
                       ng-click="execute($event, nodeSelected)" 
                       style="padding: 0px; margin: 0px; width: 22px">
                      <md-icon ng-bind="'send'"></md-icon>
@@ -95,7 +95,7 @@
         </md-card-title>
         <md-card-content style="height: 300px; overflow-y: auto"  ng-if="!loading_tree">
           <!--TEXTAREA style="width:100%;height: 280px"></TEXTAREA-->
-          <pre>{{pretty_payload_json(payload_json.json)}}</pre>
+          <pre ng-if="payload_json.json">{{pretty_payload_json(payload_json.json)}}</pre>
         </md-card-content>
       </md-card>
 
