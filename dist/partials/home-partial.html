@@ -3,19 +3,27 @@
 <main-menu></main-menu>
 <main-toolbar></main-toolbar>
 
-    <md-content ng-init="init()" class="md-padding">
+    <md-content ng-init="init()" >
     <div flex-xs flex-gt-xs="100" layout="column">
 
     <md-card md-theme-watch>
-        <md-card-title>
+        <md-card-title style="padding:5px 5px 5px">
           <md-card-title-text>
-            <span class="md-headline">Gateway List</span>
+            <span class="md-headline"  style="font-size: 18px">SAP Gateway {{gatewaySelected.name ? ': ' + gatewaySelected.name : ''}}</span>
           </md-card-title-text>
           <md-card-title-media>
             <div class="md-media-xs card-media"></div>
           </md-card-title-media>
+           <md-actions>
+              <md-button  aria-label="Refresh" 
+                      title="{{show_select_gateway === true ? 'Hide' : 'Show'}}" 
+                      ng-click="show_select_gateway = !show_select_gateway" 
+                      style="padding: 0px; margin: 0px; width: 22px">
+                     {{show_select_gateway === true ? 'Hide' : 'Show'}}
+                  </md-button>
+          </md-actions>
         </md-card-title>
-        <md-card-content>
+        <md-card-content ng-show="show_select_gateway">
           <md-select ng-model="gatewaySelectedId" placeholder="Select the Gateway" style="width:80%" ng-change="changeGateway(gatewaySelectedId)">
              <md-option ng-repeat="g in gateways" ng-value="g.id">
                   {{g.name}} --> {{g.client.name}}

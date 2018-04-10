@@ -16,6 +16,8 @@
 		$scope.endpointsTree = [];
 		$scope.payloadsTree = [];
 
+		$scope.show_select_gateway = true;
+
 		$scope.url_details = "";
 
 		$scope.loading_tree = false;
@@ -144,6 +146,7 @@
 			$scope.nodeSelected = null;
 			$scope.nodeExpanded = null;
 			console.log("Gateway selected", $scope.gatewaySelectedId);
+			$scope.show_select_gateway = false;
 			$scope.gatewaySelected = _.find($scope.gateways,function(g){
 				return id == g.id;
 			});
