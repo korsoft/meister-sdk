@@ -73,7 +73,7 @@
             <span class="md-headline">Call Syntax</span>
           </md-card-title-text>
           <md-actions  ng-if="!loading_tree">
-            <md-button class="md-raised">
+            <md-button class="md-raised" ng-click="execute_details($event, nodeSelected)" >
               Execute Json
             </md-button>
             <md-button class="md-raised">

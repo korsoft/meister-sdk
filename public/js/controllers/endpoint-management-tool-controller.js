@@ -177,6 +177,24 @@
 			);
 		};
 
+		$scope.execute_details = function(event, node){
+			console.log("Execute details event",node);
+			var params = {
+				"endpoint": node.name,
+				"json": JSON.stringify($scope.payload_json.json,null,"    ")
+			};
+			$scope.promise = GatewayService.execute_endpoint($scope.gatewaySelected.id,params);
+			$scope.promise.then(
+				function(result){
+					console.log("result",result);
+				},
+				function(error){
+					console.log('failure', error);
+                    MessageUtil.showError(error.data.message);
+				}
+			);
+		};
+
 		$scope.pretty_payload_json = function (obj) {
             return angular.toJson(obj, true);
         }
