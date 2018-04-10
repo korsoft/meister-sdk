@@ -58,8 +58,8 @@
             <span class="md-subheadline">Call URL/Details</span>
           </md-card-title-text>
         </md-card-title>
-        <md-card-content  ng-if="!loading_tree">
-          <TEXTAREA style="width:100%"></TEXTAREA>
+        <md-card-content  ng-if="!loading_tree" style="height: 200px; overflow-y: auto" >
+         <span style="font-size: 12px;color: gray">{{url_details}}</span>
         </md-card-content>
       </md-card>
       
