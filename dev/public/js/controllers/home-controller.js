@@ -9,7 +9,6 @@
 		$scope.treeOptions = {showIcon:false,expandOnClick:false};
 		$scope.nodeSelected = null;
 		$scope.nodeExpanded = null;
-		$scope.show_select_gateway = true;
 		var gatewayResponse = null;
 		$scope.json = null;
 
@@ -94,7 +93,6 @@
 			$scope.gatewaySelectedId = id;
 			$scope.nodeSelected = null;
 			$scope.nodeExpanded = null;
-			$scope.show_select_gateway = false;
 			console.log("Gateway selected", $scope.gatewaySelectedId);
 			$scope.gatewaySelected = _.find($scope.gateways,function(g){
 				return id == g.id;
