@@ -191,6 +191,17 @@
 				function(result){
 					console.log("result",result);
 					$scope.url_details = result.data.url;
+					$mdDialog.show({
+		                controller: 'ResponseEndpointExecutionDialogController',
+		                templateUrl: 'templates/response-endpoint-execution.html',
+		                parent: angular.element(document.body),
+		                targetEvent: event,
+		                clickOutsideToClose:false,
+		                escapeToClose: false,
+		                locals: {
+		                 json: angular.fromJson(result.data.data.d.results[0].Json)
+		               }
+		              });
 				},
 				function(error){
 					console.log('failure', error);

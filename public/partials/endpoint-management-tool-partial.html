@@ -73,12 +73,12 @@
             <span class="md-headline">Call Syntax</span>
           </md-card-title-text>
           <md-actions  ng-if="!loading_tree">
-            <md-button class="md-raised" ng-click="execute_details($event, nodeSelected)" >
+            <md-button class="md-raised"  ng-if="payload_json.json" ng-click="execute_details($event, nodeSelected)" >
               Execute Json
             </md-button>
-            <md-button class="md-raised">
+            <!--<md-button class="md-raised">
               Call Details
-            </md-button>
+            </md-button> -->
           </md-actions>
         </md-card-title>
         <md-card-content style="height: 200px; overflow-y: auto"  ng-if="!loading_tree">
