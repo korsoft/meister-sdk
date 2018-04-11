@@ -17,6 +17,7 @@
 		$scope.payloadsTree = [];
 
 		$scope.styleSelected = null;
+		$scope.styles = [];
 		$scope.show_select_gateway = true;
 
 		$scope.url_details = "";
@@ -201,12 +202,26 @@
             instance.expandAll();
         };
 
+        $scope.changeStyle = function(style){
+        	$scope.styleSelected = style;
+        	$scope.styleSelected.parent = $scope.nodeSelected;
+        	console.log("changeStyle",style);
+        };
+
 	     $scope.$on('selection-changed', function (e, node) {
 	        console.log("Node selected",node);
 	        $scope.payload_json = {json: null, options: {mode: 'tree'}};
 	        $scope.url_details = "";
 	        $scope.nodeSelected = node;
+	        $scope.styles = [];
 	        $scope.styleSelected = null;
+	        if(node.source.STYLES && node.source.STYLES.length>0){
+	        	console.log("Styles",node.source.STYLES);
+	        	$scope.styles = node.children;
+	        	$scope.styleSelected = node.children[0];
+	        	$scope.styleSelected.parent = node;
+	        }
+
 	    });
 
 	     $scope.$on('expanded-state-changed', function (e, node) {

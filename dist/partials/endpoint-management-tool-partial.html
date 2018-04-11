@@ -96,8 +96,16 @@
             </md-button> -->
           </md-actions>
         </md-card-title>
-        <md-card-content style="height: 200px; overflow-y: auto"  ng-if="!loading_tree">
+        <md-card-content style="height: 300px; overflow-y: auto"  ng-if="!loading_tree">
           <!--tree nodes='payloadsTree' options='treeOptions' ></tree-->
+          <md-input-container class="md-block" ng-if="payload_json.json && styles && styles.length>0">
+          <label >Select the Style</label>
+          <md-select ng-model="styleSelected" style="width: 50%" placeholder="Select the Style"  ng-change="changeStyle(styleSelected)">
+             <md-option ng-repeat="style in styles" ng-value="style">
+                  {{style.name}}
+              </md-option>
+        </md-select>
+      </md-input-container>
           <div ng-jsoneditor="onLoadJson" ng-model="payload_json.json" options="payload_json.options" style="width: 100%; height: 215px;" ng-if="payload_json.json"></div>
         </md-card-content>
       </md-card>
