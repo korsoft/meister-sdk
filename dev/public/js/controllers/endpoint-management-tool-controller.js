@@ -16,6 +16,7 @@
 		$scope.endpointsTree = [];
 		$scope.payloadsTree = [];
 
+		$scope.styleSelected = null;
 		$scope.show_select_gateway = true;
 
 		$scope.url_details = "";
@@ -50,6 +51,7 @@
 			$scope.payloadsTree = [];
 			$scope.payload_json = {json: null, options: {mode: 'tree'}};
 			$scope.url_details = "";
+			$scope.styleSelected = null;
 			var rootNode = {
 				name: $scope.gatewaySelected.name,
 				children: []
@@ -87,6 +89,7 @@
 									name: style.NAME,
 									source: style,
 									expanded: false,
+									parent: endpointItem,
 									children: []
 								};
 								endpointItem.children.push(styleItem);
@@ -94,48 +97,9 @@
 						});
 					});
 				});
-				
-				
+					
 			}
 			
-			/*var rootNode = {
-				name: 'root',
-				children: []
-			};
-
-			$scope.endpointsTree.push(rootNode);
-
-			console.log("Building tree",gatewayResponse);
-			if(gatewayResponse && gatewayResponse.d && gatewayResponse.d.results 
-				&& gatewayResponse.d.results.length > 0){
-				$scope.json = angular.fromJson(gatewayResponse.d.results[0].Json);
-				console.log("Json",$scope.json);
-				_.forEach($scope.json, function(node){
-					_.forEach(node.MODULES, function(module){
-						_.forEach(module.ENDPOINTS, function(endpoint){
-							var endpointItem = {
-								name: endpoint.NAMESPACE,
-								source: endpoint,
-								expanded: false,
-								children: []
-							};
-							rootNode.children.push(endpointItem);
-						});
-					});
-				});
-				
-				
-			}
-
-			var payloadNode = {
-				name: 'Payloads',
-				children: [
-					{name:'Full', children: [{name:'Request',children:[]},{name:'Response',children:[]}]},
-					{name:'Ipad', children: []}
-				]
-			};
-			$scope.payloadsTree.push(payloadNode);
-			*/
 		};
 
 		$scope.changeGateway = function(id){
@@ -145,6 +109,7 @@
 			$scope.gatewaySelectedId = id;
 			$scope.nodeSelected = null;
 			$scope.nodeExpanded = null;
+			$scope.styleSelected = null;
 			console.log("Gateway selected", $scope.gatewaySelectedId);
 			$scope.show_select_gateway = false;
 			$scope.gatewaySelected = _.find($scope.gateways,function(g){
@@ -183,11 +148,26 @@
 			);
 		};
 
-		$scope.execute_details = function(event, node){
+		$scope.execute_by_style = function(event, node){
+			console.log("execute_by_style",$scope.endpointsTree);
+			$scope.styleSelected = node;
+			$scope.execute(event, node.parent);
+		};
+
+
+		$scope.execute_details = function(event){
+			var node = null;
+			
+			if($scope.styleSelected)
+				node = $scope.styleSelected.parent;
+			else
+				node = $scope.nodeSelected;
+
 			console.log("Execute details event",node);
 			var params = {
 				"endpoint": node.name,
-				"json": JSON.stringify($scope.payload_json.json,null,"    ")
+				"json": JSON.stringify($scope.payload_json.json,null,"    "),
+				"style": $scope.styleSelected ? $scope.styleSelected.name : 'DEFAULT'
 			};
 			$scope.promise = GatewayService.execute_endpoint($scope.gatewaySelected.id,params);
 			$scope.promise.then(
@@ -226,6 +206,7 @@
 	        $scope.payload_json = {json: null, options: {mode: 'tree'}};
 	        $scope.url_details = "";
 	        $scope.nodeSelected = node;
+	        $scope.styleSelected = null;
 	    });
 
 	     $scope.$on('expanded-state-changed', function (e, node) {

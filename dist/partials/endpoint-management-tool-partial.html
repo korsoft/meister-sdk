@@ -52,6 +52,13 @@
                       style="padding: 0px; margin: 0px; width: 22px">
                      <md-icon ng-bind="'send'"></md-icon>
                   </md-button>
+                   <md-button class="md-icon-button" aria-label="Refresh" 
+                      title="Execute" 
+                      ng-if="nodeSelected && nodeSelected.source && !nodeSelected.source.MODULES && !nodeSelected.source.ENDPOINTS && !nodeSelected.source.STYLES"
+                      ng-click="execute_by_style($event, nodeSelected)" 
+                      style="padding: 0px; margin: 0px; width: 22px">
+                     <md-icon ng-bind="'send'"></md-icon>
+                  </md-button>
 
         </md-actions>
          </md-card-title>
@@ -81,7 +88,7 @@
             <span class="md-headline">Call Syntax</span>
           </md-card-title-text>
           <md-actions  ng-if="!loading_tree">
-            <md-button class="md-raised"  ng-if="payload_json.json" ng-click="execute_details($event, nodeSelected)" >
+            <md-button class="md-raised"  ng-if="payload_json.json" ng-click="execute_details($event)" >
               Execute Json
             </md-button>
             <!--<md-button class="md-raised">

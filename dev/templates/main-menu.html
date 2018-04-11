@@ -4,9 +4,9 @@
         <h1 class="md-toolbar-tools">Meister SDK Engine</h1>
       </md-toolbar>
 
-      <md-content style="">
+      <md-content>
         
-        <md-menu-content width="4">
+        <md-menu-content style="max-height: 400px">
           <md-menu-item>
           <md-button ui-sref="home">
             <md-icon ng-bind="'home'"></md-icon> Home
@@ -17,8 +17,7 @@
             <md-icon ng-bind="'code'"></md-icon> Endpoint Management Tool
           </md-button>
         </md-menu-item>
-        <md-menu-content width="4">
-          <md-menu-item ng-if="user_type() == SYSTEM_ADMIN">
+       <md-menu-item ng-if="user_type() == SYSTEM_ADMIN">
           <md-button ui-sref="clients">
             <md-icon ng-bind="'work'"></md-icon> Clients
           </md-button>
