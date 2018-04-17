@@ -19,7 +19,7 @@
 		$scope.styleSelected = null;
 		$scope.styles = [];
 		$scope.show_select_gateway = true;
-
+		$scope.json_details = "";
 		$scope.url_details = "";
 
 		$scope.loading_tree = false;
@@ -51,6 +51,7 @@
 			$scope.endpointsTree = [];
 			$scope.payloadsTree = [];
 			$scope.payload_json = {json: null, options: {mode: 'tree'}};
+			$scope.json_details = "";
 			$scope.url_details = "";
 			$scope.styleSelected = null;
 			var rootNode = {
@@ -136,6 +137,7 @@
 		$scope.execute = function(event, node){
 			console.log("Execute event for endpoint",node);
 			var params = {"endpoint":node.name};
+			$scope.json_details = "";
 			$scope.promise = GatewayService.execute_endpoint($scope.gatewaySelected.id,params);
 			$scope.promise.then(
 				function(result){
@@ -175,7 +177,8 @@
 				function(result){
 					console.log("result",result);
 					$scope.url_details = result.data.url;
-					$mdDialog.show({
+					$scope.json_details = angular.fromJson(result.data.data.d.results[0].Json);
+					/*$mdDialog.show({
 		                controller: 'ResponseEndpointExecutionDialogController',
 		                templateUrl: 'templates/response-endpoint-execution.html',
 		                parent: angular.element(document.body),
@@ -185,7 +188,7 @@
 		                locals: {
 		                 json: angular.fromJson(result.data.data.d.results[0].Json)
 		               }
-		              });
+		              });*/
 				},
 				function(error){
 					console.log('failure', error);
@@ -197,6 +200,10 @@
 		$scope.pretty_payload_json = function (obj) {
             return angular.toJson(obj, true);
         }
+
+        $scope.json_to_string = function(obj){
+        	return JSON.stringify(obj);
+        };
 
 		$scope.onLoadJson = function (instance) {
             instance.expandAll();
@@ -215,6 +222,7 @@
 	        $scope.nodeSelected = node;
 	        $scope.styles = [];
 	        $scope.styleSelected = null;
+	        $scope.json_details = "";
 	        if(node.source.STYLES && node.source.STYLES.length>0){
 	        	console.log("Styles",node.source.STYLES);
 	        	$scope.styles = node.children;
