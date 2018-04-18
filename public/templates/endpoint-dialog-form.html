@@ -34,15 +34,17 @@
             </md-input-container>
              <md-input-container class="md-block">
               <label>Type</label>
-              <input ng-model="endpoint.TYPE" required>
+              <md-select ng-model="endpoint.TYPE" required>
+                <md-option value="D">Dynamic</md-option>
+                <md-option value="L">Static</md-option>
+              </md-select>
             </md-input-container>
             <md-input-container class="md-block">
               <label>Version</label>
               <input ng-model="endpoint.VERSION">
             </md-input-container>
             <md-input-container class="md-block">
-              <label>Locked</label>
-              <input ng-model="endpoint.LOCKED">
+              <md-checkbox ng-model="endpoint.LOCKED" ng-true-value="'true'" ng-false-value="'false'"  >Locked</md-checkbox>             
             </md-input-container>
             <md-input-container class="md-block">
               <label>Package</label>
