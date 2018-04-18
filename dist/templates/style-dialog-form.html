@@ -18,7 +18,10 @@
             </md-input-container>
             <md-input-container class="md-block" required>
               <label>Direction</label>
-              <input ng-model="style.DIRECTION">
+              <md-select ng-model="style.DIRECTION" >
+                            <md-option value="I">inbound</md-option>
+                            <md-option value="O">outbound</md-option>
+              </md-select>
             </md-input-container>
             <md-input-container class="md-block">
               <label>Json</label>

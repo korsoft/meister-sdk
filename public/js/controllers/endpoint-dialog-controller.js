@@ -5,6 +5,7 @@
   
         $scope.endpoint = {};
         $scope.parentNode = {};
+        $scope.page=1;
 
         $scope.promise = null;
          $scope.cancel = function() {
@@ -23,7 +24,7 @@
           $scope.endpoint.LOCKED = "";
           $scope.endpoint.PACKAGE = "";
           $scope.endpoint.TRANSPORT = "";
-          $scope.endpoint.Payload_styles = [];
+          $scope.endpoint.Payload_styles = [{PKY:"",DIRECTION:"I",NAME:"Default",JSON:"",CLASS_NAME:""}];
         } else {
           $scope.endpoint = angular.copy(endpoint);
         }
@@ -38,7 +39,7 @@
           var json_to_send =  GatewayService.buildJsonByNewEndpoint(json, parentNode.source, $scope.endpoint);
           
           var params = {
-            json: JSON.stringify(json_to_send)
+            json: angular.toJson(json_to_send)
           };
 
             $scope.promise = GatewayService.execute_changes(gateway.id, params);
@@ -63,6 +64,31 @@
               );
          
         };
+
+        $scope.changePage = function (page){
+          $scope.page=page;
+        }
+
+        $scope.addStyle = function () {
+          $scope.endpoint.Payload_styles.push({PKY:"",DIRECTION:"",NAME:"",JSON:"",CLASS_NAME:""});
+        }
+
+        $scope.deleteStyle = function (index) {
+          $scope.endpoint.Payload_styles.splice(index, 1);
+        }
+
+        $scope.checkUniqueName= function () {
+          var counts = [];
+        //  console.log($scope.endpoint.Payload_styles[0]);
+          for(var i = 0; i < $scope.endpoint.Payload_styles.length; i++) {
+              if(counts[$scope.endpoint.Payload_styles[i].NAME] === undefined) {
+                  counts[$scope.endpoint.Payload_styles[i].NAME] = 1;
+              } else {
+                  return true;
+              }
+          }
+          return false;
+        }
         
     }]);
 })(meister);

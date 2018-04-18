@@ -91,10 +91,6 @@
                       DATE:module.DATE.split("-").join(""),
                       ENDPOINTS: []
                     };
-                    endpoint.STYLES = [
-                        //{PKY:"",DIRECTION:"O",NAME:"Default",JSON:{NUMBER:""},CLASS_NAME:""},
-                        {PKY:"",DIRECTION:"I",NAME:"Default",JSON:{NUMBER:""},CLASS_NAME:""}
-                    ];
                     moduleItem.ENDPOINTS.push(endpoint);
                     json_to_send.MODULES.push(moduleItem);
                     return false;
