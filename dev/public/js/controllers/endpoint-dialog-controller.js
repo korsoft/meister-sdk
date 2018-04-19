@@ -81,8 +81,8 @@
           var counts = [];
         //  console.log($scope.endpoint.Payload_styles[0]);
           for(var i = 0; i < $scope.endpoint.STYLES.length; i++) {
-              if(counts[$scope.endpoint.STYLES[i].NAME] === undefined) {
-                  counts[$scope.endpoint.STYLES[i].NAME] = 1;
+              if(counts[$scope.endpoint.STYLES[i].NAME+$scope.endpoint.STYLES[i].DIRECTION] === undefined) {
+                  counts[$scope.endpoint.STYLES[i].NAME+$scope.endpoint.STYLES[i].DIRECTION] = 1;
               } else {
                   return true;
               }
