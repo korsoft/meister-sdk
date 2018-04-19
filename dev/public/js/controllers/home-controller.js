@@ -1,6 +1,6 @@
 (function(app) {
-	app.controller('HomeController', ['$scope','$mdToast','$mdDialog','MessageUtil','GatewayService',
-		function($scope, $mdToast,$mdDialog,MessageUtil,GatewayService) {
+	app.controller('HomeController', ['$scope','$rootScope','$mdMenu','$mdToast','$mdDialog','MessageUtil','GatewayService',
+		function($scope, $rootScope, $mdMenu, $mdToast,$mdDialog,MessageUtil,GatewayService) {
 
 		$scope.promise = null;
 		$scope.gateways = [];
@@ -137,15 +137,28 @@
 			);
 		};
 
+		$rootScope.openActionsInNode = function($mdOpenMenu, $event){
+			console.log("openActionsInNode",$event);
+			console.log("mdOpenMenu",$mdOpenMenu);
+		};
+
+		$scope.openActionsInNodeTemp = function($mdOpenMenu, $event){
+			console.log("openActionsInNodeTemp",$event);
+		};
+
 	     $scope.$on('selection-changed', function (e, node) {
-	        $scope.nodeSelected = node;
-	        console.log("Node selected",node);
+	     	console.log("Node selected",node);
 	        $scope.payload_json = {json: null, options: {mode: 'tree'}};
 	        $scope.url_details = "";
 	        $scope.nodeSelected = node;
 	        $scope.styles = [];
 	        $scope.styleSelected = null;
 	        $scope.json_details = "";
+	     	if(!node.source){
+	     		$scope.nodeSelected = null;
+	     		return;
+	     	}
+	        $scope.nodeSelected = node;
 	        if(node.source.STYLES && node.source.STYLES.length>0){
 	        	console.log("Styles",node.source.STYLES);
 	        	$scope.styles = node.children;
@@ -154,11 +167,40 @@
 	        }
 	    });
 
-	     $scope.$on('expanded-state-changed', function (e, node) {
-	        console.log("Expanded node",node);
-	        $scope.nodeExpanded = node;
-	        //console.log(node.expanded);
+	     $scope.$on('action-node-selected', function (e, obj) {
+	        console.log("action-node-selected",obj);
+	        if(obj.actionName === "addModule")
+	        	$scope.addModule(obj.sourceEvent,obj.node);
+	        else if(obj.actionName == "addEndpoint")
+	        	$scope.addEndpoint(obj.sourceEvent,obj.node);
+	        else if(obj.actionName == "addStyle")
+	        	$scope.addStyle(obj.sourceEvent,obj.node);
+	        else if(obj.actionName == "execute")
+	        	$scope.execute(obj.sourceEvent,obj.node);
+	        else if(obj.actionName == "execute_by_style")
+	        	$scope.execute_by_style(obj.sourceEvent,obj.node);
     	});
+
+	     $scope.$on('selection-changed', function (e, node) {
+	        console.log("Node selected",node);
+	        $scope.payload_json = {json: null, options: {mode: 'tree'}};
+	        $scope.url_details = "";
+	        $scope.nodeSelected = node;
+	        $scope.styles = [];
+	        $scope.styleSelected = null;
+	        $scope.json_details = "";
+	        if(!node.source){
+	     		$scope.nodeSelected = null;
+	     		return;
+	     	}
+	     	$scope.nodeSelected = node;
+	        if(node.source.STYLES && node.source.STYLES.length>0){
+	        	console.log("Styles",node.source.STYLES);
+	        	$scope.styles = node.children;
+	        	$scope.styleSelected = node.children[0];
+	        	$scope.styleSelected.parent = node;
+	        }
+	    });
 
 	     $scope.addModule = function(ev, parentNode){
 	     	$scope.mode_run = false;

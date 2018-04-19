@@ -12,7 +12,7 @@
             return {
                 restrict: "E",
                 scope: { nodes: '=', options: '=?' },
-                template: "<treenode nodes='nodes' tree='nodelist' options='options'></treenode>",
+                template: "<treenode nodes='nodes' oncontextmenu='return false' tree='nodelist' options='options'></treenode>",
                 compile: function compile(tElement, tAttrs, transclude) {
                     return {
                         pre: function (scope) {
@@ -80,13 +80,55 @@
             return {
                 restrict: "E",
                 scope: { nodes: '=', tree: '=', options: '=?' },
-                template: '<ul>'
+                template: '<ul oncontextmenu="return false" >'
                 + '<li ng-repeat="node in nodes | nodeFilter:options.filter track by node.nodeId" class="node" id="{{::node.nodeId}}">'
                 + '<i class="tree-node-ico pointer" ng-class="{\'tree-node-expanded\': node.expanded && (node.children | nodeFilter:options.filter).length > 0,\'tree-node-collapsed\':!node.expanded && (node.children | nodeFilter:options.filter).length > 0}" ng-click="toggleNode(node)"></i>'
                 + '<span class="node-title pointer" ng-click="selectNode(node, $event)" ng-class="{\'disabled\':node.disabled}">'
                 + '<span><i class="tree-node-ico" ng-if="options.showIcon" ng-class="{\'tree-node-image\':node.children, \'tree-node-leaf\':!node.children}" ng-style="node.image && {\'background-image\':\'url(\'+node.image+\')\'}"></i>'
                 + '     <span class="node-name" tabindex="{{::(node.focusable ? 0 : -1)}}" ng-class="{selected: node.selected&& !node.disabled}">'
-                + '         {{node.name}}'
+                + ' <span ng-if="!node.source">{{node.name}}</span>'
+                + ' <md-menu ng-if="node.source">'
+                + '     <span ng-click="$mdMenu.open()"  ng-mouseup="openMenu($mdOpenMenu,$event,node)">'
+                + '       {{node.name}}'
+                + '     </span>'
+                + '     <md-menu-content >'
+                + '         <md-menu-item ng-if="node  && node.source.MODULES">'
+                + ' <md-button  '
+                + '      ng-click="emitActionNodeSelected(\'addModule\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'note_add\'"></md-icon> Add module'
+                + '  </md-button>'
+                + '         </md-menu-item>'
+                + '         <md-menu-item ng-if="node  && node.source.ENDPOINTS">'
+                + ' <md-button  '
+                + '      ng-click="emitActionNodeSelected(\'addEndpoint\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'note_add\'"></md-icon> Add endpoint'
+                + '  </md-button>'
+                + '         </md-menu-item>'
+                + '         <md-menu-item ng-if="node  && node.source.STYLES">'
+                + ' <md-button  '
+                + '      ng-click="emitActionNodeSelected(\'addStyle\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'note_add\'"></md-icon> Add style'
+                + '  </md-button>'
+                + '         </md-menu-item>'
+                + '         <md-menu-item ng-if="node  && node.source.STYLES">'
+                + ' <md-button  '
+                + '      ng-click="emitActionNodeSelected(\'execute\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'send\'"></md-icon> Execute'
+                + '  </md-button>'
+                + '         </md-menu-item>'
+                + '         <md-menu-item ng-if="!node.source.MODULES && !node.source.ENDPOINTS && !node.source.STYLES">'
+                + ' <md-button  '
+                + '      ng-click="emitActionNodeSelected(\'execute_by_style\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'send\'"></md-icon> Execute'
+                + '  </md-button>'
+                + '         </md-menu-item>'
+                + '    </md-menu-content>'
+                + ' </md-menu>'
                 + '         <span ng-if="node.badge != null" class="label" ng-class="node.badge.type">{{node.badge.title}}</span>'
                 + '     </span>'
                 + '</span>'
@@ -107,12 +149,15 @@
                             return scope.tree.filter(function (item) { return item.selected; });
                         }
 
+                        scope.emitActionNodeSelected = function(actionName,node,event){
+                            scope.$emit('action-node-selected', {"actionName":actionName,"node":node,"sourceEvent":event});
+                        }
+
                         //Select node
                         scope.selectNode = function (node, $event) {
                             if (node.disabled) { return; }
 
-                            console.log("show submenu");
-
+                            
                             var selectedNode;
                             if (scope.options.multipleSelect === true) {
                                 node.selected = !node.selected;
@@ -153,6 +198,18 @@
                                 scope.$emit('expanded-state-changed', node);
                                 if (scope.options.onExpandNode) {
                                     scope.options.onExpandNode(node);
+                                }
+                            }
+                        }
+
+                        scope.openMenu = function (menu,e,node) {
+                            if(e.which==3){
+                                var itemSelected = getSelectedNodes();
+                                e.preventDefault();
+                                e.stopPropagation();
+                                if(itemSelected.length==1 &&
+                                    itemSelected[0].nodeId==node.nodeId){
+                                    menu(e);
                                 }
                             }
                         }
