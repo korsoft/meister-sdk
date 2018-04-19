@@ -14,6 +14,17 @@
 		$scope.show_select_gateway = true;
 		$scope.loading_tree = false;
 
+		$scope.payload_json = {json: null, options: {mode: 'tree'}};
+		$scope.payloadsTree = [];
+		$scope.basicTree = [];
+		$scope.styleSelected = null;
+		$scope.styles = [];
+		$scope.show_select_gateway = true;
+		$scope.json_details = "";
+		$scope.url_details = "";
+
+		$scope.mode_run = false;
+
 		$scope.init = function(){
 
 			console.log("home controller init...");
@@ -43,6 +54,13 @@
 				name: $scope.gatewaySelected.name,
 				children: []
 			};
+			$scope.mode_run = false;
+			$scope.payloadsTree = [];
+			$scope.payload_json = {json: null, options: {mode: 'tree'}};
+			$scope.json_details = "";
+			$scope.url_details = "";
+			$scope.styleSelected = null;
+
 			$scope.basicTree.push(rootNode);
 			console.log("Building tree",gatewayResponse);
 			if(gatewayResponse && gatewayResponse.d && gatewayResponse.d.results 
@@ -94,6 +112,10 @@
 			$scope.nodeSelected = null;
 			$scope.nodeExpanded = null;
 			$scope.show_select_gateway = false;
+			$scope.mode_run = false;
+			$scope.url_details = "";
+			$scope.styleSelected = null;
+			
 			console.log("Gateway selected", $scope.gatewaySelectedId);
 			$scope.gatewaySelected = _.find($scope.gateways,function(g){
 				return id == g.id;
@@ -116,8 +138,20 @@
 		};
 
 	     $scope.$on('selection-changed', function (e, node) {
-	        console.log("Node selected",node);
 	        $scope.nodeSelected = node;
+	        console.log("Node selected",node);
+	        $scope.payload_json = {json: null, options: {mode: 'tree'}};
+	        $scope.url_details = "";
+	        $scope.nodeSelected = node;
+	        $scope.styles = [];
+	        $scope.styleSelected = null;
+	        $scope.json_details = "";
+	        if(node.source.STYLES && node.source.STYLES.length>0){
+	        	console.log("Styles",node.source.STYLES);
+	        	$scope.styles = node.children;
+	        	$scope.styleSelected = node.children[0];
+	        	$scope.styleSelected.parent = node;
+	        }
 	    });
 
 	     $scope.$on('expanded-state-changed', function (e, node) {
@@ -127,6 +161,7 @@
     	});
 
 	     $scope.addModule = function(ev, parentNode){
+	     	$scope.mode_run = false;
 	     	$mdDialog.show({
                 controller: 'ModuleDialogController',
                 templateUrl: 'templates/module-dialog-form.html',
@@ -150,6 +185,7 @@
 	     };
 
 	     $scope.addEndpoint = function(ev, parentNode){
+	     	$scope.mode_run = false;
 	     	$mdDialog.show({
                 controller: 'EndpointDialogController',
                 templateUrl: 'templates/endpoint-dialog-form.html',
@@ -173,6 +209,7 @@
 	     };
   
   		$scope.addStyle = function(ev, parentNode){
+  			$scope.mode_run = false;
 	     	$mdDialog.show({
                 controller: 'StyleDialogController',
                 templateUrl: 'templates/style-dialog-form.html',
@@ -194,5 +231,88 @@
                
               });
 	     };
+
+	     $scope.execute = function(event, node){
+			console.log("Execute event for endpoint",node);
+			var params = {"endpoint":node.name};
+			$scope.json_details = "";
+			$scope.mode_run = true;
+			$scope.promise = GatewayService.execute_endpoint($scope.gatewaySelected.id,params);
+			$scope.promise.then(
+				function(result){
+					console.log("result",result);
+					$scope.payload_json.json = angular.fromJson(result.data.data.d.results[0].Json);
+				},
+				function(error){
+					console.log('failure', error);
+                    MessageUtil.showError(error.data.message);
+				}
+			);
+		};
+
+		$scope.execute_by_style = function(event, node){
+			console.log("execute_by_style",$scope.basicTree);
+			$scope.styleSelected = node;
+			$scope.execute(event, node.parent);
+		};
+
+
+		$scope.execute_details = function(event){
+			var node = null;
+			
+			if($scope.styleSelected)
+				node = $scope.styleSelected.parent;
+			else
+				node = $scope.nodeSelected;
+
+			console.log("Execute details event",node);
+			var params = {
+				"endpoint": node.name,
+				"json": JSON.stringify($scope.payload_json.json,null,"    "),
+				"style": $scope.styleSelected ? $scope.styleSelected.name : 'DEFAULT'
+			};
+			$scope.promise = GatewayService.execute_endpoint($scope.gatewaySelected.id,params);
+			$scope.promise.then(
+				function(result){
+					console.log("result",result);
+					$scope.url_details = result.data.url;
+					$scope.json_details = angular.fromJson(result.data.data.d.results[0].Json);
+					/*$mdDialog.show({
+		                controller: 'ResponseEndpointExecutionDialogController',
+		                templateUrl: 'templates/response-endpoint-execution.html',
+		                parent: angular.element(document.body),
+		                targetEvent: event,
+		                clickOutsideToClose:false,
+		                escapeToClose: false,
+		                locals: {
+		                 json: angular.fromJson(result.data.data.d.results[0].Json)
+		               }
+		              });*/
+				},
+				function(error){
+					console.log('failure', error);
+                    MessageUtil.showError(error.data.message);
+				}
+			);
+		};
+
+		$scope.pretty_payload_json = function (obj) {
+            return angular.toJson(obj, true);
+        }
+
+        $scope.json_to_string = function(obj){
+        	return JSON.stringify(obj);
+        };
+
+		$scope.onLoadJson = function (instance) {
+            instance.expandAll();
+        };
+
+         $scope.changeStyle = function(style){
+        	$scope.styleSelected = style;
+        	$scope.styleSelected.parent = $scope.nodeSelected;
+        	console.log("changeStyle",style);
+        };
+
 	}]);
 })(meister);
