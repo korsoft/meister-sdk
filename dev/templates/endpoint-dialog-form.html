@@ -70,7 +70,7 @@
                   </tr>
                 </thead>
                 <tbody md-body >
-                  <tr md-row ng-repeat="style in endpoint.Payload_styles ">
+                  <tr md-row ng-repeat="style in endpoint.Styles ">
                     <td md-cell>
                       <md-input-container md-no-float>
                           <input ng-model="style.NAME" required placeholder="Name" style="width: 100px">
@@ -86,7 +86,7 @@
                     </td>
                     <td md-cell>
                       <md-input-container md-no-float>
-                          <textarea ng-model="style.JSON" required placeholder="JSON" style="width: 300px"></textarea> 
+                          <textarea ng-model="style.JSON" placeholder="JSON" style="width: 300px"></textarea> 
                       </md-input-container>
                     </td>
                      <td md-cell>

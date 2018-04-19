@@ -35,9 +35,12 @@
 
     </div>
 
-<div layout="row" layout-xs="column" layout-wrap>
+ </md-content>
+
+ <md-content layout-xs="column" layout="row" ng-if="gatewaySelected!=null">
+ <div flex-xs flex-gt-xs="50" layout="column">
    
-       <md-card  flex ng-if="gatewaySelected!=null">
+       <md-card >
         <md-card-title style="-webkit-flex:none">
           <md-card-title-text>
             <div layout="row">
@@ -45,7 +48,7 @@
             </div>
           </md-card-title-text>
         <md-actions>
-            <md-button class="md-icon-button" aria-label="Refresh" title="Refresh"
+                <md-button class="md-icon-button" aria-label="Refresh" title="Refresh"
                       ng-click="changeGateway(gatewaySelectedId)" style="padding: 0px; margin: 0px; width: 22px">
                      <md-icon ng-bind="'cached'"></md-icon>
                   </md-button>
@@ -70,6 +73,20 @@
                       style="padding: 0px; margin: 0px; width: 22px">
                      <md-icon ng-bind="'note_add'"></md-icon>
                   </md-button>
+                  <md-button class="md-icon-button" aria-label="Refresh" 
+                      title="Execute" 
+                      ng-if="nodeSelected && nodeSelected.source.STYLES"
+                      ng-click="execute($event, nodeSelected)" 
+                      style="padding: 0px; margin: 0px; width: 22px">
+                     <md-icon ng-bind="'send'"></md-icon>
+                  </md-button>
+                   <md-button class="md-icon-button" aria-label="Refresh" 
+                      title="Execute" 
+                      ng-if="nodeSelected && nodeSelected.source && !nodeSelected.source.MODULES && !nodeSelected.source.ENDPOINTS && !nodeSelected.source.STYLES"
+                      ng-click="execute_by_style($event, nodeSelected)" 
+                      style="padding: 0px; margin: 0px; width: 22px">
+                     <md-icon ng-bind="'send'"></md-icon>
+                  </md-button>
         </md-actions>
         </md-card-title>
        <md-card-content style="height: 400px; overflow-y: auto" ng-if="!loading_tree">
@@ -77,9 +94,11 @@
        </md-card-content>
       </md-card>
    
+   </div>
+    
+    <div flex-xs flex-gt-xs="50" layout="column">
 
-
-      <md-card  flex ng-if="gatewaySelected!=null" >
+      <md-card  ng-if="!mode_run">
         <md-card-title style="-webkit-flex:none">
           <md-card-title-text>
             <span class="md-headline">Properties</span>
@@ -96,7 +115,7 @@
                       </tr>
                     </thead>
                     <tbody md-body>
-                      <tr md-row class="with-hover" ng-repeat="(key, value) in nodeSelected.source">
+                      <tr md-row class="with-hover" ng-repeat="(key, value) in nodeSelected.source" ng-if="key!='PKY' && !isArray(value)">
                         <td md-cell style="text-overflow:ellipsis;overflow:hidden;padding:0px"><span title="{{key}}">{{key}}</span></td>
                         <td md-cell style="text-overflow:ellipsis;overflow:hidden;padding:0px"><span ng-if="!nodeSelected.source[key+$index].$edit" title="{{isArray(value) ? '(Collection)' : value}}">{{isArray(value) ? '(Collection)' : value}}</span>
                           <md-input-container class="md-block" ng-if="nodeSelected.source[key+$index].$edit">
@@ -124,6 +143,58 @@
         </md-card-content>
       </md-card>
 
+      <md-card ng-if="mode_run">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Call Syntax</span>
+          </md-card-title-text>
+          <md-actions  ng-if="!loading_tree">
+            <md-button class="md-raised"  ng-if="payload_json.json" ng-click="execute_details($event)" >
+              Execute Json
+            </md-button>
+            <!--<md-button class="md-raised">
+              Call Details
+            </md-button> -->
+          </md-actions>
+        </md-card-title>
+        <md-card-content style="height: 300px; overflow-y: auto"  ng-if="!loading_tree">
+          <md-input-container class="md-block" ng-if="payload_json.json && url_details!=''">
+            <label >Url Details</label>
+            <input ng-model="url_details" type="text" readonly="true">
+          </md-input-container>
+           <div layout-gt-sm="row">
+          <md-input-container class="md-block" ng-if="payload_json.json && styles && styles.length>0" flex-gt-sm>
+              <label >Select the Style</label>
+              <md-select ng-model="styleSelected" style="width: 50%" placeholder="Select the Style"  ng-change="changeStyle(styleSelected)">
+                 <md-option ng-repeat="style in styles" ng-value="style">
+                      {{style.name}}
+                  </md-option>
+            </md-select>
+          </md-input-container>
+          <md-input-container flex-gt-sm ng-if="payload_json.json">
+            <label>JSON</label>
+            <textarea readonly="true" ng-value="json_to_string(payload_json.json)" rows="4" style="font-size: 10px;color: gray;line-height:18px" md-no-autogrow>
+            </textarea>
+          </md-input-container>
+        </div>
+      
+          <div ng-jsoneditor="onLoadJson" ng-model="payload_json.json" options="payload_json.options" style="width: 100%; height: 215px;" ng-if="payload_json.json"></div>
+        </md-card-content>
+      </md-card>
+
    </div>
  </md-content>
+
+ <md-content ng-if="mode_run && json_details && json_details!=''">
+   <md-card >
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-subheadline">RESULT</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content style="height: 300px; overflow-y: auto"  >
+          <pre ng-if="payload_json.json">{{pretty_payload_json(json_details)}}</pre>
+        </md-card-content>
+      </md-card>
+</md-content>
 </div>
