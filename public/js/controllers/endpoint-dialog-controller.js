@@ -24,7 +24,7 @@
           $scope.endpoint.LOCKED = "";
           $scope.endpoint.PACKAGE = "";
           $scope.endpoint.TRANSPORT = "";
-          $scope.endpoint.Styles = [{PKY:"",DIRECTION:"I",NAME:"Default",JSON:"",CLASS_NAME:""}];
+          $scope.endpoint.STYLES = [{PKY:"",DIRECTION:"I",NAME:"Default",JSON:"",CLASS_NAME:""}];
         } else {
           $scope.endpoint = angular.copy(endpoint);
         }
@@ -70,19 +70,19 @@
         }
 
         $scope.addStyle = function () {
-          $scope.endpoint.Styles.push({PKY:"",DIRECTION:"",NAME:"",JSON:"",CLASS_NAME:""});
+          $scope.endpoint.STYLES.push({PKY:"",DIRECTION:"",NAME:"",JSON:"",CLASS_NAME:""});
         }
 
         $scope.deleteStyle = function (index) {
-          $scope.endpoint.Styles.splice(index, 1);
+          $scope.endpoint.STYLES.splice(index, 1);
         }
 
         $scope.checkUniqueName= function () {
           var counts = [];
         //  console.log($scope.endpoint.Payload_styles[0]);
-          for(var i = 0; i < $scope.endpoint.Styles.length; i++) {
-              if(counts[$scope.endpoint.Styles[i].NAME] === undefined) {
-                  counts[$scope.endpoint.Styles[i].NAME] = 1;
+          for(var i = 0; i < $scope.endpoint.STYLES.length; i++) {
+              if(counts[$scope.endpoint.STYLES[i].NAME] === undefined) {
+                  counts[$scope.endpoint.STYLES[i].NAME] = 1;
               } else {
                   return true;
               }
