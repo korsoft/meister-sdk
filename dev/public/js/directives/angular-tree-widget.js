@@ -8,7 +8,7 @@
     'use strict';
 
     angular.module('TreeWidget', ['ngAnimate', 'RecursionHelper'])
-        .directive('tree', [ function () {
+        .directive('tree', [  function () {
             return {
                 restrict: "E",
                 scope: { nodes: '=', options: '=?' },
@@ -76,7 +76,7 @@
             }
 
         }])
-        .directive('treenode', ['RecursionHelper', function (RecursionHelper) {
+        .directive('treenode', ['RecursionHelper','$timeout', function (RecursionHelper,$timeout) {
             return {
                 restrict: "E",
                 scope: { nodes: '=', tree: '=', options: '=?' },
@@ -91,7 +91,7 @@
                 + '     <span ng-click="$mdMenu.open()"  ng-mouseup="openMenu($mdOpenMenu,$event,node)">'
                 + '       {{node.name}}'
                 + '     </span>'
-                + '     <md-menu-content >'
+                + '     <md-menu-content  oncontextmenu="return false" >'
                 + '         <md-menu-item ng-if="node  && node.source.MODULES">'
                 + ' <md-button  '
                 + '      ng-click="emitActionNodeSelected(\'addModule\',node,$event)" '
@@ -210,6 +210,12 @@
                                 if(itemSelected.length==1 &&
                                     itemSelected[0].nodeId==node.nodeId){
                                     menu(e);
+                                    $timeout(function() {
+                                        var element = document.getElementsByClassName('md-menu-backdrop');
+                                        element[0].oncontextmenu = function() {
+                                          return false;
+                                        }
+                                    });
                                 }
                             }
                         }
