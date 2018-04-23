@@ -1,5 +1,6 @@
 var meister = angular.module('meister', ['ngMaterial', 'ngAnimate','ngSanitize', 'ngMessages',
- 'ngAria', 'ui.router','ngCookies','md.data.table','chart.js','TreeWidget','angular-oauth2','ng.jsoneditor']);
+ 'ngAria', 'ui.router','ngCookies','md.data.table','chart.js','TreeWidget','angular-oauth2',
+ 'ng.jsoneditor','angular-loading-bar']);
 
 meister.constant('SERVER_BASE_URL', "http://localhost:8000");
 meister.constant('CLIENT_SECRET_KEY',"GzkU62Ruwo29riFgJHVDPw377k8hYu5dXXYxgYSR");
@@ -10,12 +11,16 @@ meister.constant('COOKIE_LAST_REQUEST','meister-sdk-last-request');
 meister.constant('COOKIE_MAX_TIMEOUT_REQUEST',30); //in minutes
 
 (function(app) {
-    app.config(['$stateProvider','$compileProvider', '$mdDateLocaleProvider', '$urlRouterProvider','OAuthProvider','OAuthTokenProvider','SERVER_BASE_URL','CLIENT_SECRET_KEY', 
-        function($stateProvider, $compileProvider, $mdDateLocaleProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider, SERVER_BASE_URL, CLIENT_SECRET_KEY) {
+    app.config(['$stateProvider','$compileProvider', '$mdDateLocaleProvider', '$urlRouterProvider','OAuthProvider',
+      'OAuthTokenProvider','SERVER_BASE_URL','CLIENT_SECRET_KEY', 'cfpLoadingBarProvider',
+        function($stateProvider, $compileProvider, $mdDateLocaleProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider,
+          SERVER_BASE_URL, CLIENT_SECRET_KEY,cfpLoadingBarProvider) {
 
           $mdDateLocaleProvider.formatDate = function(date) {
          return moment(date).format('YYYY-MM-DD');
-      };
+        };
+
+        cfpLoadingBarProvider.includeSpinner=false;
       
       $compileProvider.preAssignBindingsEnabled(true);
           
