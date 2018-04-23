@@ -21,6 +21,7 @@
 		$scope.styles = [];
 		$scope.show_select_gateway = true;
 		$scope.json_details = "";
+
 		$scope.url_details = "";
 
 		$scope.mode_run = false;
@@ -57,7 +58,6 @@
 			$scope.mode_run = false;
 			$scope.payloadsTree = [];
 			$scope.payload_json = {json: null, options: {mode: 'tree'}};
-			$scope.json_details = "";
 			$scope.url_details = "";
 			$scope.styleSelected = null;
 
@@ -146,15 +146,19 @@
 			console.log("openActionsInNodeTemp",$event);
 		};
 
+		$scope.clear_log_json_result = function(){
+			$scope.json_details = "";
+		};
+
 	     $scope.$on('selection-changed', function (e, node) {
 	     	console.log("Node selected",node);
 	        $scope.payload_json = {json: null, options: {mode: 'tree'}};
 	        $scope.url_details = "";
 	        $scope.nodeSelected = node;
+	        $scope.mode_run = false;
 	        $scope.styles = [];
 	        $scope.styleSelected = null;
-	        $scope.json_details = "";
-	     	if(!node.source){
+	        if(!node.source){
 	     		$scope.nodeSelected = null;
 	     		return;
 	     	}
@@ -187,8 +191,8 @@
 	        $scope.url_details = "";
 	        $scope.nodeSelected = node;
 	        $scope.styles = [];
+	        $scope.mode_run = false;
 	        $scope.styleSelected = null;
-	        $scope.json_details = "";
 	        if(!node.source){
 	     		$scope.nodeSelected = null;
 	     		return;
@@ -277,7 +281,6 @@
 	     $scope.execute = function(event, node){
 			console.log("Execute event for endpoint",node);
 			var params = {"endpoint":node.name};
-			$scope.json_details = "";
 			$scope.mode_run = true;
 			$scope.promise = GatewayService.execute_endpoint($scope.gatewaySelected.id,params);
 			$scope.promise.then(
@@ -318,7 +321,8 @@
 				function(result){
 					console.log("result",result);
 					$scope.url_details = result.data.url;
-					$scope.json_details = angular.fromJson(result.data.data.d.results[0].Json);
+					$scope.json_details += "<span class=\"title-log-result\">RUNTIME: " + moment().format('MMMM DD YYYY, h:mm:ss a') + ": Result</span><br/>";
+					$scope.json_details += "<span class=\"content-log-result\">" + result.data.data.d.results[0].Json + "</span><br/><br/>";
 					/*$mdDialog.show({
 		                controller: 'ResponseEndpointExecutionDialogController',
 		                templateUrl: 'templates/response-endpoint-execution.html',
@@ -337,10 +341,6 @@
 				}
 			);
 		};
-
-		$scope.pretty_payload_json = function (obj) {
-            return angular.toJson(obj, true);
-        }
 
         $scope.json_to_string = function(obj){
         	return JSON.stringify(obj);

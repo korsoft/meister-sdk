@@ -193,10 +193,29 @@
           <md-card-title-text>
             <span class="md-subheadline">RESULT</span>
           </md-card-title-text>
+           <md-actions >
+            <md-button class="md-raised"  ng-click="clear_log_json_result()" >
+              Clear log
+            </md-button>
+          </md-actions>
         </md-card-title>
         <md-card-content style="height: 300px; overflow-y: auto"  >
-          <pre ng-if="payload_json.json">{{pretty_payload_json(json_details)}}</pre>
+          <div ng-if="payload_json.json" ng-bind-html="json_details"></div>
         </md-card-content>
       </md-card>
 </md-content>
 </div>
+
+<style type="text/css">
+  .title-log-result {
+    color: red;
+    font-size: 10px;
+    font-weight: bold;
+  }
+  .content-log-result {
+    color: gray;
+    font-size: 10px;
+    font-weight: bold;
+    padding-left: 10px;
+  }
+</style>
