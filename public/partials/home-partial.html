@@ -101,7 +101,7 @@
     <div flex-xs flex-gt-xs="50" layout="column">
 
       <md-card  ng-if="!mode_run">
-        <md-card-title style="-webkit-flex:none">
+        <md-card-title style="-webkit-flex:none;padding-bottom: 23px;">
           <md-card-title-text>
             <span class="md-headline">Properties</span>
           </md-card-title-text>
@@ -146,7 +146,7 @@
       </md-card>
 
       <md-card ng-if="mode_run">
-        <md-card-title>
+        <md-card-title style="padding-bottom: 9px;">
           <md-card-title-text>
             <span class="md-headline">Call Syntax</span>
           </md-card-title-text>
@@ -159,7 +159,7 @@
             </md-button> -->
           </md-actions>
         </md-card-title>
-        <md-card-content style="height: 300px; overflow-y: auto"  ng-if="!loading_tree">
+        <md-card-content style="height: 400px; overflow-y: auto"  ng-if="!loading_tree">
           <md-input-container class="md-block" ng-if="payload_json.json && url_details!=''">
             <label >Url Details</label>
             <input ng-model="url_details" type="text" readonly="true">
@@ -199,7 +199,7 @@
             </md-button>
           </md-actions>
         </md-card-title>
-        <md-card-content style="height: 300px; overflow-y: auto"  >
+        <md-card-content style="height: 400px; overflow-y: auto"  >
           <div ng-if="payload_json.json" ng-bind-html="json_details"></div>
         </md-card-content>
       </md-card>
