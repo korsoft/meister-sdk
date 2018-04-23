@@ -1,6 +1,7 @@
 (function(app) {
-	app.controller('HomeController', ['$scope','$rootScope','$mdMenu','$mdToast','$mdDialog','MessageUtil','GatewayService',
-		function($scope, $rootScope, $mdMenu, $mdToast,$mdDialog,MessageUtil,GatewayService) {
+	app.controller('HomeController', ['$scope','$rootScope','$mdMenu','$mdToast','$mdDialog','MessageUtil',
+		'GatewayService','$filter',
+		function($scope, $rootScope, $mdMenu, $mdToast,$mdDialog,MessageUtil,GatewayService,$filter) {
 
 		$scope.promise = null;
 		$scope.gateways = [];
@@ -322,7 +323,7 @@
 					console.log("result",result);
 					$scope.url_details = result.data.url;
 					$scope.json_details += "<span class=\"title-log-result\">RUNTIME: " + moment().format('MMMM DD YYYY, h:mm:ss a') + ": Result</span><br/>";
-					$scope.json_details += "<span class=\"content-log-result\">" + result.data.data.d.results[0].Json + "</span><br/><br/>";
+					$scope.json_details += "<span class=\"content-log-result\"> <code><pre>"+$filter('json')(angular.fromJson(result.data.data.d.results[0].Json), 2)+"</pre></code></span><br/><br/>";
 					/*$mdDialog.show({
 		                controller: 'ResponseEndpointExecutionDialogController',
 		                templateUrl: 'templates/response-endpoint-execution.html',
