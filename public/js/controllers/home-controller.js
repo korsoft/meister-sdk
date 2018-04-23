@@ -310,7 +310,7 @@
 			console.log("Execute details event",node);
 			var params = {
 				"endpoint": node.name,
-				"json": JSON.stringify($scope.payload_json.json,null,"    "),
+				"json": JSON.stringify($scope.payload_json.json,null,""),
 				"style": $scope.styleSelected ? $scope.styleSelected.name : 'DEFAULT'
 			};
 			$scope.promise = GatewayService.execute_endpoint($scope.gatewaySelected.id,params);
