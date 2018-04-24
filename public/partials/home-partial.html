@@ -187,7 +187,7 @@
    </div>
  </md-content>
 
- <md-content ng-if="mode_run && json_details && json_details!=''">
+ <md-content ng-if="mode_run && json_logs.length>0">
    <md-card >
         <md-card-title>
           <md-card-title-text>
@@ -200,7 +200,16 @@
           </md-actions>
         </md-card-title>
         <md-card-content style="height: 400px; overflow-y: auto"  >
-          <div ng-if="payload_json.json" ng-bind-html="json_details"></div>
+          <md-select ng-model="json_logs_title" placeholder="Select the JSON Result" 
+            style="width:80%" ng-change="changeJsonLog(json_logs_title)">
+             <md-option ng-repeat="g in json_logs" ng-value="g.title">
+                  {{g.title}}
+              </md-option>
+        </md-select>
+          <span class="title-log-result">{{json_logs_title}}: Result</span><br/>
+          <span class="content-log-result"> <code><pre>{{json_logs_content}}</pre></code></span>
+          
+          <!--div ng-if="payload_json.json" ng-bind-html="json_details"></div -->
         </md-card-content>
       </md-card>
 </md-content>

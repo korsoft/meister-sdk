@@ -21,7 +21,11 @@
 		$scope.styleSelected = null;
 		$scope.styles = [];
 		$scope.show_select_gateway = true;
+		
 		$scope.json_details = "";
+		$scope.json_logs = [];
+		$scope.json_logs_title = null;
+		$scope.json_logs_content = null;
 
 		$scope.url_details = "";
 
@@ -149,6 +153,9 @@
 
 		$scope.clear_log_json_result = function(){
 			$scope.json_details = "";
+			$scope.json_logs = [];
+			$scope.json_logs_title = null;
+			$scope.json_logs_content = null;
 		};
 
 	     $scope.$on('selection-changed', function (e, node) {
@@ -317,13 +324,28 @@
 				"json": JSON.stringify($scope.payload_json.json,null,""),
 				"style": $scope.styleSelected ? $scope.styleSelected.name : 'DEFAULT'
 			};
+			var execution_time = new Date();
 			$scope.promise = GatewayService.execute_endpoint($scope.gatewaySelected.id,params);
 			$scope.promise.then(
 				function(result){
 					console.log("result",result);
+					var end_time = new Date();
+					var difference = end_time-execution_time;
 					$scope.url_details = result.data.url;
-					$scope.json_details += "<span class=\"title-log-result\">RUNTIME: " + moment().format('MMMM DD YYYY, h:mm:ss a') + ": Result</span><br/>";
-					$scope.json_details += "<span class=\"content-log-result\"> <code><pre>"+$filter('json')(angular.fromJson(result.data.data.d.results[0].Json), 2)+"</pre></code></span><br/><br/>";
+					var json_text_title = "RUNTIME: " + moment().format('MMMM DD YYYY, h:mm:ss a');
+					var json_text_content = $filter('json')(angular.fromJson(result.data.data.d.results[0].Json), 2);
+
+					var json_text_item = {
+						title:json_text_title + " - Time Execution: " + (difference/1000) + " seconds" ,
+						content:json_text_content
+					};
+
+					$scope.json_logs_title = json_text_item.title;
+					$scope.json_logs_content = json_text_item.content;
+					$scope.json_logs.push(json_text_item);
+
+					//$scope.json_details += "<span class=\"title-log-result\">" + json_text_title + ": Result</span><br/>";
+					//$scope.json_details += "<span class=\"content-log-result\"> <code><pre>"+json_text_content+"</pre></code></span><br/><br/>";
 					/*$mdDialog.show({
 		                controller: 'ResponseEndpointExecutionDialogController',
 		                templateUrl: 'templates/response-endpoint-execution.html',
@@ -342,6 +364,15 @@
 				}
 			);
 		};
+
+		$scope.changeJsonLog = function(log){
+			console.log("changeJsonLog",log);
+			$scope.json_logs_title = log;
+			var item_selected = _.find($scope.json_logs,function(i){return i.title === log});
+			if(item_selected){
+				$scope.json_logs_content = item_selected.content;
+			}
+		}
 
         $scope.json_to_string = function(obj){
         	return JSON.stringify(obj);
