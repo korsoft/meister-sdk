@@ -27,7 +27,6 @@
     "underscore": "^1.8.3",
     "angular-sanitize": "1.6.1",
     "chart.js": "^2.7.1",
-    "angular-recursion": "^1.0.5",
-    "angular-loading-bar": "^0.9.0"
+    "angular-recursion": "^1.0.5"
   }
 }

@@ -135,3 +135,6 @@ md-toast.md-error-toast-theme .md-toast-content {
   -moz-border-radius: 100%;
   -webkit-border-radius: 100%;
   border-radius: 100%; }
+
+.executeContainer {
+  min-height: 400px; }

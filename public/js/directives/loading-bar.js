@@ -287,6 +287,7 @@ angular.module('cfp.loadingBar', [])
         } else {
           // after 99%, don't increment:
           rnd = 0;
+          _set(0);
         }
 
         var pct = _status() + rnd;

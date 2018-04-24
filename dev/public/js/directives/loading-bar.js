@@ -1,3 +1,9 @@
+/*! 
+ * angular-loading-bar v0.9.0
+ * https://chieffancypants.github.io/angular-loading-bar
+ * Copyright (c) 2016 Wes Cruver
+ * License: MIT
+ */
 /*
  * angular-loading-bar
  *
@@ -281,6 +287,7 @@ angular.module('cfp.loadingBar', [])
         } else {
           // after 99%, don't increment:
           rnd = 0;
+          _set(0);
         }
 
         var pct = _status() + rnd;
