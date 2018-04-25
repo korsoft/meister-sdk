@@ -77,6 +77,7 @@
           $scope.endpoint.STYLES.splice(index, 1);
         }
 
+
         $scope.checkUniqueName= function () {
           var counts = [];
         //  console.log($scope.endpoint.Payload_styles[0]);
