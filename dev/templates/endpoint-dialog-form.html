@@ -86,7 +86,7 @@
                     </td>
                     <td md-cell>
                       <md-input-container md-no-float>
-                          <textarea ng-model="style.JSON" placeholder="JSON" style="width: 300px"></textarea> 
+                        <div ng-jsoneditor ng-model="style.JSON" options="{mode: 'tree'}" style="width: 300px; height: 215px;"  prefer-text="true" ></div>
                       </md-input-container>
                     </td>
                      <td md-cell>

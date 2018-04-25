@@ -26,7 +26,7 @@
 		$scope.json_logs = [];
 		$scope.json_logs_title = null;
 		$scope.json_logs_content = null;
-
+		$scope.json_logs_content_obj = null;
 		$scope.url_details = "";
 
 		$scope.mode_run = false;
@@ -156,6 +156,7 @@
 			$scope.json_logs = [];
 			$scope.json_logs_title = null;
 			$scope.json_logs_content = null;
+			$scope.json_logs_content_obj = null;
 		};
 
 	     $scope.$on('selection-changed', function (e, node) {
@@ -342,6 +343,7 @@
 
 					$scope.json_logs_title = json_text_item.title;
 					$scope.json_logs_content = json_text_item.content;
+					$scope.json_logs_content_obj = angular.fromJson(result.data.data.d.results[0].Json);
 					$scope.json_logs.push(json_text_item);
 
 					//$scope.json_details += "<span class=\"title-log-result\">" + json_text_title + ": Result</span><br/>";
