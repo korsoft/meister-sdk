@@ -7,8 +7,8 @@
           </div>
         </md-toolbar>
         <md-card-content>
-          <form name="Form">
-            <md-input-container class="md-block">
+          <form name="Form" ng-submit="login()">
+            <md-input-container class="md-block" >
               <label>Email</label>
               <input type="email" name="email" ng-model="username" placeholder="login" required/>
               <div ng-messages="Form.email.$error" role="alert" multiple="">
@@ -23,7 +23,7 @@
                 <div ng-message="md-maxlength" class="my-message">Too long.</div>
               </div>
             </md-input-container>
-            <md-button ng-disabled="Form.$invalid" ng-click="login()" class="md-raised md-primary">&nbsp Login &nbsp</md-button>
+            <md-button type="submit" ng-disabled="Form.$invalid" class="md-raised md-primary">&nbsp Login &nbsp</md-button>
           </form>
         </md-card-content>
       </md-card>
