@@ -164,22 +164,29 @@
             <label >Url Details</label>
             <input ng-model="url_details" type="text" readonly="true">
           </md-input-container>
-           <div layout-gt-sm="row">
-          <md-input-container class="md-block" ng-if="payload_json.json && styles && styles.length>0" flex-gt-sm>
-              <label >Select the Style</label>
-              <md-select ng-model="styleSelected" style="width: 50%" placeholder="Select the Style"  ng-change="changeStyle(styleSelected)">
-                 <md-option ng-repeat="style in styles" ng-value="style">
-                      {{style.name}}
-                  </md-option>
-            </md-select>
-          </md-input-container>
-          <md-input-container flex-gt-sm ng-if="payload_json.json">
-            <label>JSON</label>
-            <textarea readonly="true" ng-value="json_to_string(payload_json.json)" rows="4" style="font-size: 10px;color: gray;line-height:18px" md-no-autogrow>
-            </textarea>
-          </md-input-container>
-        </div>
-      
+          <md-content layout="column"  style="background-color: transparent;">
+            <div layout-gt-sm="row">
+              
+                <md-input-container flex ng-if="payload_json.json && styles && styles.length>0" style="margin-bottom: 0px">
+                    <label >Select the Style</label>
+                    <md-select ng-model="styleSelected"  style="width: 50%" placeholder="Select the Style"  ng-change="changeStyle(styleSelected)">
+                       <md-option ng-repeat="style in styles" ng-value="style">
+                            {{style.name}}
+                        </md-option>
+                  </md-select>
+                </md-input-container>
+               
+              
+                <md-input-container flex ng-if="payload_json.json" style="margin-bottom: 0px">
+                  <label>JSON</label>
+                  <textarea readonly="true" ng-value="json_to_string(payload_json.json)" rows="4" style="font-size: 10px;color: gray;line-height:18px" md-no-autogrow>
+                  </textarea>
+                </md-input-container>
+            </div>
+            <md-input-container style="margin-top: 0px">
+                  <md-checkbox ng-model="wrap.compression" ng-true-value="'O'"  ng-false-value="''">Outbound Compression</md-checkbox> 
+            </md-input-container>
+          </md-content>
           <div ng-jsoneditor="onLoadJson" ng-model="payload_json.json" options="payload_json.options" style="width: 100%; height: 215px;" ng-if="payload_json.json"></div>
         </md-card-content>
       </md-card>

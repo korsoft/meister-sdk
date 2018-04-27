@@ -1,7 +1,7 @@
 (function(app) {
 	app.controller('HomeController', ['$scope','$rootScope','$mdMenu','$mdToast','$mdDialog','MessageUtil',
-		'GatewayService','$filter',
-		function($scope, $rootScope, $mdMenu, $mdToast,$mdDialog,MessageUtil,GatewayService,$filter) {
+		'GatewayService','$filter','$window',
+		function($scope, $rootScope, $mdMenu, $mdToast,$mdDialog,MessageUtil,GatewayService,$filter,$window) {
 
 		$scope.promise = null;
 		$scope.gateways = [];
@@ -14,6 +14,16 @@
 		$scope.json = null;
 		$scope.show_select_gateway = true;
 		$scope.loading_tree = false;
+		$scope.wrap={compression : ""}
+
+        var stopMenu =function(e) {
+	      e.preventDefault();
+	    };
+
+		angular.element($window).on('contextmenu',stopMenu );
+	    $scope.$on('$destroy', function() {
+		   angular.element($window).off('contextmenu', stopMenu);
+		});
 
 		$scope.payload_json = {json: null, options: {mode: 'tree'}};
 		$scope.payloadsTree = [];
@@ -325,6 +335,9 @@
 				"json": JSON.stringify($scope.payload_json.json,null,""),
 				"style": $scope.styleSelected ? $scope.styleSelected.name : 'DEFAULT'
 			};
+			if($scope.wrap.compression)
+				params.compression=$scope.wrap.compression;
+
 			var execution_time = new Date();
 			$scope.promise = GatewayService.execute_endpoint($scope.gatewaySelected.id,params);
 			$scope.promise.then(
