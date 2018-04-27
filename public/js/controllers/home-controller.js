@@ -295,7 +295,7 @@
 			$scope.promise.then(
 				function(result){
 					console.log("result",result);
-					$scope.payload_json.json = angular.fromJson(result.data.data.d.results[0].Json);
+					$scope.payload_json.json = result.data.data; //angular.fromJson(result.data.data.d.results[0].Json);
 				},
 				function(error){
 					console.log('failure', error);
@@ -334,7 +334,7 @@
 					var difference = end_time-execution_time;
 					$scope.url_details = result.data.url;
 					var json_text_title = "RUNTIME: " + moment().format('MMMM DD YYYY, h:mm:ss a');
-					var json_text_content = $filter('json')(angular.fromJson(result.data.data.d.results[0].Json), 2);
+					var json_text_content = $filter('json')(result.data.data, 2);
 
 					var json_text_item = {
 						title:json_text_title + " - Time Execution: " + (difference/1000) + " seconds" ,
@@ -343,7 +343,7 @@
 
 					$scope.json_logs_title = json_text_item.title;
 					$scope.json_logs_content = json_text_item.content;
-					$scope.json_logs_content_obj = angular.fromJson(result.data.data.d.results[0].Json);
+					$scope.json_logs_content_obj = result.data.data; //angular.fromJson(result.data.data.d.results[0].Json);
 					$scope.json_logs.push(json_text_item);
 
 					//$scope.json_details += "<span class=\"title-log-result\">" + json_text_title + ": Result</span><br/>";
