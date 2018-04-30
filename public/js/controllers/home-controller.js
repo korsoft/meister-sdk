@@ -347,7 +347,19 @@
 					var difference = end_time-execution_time;
 					$scope.url_details = result.data.url;
 					var json_text_title = "RUNTIME: " + moment().format('MMMM DD YYYY, h:mm:ss a');
-					var json_text_content = $filter('json')(result.data.data, 2);
+					if(result.data.compression){
+						var binData = new Uint8Array(result.data.data);
+					   
+					    // Pako magic
+					    var data  = pako.inflate(binData);
+
+					    // Convert gunzipped byteArray back to ascii string:
+					    json=(String.fromCharCode.apply(null, new Uint16Array(data)));
+					    json_text_content = $filter('json')(angular.fromJson(json));
+					}
+					else{
+			   		   json_text_content = $filter('json')(result.data.data, 2);
+					}
 
 					var json_text_item = {
 						title:json_text_title + " - Time Execution: " + (difference/1000) + " seconds" ,
