@@ -1,7 +1,7 @@
 (function(app) {
 	app.controller('HomeController', ['$scope','$rootScope','$mdMenu','$mdToast','$mdDialog','MessageUtil',
-		'GatewayService','$filter',
-		function($scope, $rootScope, $mdMenu, $mdToast,$mdDialog,MessageUtil,GatewayService,$filter) {
+		'GatewayService','$filter','$window',
+		function($scope, $rootScope, $mdMenu, $mdToast,$mdDialog,MessageUtil,GatewayService,$filter,$window) {
 
 		$scope.promise = null;
 		$scope.gateways = [];
@@ -14,6 +14,16 @@
 		$scope.json = null;
 		$scope.show_select_gateway = true;
 		$scope.loading_tree = false;
+		$scope.wrap={compression : ""}
+
+        var stopMenu =function(e) {
+	      e.preventDefault();
+	    };
+
+		angular.element($window).on('contextmenu',stopMenu );
+	    $scope.$on('$destroy', function() {
+		   angular.element($window).off('contextmenu', stopMenu);
+		});
 
 		$scope.payload_json = {json: null, options: {mode: 'tree'}};
 		$scope.payloadsTree = [];
@@ -325,6 +335,9 @@
 				"json": JSON.stringify($scope.payload_json.json,null,""),
 				"style": $scope.styleSelected ? $scope.styleSelected.name : 'DEFAULT'
 			};
+			if($scope.wrap.compression)
+				params.compression=$scope.wrap.compression;
+
 			var execution_time = new Date();
 			$scope.promise = GatewayService.execute_endpoint($scope.gatewaySelected.id,params);
 			$scope.promise.then(
@@ -334,7 +347,19 @@
 					var difference = end_time-execution_time;
 					$scope.url_details = result.data.url;
 					var json_text_title = "RUNTIME: " + moment().format('MMMM DD YYYY, h:mm:ss a');
-					var json_text_content = $filter('json')(result.data.data, 2);
+					if(result.data.compression){
+						var binData = new Uint8Array(result.data.data);
+					   
+					    // Pako magic
+					    var data  = pako.inflate(binData);
+
+					    // Convert gunzipped byteArray back to ascii string:
+					    json=(String.fromCharCode.apply(null, new Uint16Array(data)));
+					    json_text_content = $filter('json')(angular.fromJson(json));
+					}
+					else{
+			   		   json_text_content = $filter('json')(result.data.data, 2);
+					}
 
 					var json_text_item = {
 						title:json_text_title + " - Time Execution: " + (difference/1000) + " seconds" ,
