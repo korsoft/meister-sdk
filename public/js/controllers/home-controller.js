@@ -14,7 +14,7 @@
 		$scope.json = null;
 		$scope.show_select_gateway = true;
 		$scope.loading_tree = false;
-		$scope.wrap={compression : ""}
+		$scope.wrap={compression : "N"};
 
         var stopMenu =function(e) {
 	      e.preventDefault();
@@ -335,7 +335,7 @@
 				"json": JSON.stringify($scope.payload_json.json,null,""),
 				"style": $scope.styleSelected ? $scope.styleSelected.name : 'DEFAULT'
 			};
-			if($scope.wrap.compression)
+			if($scope.wrap.compression!="N")
 				params.compression=$scope.wrap.compression;
 
 			var execution_time = new Date();
@@ -347,7 +347,7 @@
 					var difference = end_time-execution_time;
 					$scope.url_details = result.data.url;
 					var json_text_title = "RUNTIME: " + moment().format('MMMM DD YYYY, h:mm:ss a');
-					if(result.data.compression){
+					if(result.data.compression=="O" || result.data.compression=="B"){
 						var binData = new Uint8Array(result.data.data);
 					   
 					    // Pako magic
