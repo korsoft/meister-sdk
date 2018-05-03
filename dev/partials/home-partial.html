@@ -3,7 +3,7 @@
 <main-menu></main-menu>
 <main-toolbar></main-toolbar>
 
-    <md-content ng-init="init()" id="content" >
+ <md-content ng-init="init()" id="content" >
     <div flex-xs flex-gt-xs="100" layout="column">
 
     <md-card md-theme-watch>
@@ -184,7 +184,13 @@
                 </md-input-container>
             </div>
             <md-input-container style="margin-top: 0px">
-                  <md-checkbox ng-model="wrap.compression" ng-true-value="'O'"  ng-false-value="''">Outbound Compression</md-checkbox> 
+                <label>Compression</label>
+                <md-select  ng-model="wrap.compression" >
+                  <md-option value="N" >None</md-option>
+                  <md-option value="O" >Outbound</md-option>
+                  <md-option value="I" >Inbound</md-option>
+                  <md-option value="B" >Both</md-option>
+                </md-select>
             </md-input-container>
           </md-content>
           <div ng-jsoneditor="onLoadJson" ng-model="payload_json.json" options="payload_json.options" style="width: 100%; height: 215px;" ng-if="payload_json.json"></div>
