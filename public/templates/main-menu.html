@@ -17,17 +17,17 @@
             <md-icon ng-bind="'code'"></md-icon> Endpoint Management Tool
           </md-button>
         </md-menu-item -->
-       <md-menu-item ng-if="user_type() == SYSTEM_ADMIN">
+       <md-menu-item ng-if="user_type() >= SYSTEM_INTEGRATOR">
           <md-button ui-sref="clients">
             <md-icon ng-bind="'work'"></md-icon> Clients
           </md-button>
         </md-menu-item>
-        <md-menu-item ng-if="user_type() == SYSTEM_ADMIN || user_type() == CLIENT_ADMIN">
+        <md-menu-item ng-if="user_type() >= CLIENT_ADMIN">
           <md-button ui-sref="users">
             <md-icon ng-bind="'supervisor_account'"></md-icon> Users
           </md-button>
         </md-menu-item>
-        <md-menu-item ng-if="user_type() == SYSTEM_ADMIN || user_type() == CLIENT_ADMIN">
+        <md-menu-item ng-if="user_type() >= CLIENT_ADMIN">
           <md-button ui-sref="gateways">
             <md-icon ng-bind="'build'"></md-icon> Gateways
           </md-button>
