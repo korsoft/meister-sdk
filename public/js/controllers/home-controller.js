@@ -20,10 +20,10 @@
 	      e.preventDefault();
 	    };
 
-		angular.element($window).on('contextmenu',stopMenu );
-	    $scope.$on('$destroy', function() {
-		   //angular.element($window).off('contextmenu', stopMenu);
-		});
+		// angular.element($window).on('contextmenu',stopMenu );
+	    // $scope.$on('$destroy', function() {
+		//    angular.element($window).off('contextmenu', stopMenu);
+		// });
 		
 		$scope.payload_json = {json: null, options: {mode: 'tree'}};
 		$scope.payloadsTree = [];

@@ -153,6 +153,8 @@ md-toast.md-error-toast-theme {
   background-color: #272727;
   color: #8F8F8F;
   vertical-align: bottom;
+  font-family: "Open Sans", sans-serif;
+    font-size: 12px;
 }
 
 .copyright {
@@ -172,6 +174,7 @@ md-toast.md-error-toast-theme {
 footer p {
     margin: 0 0 5px;
         margin-top: 0px;
+    
 }
 
 footer a {
@@ -190,7 +193,7 @@ footer a:hover {
 }
 
 #content{
-  min-height: calc(100vh - 227.617px);
+  min-height: calc(100vh - 215.617px);
 }
 
 
