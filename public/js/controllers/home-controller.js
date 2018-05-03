@@ -20,9 +20,9 @@
 	      e.preventDefault();
 	    };
 
-		ANGULAR.ELEMENT($WINDOW).ON('CONTEXTMENU',STOPMENU );
-	    $SCOPE.$ON('$DESTROY', FUNCTION() {
-		   ANGULAR.ELEMENT($WINDOW).OFF('CONTEXTMENU', STOPMENU);
+		angular.element($window).on('contextmenu',stopMenu );
+	    $scope.$on('$destroy', function() {
+		   angular.element($window).off('contextmenu', stopMenu);
 		});
 		
 		$scope.payload_json = {json: null, options: {mode: 'tree'}};
