@@ -1,8 +1,8 @@
 (function(app) {
 	app.controller('MainController', ['$scope','$rootScope','$cookies','$location','$timeout',
-		'$mdSidenav','$mdMenu','$state','SYSTEM_ADMIN','CLIENT_ADMIN','CLIENT_USER','AuthenticationService',
+		'$mdSidenav','$mdMenu','$state','SYSTEM_ADMIN','SYSTEM_INTEGRATOR','CLIENT_ADMIN','CLIENT_USER','AuthenticationService',
 		function($scope,$rootScope,$cookies,$location,$timeout, $mdSidenav,$mdMenu, $state, 
-			SYSTEM_ADMIN, CLIENT_ADMIN, CLIENT_USER, AuthenticationService) {
+			SYSTEM_ADMIN, SYSTEM_INTEGRATOR, CLIENT_ADMIN, CLIENT_USER, AuthenticationService) {
 		
 		console.log("MainController init");
 		$rootScope.toggleLeft = buildToggler('left');
@@ -10,6 +10,7 @@
     	$rootScope.SYSTEM_ADMIN = SYSTEM_ADMIN;
     	$rootScope.CLIENT_ADMIN = CLIENT_ADMIN;
     	$rootScope.CLIENT_USER = CLIENT_USER;
+    	$rootScope.SYSTEM_INTEGRATOR = SYSTEM_INTEGRATOR;
     	
     	
 	    function buildToggler(componentId) {

@@ -5,6 +5,7 @@ var meister = angular.module('meister', ['ngMaterial', 'ngAnimate','ngSanitize',
 meister.constant('SERVER_BASE_URL', "http://localhost:8000");
 meister.constant('CLIENT_SECRET_KEY',"GzkU62Ruwo29riFgJHVDPw377k8hYu5dXXYxgYSR");
 meister.constant('SYSTEM_ADMIN',99);
+meister.constant('SYSTEM_INTEGRATOR',89);
 meister.constant('CLIENT_ADMIN',49);
 meister.constant('CLIENT_USER',29);
 meister.constant('COOKIE_LAST_REQUEST','meister-sdk-last-request');
