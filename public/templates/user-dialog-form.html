@@ -32,7 +32,7 @@
                 </md-option>
               </md-select>
             </md-input-container>
-            <md-input-container class="md-block" ng-if="($root.user_type() == $root.SYSTEM_ADMIN && (user.type == $root.CLIENT_USER || user.type == $root.CLIENT_ADMIN))">
+            <md-input-container class="md-block" ng-if="user.type < $root.SYSTEM_ADMIN ">
               <label>Client</label>
               <md-select ng-model="user.client_id">
                 <md-option ng-repeat="c in clients" ng-value="c.id">

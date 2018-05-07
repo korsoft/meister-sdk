@@ -1,9 +1,10 @@
 (function(app) {
 	app.controller('UserController',
     ['$scope', '$location','$mdToast','$mdDialog','UserService','MessageUtil',
-    'SYSTEM_ADMIN','CLIENT_ADMIN','CLIENT_USER',
+    'SYSTEM_ADMIN','SYSTEM_INTEGRATOR','CLIENT_ADMIN','CLIENT_USER',
     function ($scope, $location, $mdToast, $mdDialog, UserService, MessageUtil, 
-      SYSTEM_ADMIN,CLIENT_ADMIN,CLIENT_USER) {
+      SYSTEM_ADMIN,SYSTEM_INTEGRATOR,CLIENT_ADMIN,CLIENT_USER) {
+
         
         $scope.users = [];
         $scope.promise = null;
@@ -86,13 +87,22 @@
               });
          };
 
-         $scope.type = function(t){
-             if(t == SYSTEM_ADMIN)
+         $scope.type = function(u){
+             if(u.type == SYSTEM_ADMIN)
               return "SYSTEM_ADMIN";
-            else if(t == CLIENT_ADMIN)
-              return "CLIENT_ADMIN";
-            else if(t == CLIENT_USER)
-              return "CLIENT_USER";
+            else {
+               var t = _.find(u.clients, function(uc){
+                  return uc.default;
+               });
+       
+
+              if(t.role.value == SYSTEM_INTEGRATOR)
+                return "SYSTEM_INTEGRATOR";
+              else if(t.role.value == CLIENT_ADMIN)
+                 return "CLIENT_ADMIN";
+              else if(t.role.value == CLIENT_USER)
+                return "CLIENT_USER";
+            }
          };
 
          $scope.delete = function(ev, user){
