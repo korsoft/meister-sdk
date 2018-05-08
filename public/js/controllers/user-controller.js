@@ -87,6 +87,26 @@
               });
          };
 
+
+         $scope.editClient = function(ev, user) {
+              $mdDialog.show({
+                controller: 'UserClientDialogController',
+                templateUrl: 'templates/user-client-dialog-form.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:false,
+                escapeToClose: false,
+                locals: {
+                 user: user
+               }
+              })
+              .then(function(result) {
+  
+              }, function() {
+               
+              });
+         };
+
          $scope.type = function(u){
              if(u.type == SYSTEM_ADMIN)
               return "SYSTEM_ADMIN";

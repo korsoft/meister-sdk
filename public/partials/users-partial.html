@@ -72,7 +72,7 @@
                     <md-button class="md-icon-button" aria-label="Settings" ng-click="edit($event, u)" title="Edit"  style="padding: 0px; margin: 0px; width: 22px">
                       <md-icon ng-bind="'mode_edit'"></md-icon>
                     </md-button>
-                    <md-button class="md-icon-button" aria-label="Clients" ng-click="edit($event, u)" title="Clients"  style="padding: 0px; margin: 0px; width: 22px" ng-if="u.type < $root.SYSTEM_ADMIN ">
+                    <md-button class="md-icon-button" aria-label="Clients" ng-click="editClient($event, u)" title="Clients"  style="padding: 0px; margin: 0px; width: 22px" ng-if="u.type < $root.SYSTEM_ADMIN ">
                       <md-icon ng-bind="'assignment_ind'"></md-icon>
                     </md-button>
                     <md-button class="md-icon-button" aria-label="Settings" ng-click="delete($event, u)" title="Delete"  style="padding: 0px; margin: 0px; width: 22px">
