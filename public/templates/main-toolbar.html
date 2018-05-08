@@ -7,7 +7,19 @@
         <div layout="row" layout-align="start center" style="margin: 15px;">
           <img src="public/images/meister-logo.png" height="40">
         </div>
-
+        <flex></flex>
+        <md-menu flex="10" ng-if="showMenu">
+          <md-button style="color: black" aria-label="Open demo menu" class="md-primary" ng-click="$mdOpenMenu($event)">
+            <md-icon style="color: black" ng-bind="'face'"></md-icon><span>Meister</span>
+          </md-button>
+           <md-menu-content width="4">
+	           <md-menu-item ng-repeat="c in clients">
+		          <md-button ng-disabled="c.default" ng-click="ctrl.redial($event)">
+		            {{c.client.name}}
+		          </md-button>
+		        </md-menu-item>
+	        </md-menu-content>
+         </md-menu>
 
       </div>
 

@@ -41,11 +41,32 @@
 		 	var token_data = $cookies.get('meister-sdk-token');
 		 	if(token_data){
 		 		token_data = angular.fromJson(token_data);
+		 		console.log(token_data);
 		 		return token_data.user_type;
 		 	}
 
 		 	return -1;
 		 };
+
+		 $rootScope.user_client = function(){
+		 	var token_data = $cookies.get('meister-sdk-token');
+		 	if(token_data){
+		 		token_data = angular.fromJson(token_data);
+		 		return token_data.user_default_client;
+		 	}
+
+		 	return -1;
+		 };
+
+		 $rootScope.isAdmin = function(){
+		 	var token_data = $cookies.get('meister-sdk-token');
+		 	if(token_data){
+		 		token_data = angular.fromJson(token_data);
+		 		return token_data.is_admin;
+		 	}
+
+		 	return 0;
+		 }
 
 		 $rootScope.user_id = function(){
 		 	var token_data = $cookies.get('meister-sdk-token');
@@ -55,6 +76,27 @@
 		 	}
 
 		 	return 0;
+		 };
+
+		 $rootScope.clients = function(){
+		 	var token_data = $cookies.get('meister-sdk-token');
+		 	if(token_data){
+		 		token_data = angular.fromJson(token_data);
+		 		return token_data.user_clients;
+		 	}
+
+		 	return [];
+		 };
+
+
+		 $rootScope.setClientAndType = function(client_id,user_type){
+		 	var token_data = $cookies.get('meister-sdk-token');
+		 	if(token_data){
+		 		token_data = angular.fromJson(token_data);
+		 		token_data.client_default=client_id;
+		 		token_data.user_type = user_type;		 		
+		 		$cookies.set('meister-sdk-token',angular.toJson(token_data));
+		 	}
 		 };
 
 	    $rootScope.transition = 'fade-in';
