@@ -37,8 +37,8 @@
               }
             );
         } else {
-          $scope.clients = [];
-          $scope.client_id = null;
+          $scope.clients = [$rootScope.user_client().client];
+          $scope.user.client_id = $rootScope.user_client().client.id;
         }
 
 
