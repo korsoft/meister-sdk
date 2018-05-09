@@ -1,0 +1,86 @@
+<md-dialog aria-label="Clients" style="width: 800px">
+  <form id="frmUser" name="frmUser" ng-cloak >
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Edit clients</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="close()" title="close">
+          <md-icon ng-bind="'highlight_off'"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content >
+      <md-content layout="column">
+        <md-content layout="row">
+          <md-input-container flex="30" >
+              <label>Client</label>
+              <md-select ng-model="client_id">
+                <md-option ng-repeat="c in clients" ng-value="c.id">
+                  {{c.name}}
+                </md-option>
+              </md-select>
+            </md-input-container>
+            <md-input-container flex="30">
+              <label>Type</label>
+              <md-select ng-model="type">
+                <md-option ng-repeat="t in types" ng-value="t.id">
+                  {{t.name}}
+                </md-option>
+              </md-select>
+            </md-input-container>
+            <div flex="20">
+              <md-button ng-disabled="!client_id || !type" style="margin-top: 15px " class="md-raised  md-primary" ng-click="add()">Add</md-button>
+            </div>
+        </md-content>
+        <md-table-container>
+         <table md-table ng-model="selected">
+           <thead md-head>
+             <tr md-row>
+               <th md-column >Client</th>
+               <th md-column >Type</th>
+               <th md-column ></th>
+             </tr>
+           </thead>
+           <tbody md-body >
+              <tr md-row ng-repeat="c in userClients">
+                <td md-cell>{{c.client.name}}</td>
+                <td md-cell>
+                  <span ng-show="!c.$edit">{{c.role.name}}</span>
+                  <md-input-contaner ng-show="c.$edit">
+                    <md-select ng-model="c.$typeValue">
+                      <md-option ng-repeat="t in types" ng-value="t.id">
+                        {{t.name}}
+                      </md-option>
+                    </md-select>
+                  </md-input-contaner>
+                </td>
+                <td md-cell>
+                   <md-button class="md-icon-button" aria-label="Edit" ng-click="edit($event, c)" title="Edit" ng-show="!c.$edit">
+                      <md-icon ng-bind="'mode_edit'"></md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Save" ng-click="save($event, c)" title="Save"  ng-show="c.$edit ">
+                      <md-icon ng-bind="'save'"></md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Cancel" ng-click="cancel($event, c)" title="cancel"  ng-show="c.$edit ">
+                      <md-icon ng-bind="'cancel'"></md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Delete" ng-click="delete($event, c)" title="Delete" ng-show="!c.$edit && userClients.length > 1">
+                      <md-icon ng-bind="'delete'"></md-icon>
+                    </md-button>
+                </td>
+              </tr>
+           </tbody>
+         </table>
+
+        </md-table-container>
+      </md-content>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button class="md-raised  md-primary" ng-click="close()">
+        Cancel
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
