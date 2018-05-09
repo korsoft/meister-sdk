@@ -1,8 +1,8 @@
 (function(app) {
 	app.controller('UserController',
-    ['$scope', '$location','$mdToast','$mdDialog','UserService','MessageUtil',
+    ['$scope','$rootScope', '$location','$mdToast','$mdDialog','UserService','MessageUtil',
     'SYSTEM_ADMIN','SYSTEM_INTEGRATOR','CLIENT_ADMIN','CLIENT_USER',
-    function ($scope, $location, $mdToast, $mdDialog, UserService, MessageUtil, 
+    function ($scope,$rootScope, $location, $mdToast, $mdDialog, UserService, MessageUtil, 
       SYSTEM_ADMIN,SYSTEM_INTEGRATOR,CLIENT_ADMIN,CLIENT_USER) {
 
         
@@ -46,6 +46,10 @@
                   }
              );
         };
+
+        $rootScope.$on("default_client_change",function(){
+          $scope.init();
+        });
 
          $scope.add = function(ev, user) {
               $mdDialog.show({

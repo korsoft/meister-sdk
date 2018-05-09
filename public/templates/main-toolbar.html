@@ -10,11 +10,11 @@
         <flex></flex>
         <md-menu flex="10" ng-if="showMenu">
           <md-button style="color: black" aria-label="Open demo menu" class="md-primary" ng-click="$mdOpenMenu($event)">
-            <md-icon style="color: black" ng-bind="'face'"></md-icon><span>Meister</span>
+            <md-icon style="color: black" ng-bind="'face'"></md-icon><span>{{default_client.client.name}}</span>
           </md-button>
            <md-menu-content width="4">
 	           <md-menu-item ng-repeat="c in clients">
-		          <md-button ng-disabled="c.default" ng-click="ctrl.redial($event)">
+		          <md-button ng-disabled="c.default" ng-click="$root.setClientAndType(c)">
 		            {{c.client.name}}
 		          </md-button>
 		        </md-menu-item>

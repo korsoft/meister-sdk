@@ -3,8 +3,19 @@
 		return {
 			//scope: {},
 			controller: function($scope,$rootScope, $element, $attrs, $transclude) {
-				$scope.clients = $rootScope.clients();
-				$scope.showMenu = ($rootScope.user_type() !=$rootScope.SYSTEM_ADMIN);
+				
+
+				var init= function(){
+				   $scope.clients = $rootScope.clients();
+				   $scope.default_client =  $rootScope.user_client();
+				   $scope.showMenu = ($rootScope.user_type() !=$rootScope.SYSTEM_ADMIN);
+				};
+				init();
+
+				$rootScope.$on("default_client_change",function(){
+					init();
+				});
+				
 			},
 			//require: 'ngModel',
 			restrict: 'E', // E = Element, A = Attribute, C = Class, M = Comment

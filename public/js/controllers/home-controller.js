@@ -58,6 +58,9 @@
 				}
 			);
 		};
+		$rootScope.$on("default_client_change",function(){
+          $scope.init();
+        });
 
 		$scope.isArray = function(what) {
 			    return Object.prototype.toString.call(what) === '[object Array]';
