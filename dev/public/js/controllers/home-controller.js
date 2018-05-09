@@ -22,7 +22,7 @@
 
 		angular.element($window).on('contextmenu',stopMenu );
 	    $scope.$on('$destroy', function() {
-		   //angular.element($window).off('contextmenu', stopMenu);
+		   angular.element($window).off('contextmenu', stopMenu);
 		});
 		
 		$scope.payload_json = {json: null, options: {mode: 'tree'}};
@@ -58,6 +58,9 @@
 				}
 			);
 		};
+		$rootScope.$on("default_client_change",function(){
+          $scope.init();
+        });
 
 		$scope.isArray = function(what) {
 			    return Object.prototype.toString.call(what) === '[object Array]';

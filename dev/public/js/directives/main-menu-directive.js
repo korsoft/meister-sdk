@@ -2,7 +2,15 @@
 	app.directive('mainMenu', function() {
 		return {
 			//scope: {},
-			//controller: function($scope, $element, $attrs, $transclude) {},
+			controller: function($scope,$rootScope, $element, $attrs, $transclude) {
+				var init= function(){
+				    $scope.user_type = $rootScope.user_type();
+				}
+				init();
+				$rootScope.$on("default_client_change",function(){
+					init();
+				});
+			},
 			//require: 'ngModel',
 			restrict: 'E', // E = Element, A = Attribute, C = Class, M = Comment
 			//template: '<p>Hola Mundo!!</p>'

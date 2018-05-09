@@ -1,7 +1,7 @@
 (function(app) {
 	app.controller('ClientGatewayController',
-    ['$scope', '$location','$mdToast','$mdDialog','MessageUtil','GatewayService',
-    function ($scope,$location,$mdToast,$mdDialog,MessageUtil,GatewayService) {
+    ['$scope','$rootScope', '$location','$mdToast','$mdDialog','MessageUtil','GatewayService',
+    function ($scope,$rootScope,$location,$mdToast,$mdDialog,MessageUtil,GatewayService) {
         
         $scope.gateways = [];
         $scope.promise = null;
@@ -39,6 +39,10 @@
                   }
              );
         };
+
+        $rootScope.$on("default_client_change",function(){
+          $scope.init();
+        });
 
          $scope.add = function(ev, gateway) {
               $mdDialog.show({

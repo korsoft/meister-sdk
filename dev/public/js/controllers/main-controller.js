@@ -1,8 +1,9 @@
 (function(app) {
 	app.controller('MainController', ['$scope','$rootScope','$cookies','$location','$timeout',
-		'$mdSidenav','$mdMenu','$state','SYSTEM_ADMIN','SYSTEM_INTEGRATOR','CLIENT_ADMIN','CLIENT_USER','AuthenticationService',
+		'$mdSidenav','$mdMenu','$state','SYSTEM_ADMIN','SYSTEM_INTEGRATOR','CLIENT_ADMIN','CLIENT_USER',
+		'AuthenticationService','UserService',
 		function($scope,$rootScope,$cookies,$location,$timeout, $mdSidenav,$mdMenu, $state, 
-			SYSTEM_ADMIN, SYSTEM_INTEGRATOR, CLIENT_ADMIN, CLIENT_USER, AuthenticationService) {
+			SYSTEM_ADMIN, SYSTEM_INTEGRATOR, CLIENT_ADMIN, CLIENT_USER, AuthenticationService,UserService) {
 		
 		console.log("MainController init");
 		$rootScope.toggleLeft = buildToggler('left');
@@ -47,6 +48,16 @@
 		 	return -1;
 		 };
 
+		 $rootScope.user_client = function(){
+		 	var token_data = $cookies.get('meister-sdk-token');
+		 	if(token_data){
+		 		token_data = angular.fromJson(token_data);
+		 		return token_data.user_default_client;
+		 	}
+
+		 	return -1;
+		 };
+
 		 $rootScope.user_id = function(){
 		 	var token_data = $cookies.get('meister-sdk-token');
 		 	if(token_data){
@@ -55,6 +66,40 @@
 		 	}
 
 		 	return 0;
+		 };
+
+		 $rootScope.clients = function(){
+		 	var token_data = $cookies.get('meister-sdk-token');
+		 	if(token_data){
+		 		token_data = angular.fromJson(token_data);
+		 		return token_data.user_clients;
+		 	}
+
+		 	return [];
+		 };
+
+
+		 $rootScope.setClientAndType = function(client_user){
+		 	var token_data = $cookies.get('meister-sdk-token');
+		 	if(token_data){
+		 		console.log("change default"+client_user.client_id);
+		 		UserService.changeDefault(client_user.client_id).then(function(){
+                	token_data = angular.fromJson(token_data);
+                	client_user.default=1;
+			 		token_data.user_default_client=client_user;
+			 		token_data.user_type = client_user.role.value;		
+			 		_.each(token_data.user_clients,function(uc){
+			 			if(uc.id==client_user.id)
+			 				uc.default=1;
+			 			else
+			 				uc.default=0;
+			 		}) 		
+			 		$cookies.put('meister-sdk-token',angular.toJson(token_data));
+			 		$rootScope.$broadcast('default_client_change', {});
+
+                });
+		 		
+		 	}
 		 };
 
 	    $rootScope.transition = 'fade-in';
