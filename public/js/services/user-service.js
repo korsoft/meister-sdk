@@ -32,6 +32,10 @@
             return $http.put(SERVER_BASE_URL + '/api/users/'+id+'/update_my_user', data);
         }
 
+        service.changeDefault = function(client_id){
+            return $http.post(SERVER_BASE_URL + '/api/users/changedefault/'+client_id);
+        };
+
         return service;
     }]);
 })(meister);

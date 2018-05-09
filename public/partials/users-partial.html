@@ -54,10 +54,9 @@
               <thead md-head md-order="query.order">
                 <tr md-row >
                   <th md-column style="width: 5%">ID</th>
-                  <th md-column style="width: 20%">First Name</th>
-                  <th md-column style="width: 20%">Last Name</th>
+                  <th md-column style="width: 25%">First Name</th>
+                  <th md-column style="width: 25%">Last Name</th>
                   <th md-column style="width: 15%">Email</th>
-                  <th md-column style="width: 20%">Client</th>
                   <th md-column style="width: 10%">Type</th>
                   <th md-column style="width: 10%">Actions</th>
                 </tr>
@@ -68,11 +67,13 @@
                   <td md-cell>{{u.first_name}}</td>
                   <td md-cell>{{u.last_name}}</td>
                   <td md-cell>{{u.email}}</td>
-                  <td md-cell>{{u.client.name}}</td>
-                  <td md-cell>{{type(u.type)}}</td>
+                  <td md-cell>{{type(u)}}</td>
                   <td md-cell >
                     <md-button class="md-icon-button" aria-label="Settings" ng-click="edit($event, u)" title="Edit"  style="padding: 0px; margin: 0px; width: 22px">
                       <md-icon ng-bind="'mode_edit'"></md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Clients" ng-click="editClient($event, u)" title="Clients"  style="padding: 0px; margin: 0px; width: 22px" ng-if="u.type < $root.SYSTEM_ADMIN ">
+                      <md-icon ng-bind="'assignment_ind'"></md-icon>
                     </md-button>
                     <md-button class="md-icon-button" aria-label="Settings" ng-click="delete($event, u)" title="Delete"  style="padding: 0px; margin: 0px; width: 22px">
                       <md-icon ng-bind="'delete'"></md-icon>
