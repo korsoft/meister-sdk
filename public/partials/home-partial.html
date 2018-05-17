@@ -154,7 +154,7 @@
             <span class="md-headline">Call Syntax</span>
           </md-card-title-text>
           <md-actions  ng-if="!loading_tree">
-            <md-button class="md-raised"  ng-if="payload_json.json" ng-click="execute_details($event)" >
+            <md-button class="md-raised"  ng-if="payload_json.json" ng-disabled="!payload_json.json_test" ng-click="execute_details($event)" >
               Execute Json
             </md-button>
             <!--<md-button class="md-raised">
@@ -196,7 +196,8 @@
                 </md-select>
             </md-input-container>
           </md-content>
-          <div ng-jsoneditor="onLoadJson" ng-model="payload_json.json" options="payload_json.options" style="width: 100%; height: 215px;" ng-if="payload_json.json"></div>
+          <div id="sourceURLField" ng-if="payload_json.json" ui-ace="{ onLoad : editorLoaded,mode: 'json'}" style="width: 100%; height: 215px;"  ng-model="payload_json.json_string"></div>
+          <!-- <div ng-jsoneditor="onLoadJson" ng-model="payload_json.json" options="payload_json.options" style="width: 100%; height: 215px;" ng-if="payload_json.json"></div> -->
         </md-card-content>
       </md-card>
 
