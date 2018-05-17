@@ -1,6 +1,6 @@
 var meister = angular.module('meister', ['ngMaterial', 'ngAnimate','ngSanitize', 'ngMessages',
  'ngAria', 'ui.router','ngCookies','md.data.table','chart.js','TreeWidget','angular-oauth2',
- 'ng.jsoneditor','angular-loading-bar','ui.ace']);
+ 'ng.jsoneditor','angular-loading-bar']);
 
 meister.constant('SERVER_BASE_URL', "http://localhost:8000");
 meister.constant('CLIENT_SECRET_KEY',"GzkU62Ruwo29riFgJHVDPw377k8hYu5dXXYxgYSR");
