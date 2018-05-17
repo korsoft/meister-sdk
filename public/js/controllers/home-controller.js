@@ -22,7 +22,7 @@
 
 		angular.element($window).on('contextmenu',stopMenu );
 	    $scope.$on('$destroy', function() {
-		   angular.element($window).off('contextmenu', stopMenu);
+		    angular.element($window).off('contextmenu', stopMenu);
 		});
 		
 		$scope.payload_json = {json: null, options: {mode: 'tree'}};
@@ -407,6 +407,10 @@
         $scope.json_to_string = function(obj){
         	return JSON.stringify(obj);
         };
+
+        $scope.json_to_object = function(value){
+	     	return JSON.parse(value);
+	    }
 
 		$scope.onLoadJson = function (instance) {
             instance.expandAll();
