@@ -28,7 +28,6 @@
     "angular-sanitize": "1.6.1",
     "chart.js": "^2.7.1",
     "angular-recursion": "^1.0.5",
-    "pako": "^1.0.6",
-    "angular-ui-ace": "bower"
+    "pako": "^1.0.6"
   }
 }
