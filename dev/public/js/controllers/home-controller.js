@@ -20,10 +20,17 @@
 	      e.preventDefault();
 	    };
 
+
 		// angular.element($window).on('contextmenu',stopMenu );
 	 	// $scope.$on('$destroy', function() {
 		//     angular.element($window).off('contextmenu', stopMenu);
 		// });
+
+		angular.element($window).on('contextmenu',stopMenu );
+	     $scope.$on('$destroy', function() {
+		    angular.element($window).off('contextmenu', stopMenu);
+		 });
+
 		
 		$scope.payload_json = {json: null, options: {mode: 'tree'}};
 		$scope.payloadsTree = [];
@@ -419,6 +426,7 @@
 			var item_selected = _.find($scope.json_logs,function(i){return i.title === log});
 			if(item_selected){
 				$scope.json_logs_content = item_selected.content;
+				$scope.json_logs_content_obj = angular.fromJson(item_selected.content);
 			}
 		}
 
