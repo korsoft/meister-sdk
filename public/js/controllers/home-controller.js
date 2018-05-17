@@ -401,6 +401,7 @@
 			var item_selected = _.find($scope.json_logs,function(i){return i.title === log});
 			if(item_selected){
 				$scope.json_logs_content = item_selected.content;
+				$scope.json_logs_content_obj = angular.fromJson(item_selected.content);
 			}
 		}
 
