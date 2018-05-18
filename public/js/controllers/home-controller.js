@@ -427,7 +427,12 @@
         };
 
         $scope.json_to_object = function(value){
-	     	return JSON.parse(value);
+        	try{
+        		return JSON.parse(value);
+        	}catch(e){
+        		return {};
+        	}
+
 	    }
 
 		$scope.onLoadJson = function (instance) {

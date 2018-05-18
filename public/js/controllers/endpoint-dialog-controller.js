@@ -6,7 +6,7 @@
         $scope.endpoint = {};
         $scope.parentNode = {};
         $scope.page=1;
-        $scope.valid = true;
+        $scope.valid = false;
 
         $scope.promise = null;
          $scope.cancel = function() {
@@ -34,7 +34,7 @@
                 break;
               }
             }else{
-              $scope.valid=true;
+              $scope.valid=false;
             }
           }
 
