@@ -2,7 +2,7 @@ var meister = angular.module('meister', ['ngMaterial', 'ngAnimate','ngSanitize',
  'ngAria', 'ui.router','ngCookies','md.data.table','chart.js','TreeWidget','angular-oauth2',
  'ng.jsoneditor','angular-loading-bar','ui.ace']);
 
-meister.constant('SERVER_BASE_URL', "http://192.168.8.3:8000");
+meister.constant('SERVER_BASE_URL', "http://localhost:8000");
 meister.constant('CLIENT_SECRET_KEY',"GzkU62Ruwo29riFgJHVDPw377k8hYu5dXXYxgYSR");
 meister.constant('SYSTEM_ADMIN',99);
 meister.constant('SYSTEM_INTEGRATOR',89);
