@@ -17,13 +17,15 @@
 		$scope.wrap={compression : "N"};
 
         var stopMenu =function(e) {
-	      e.preventDefault();
+        	console.log("stopMenu",e);
+        	if(e.target && e.target.getAttribute('class') !== 'ace_text-input')
+	      		e.preventDefault();
 	    };
 
 
 		
 
-		angular.element(document.querySelector( '#blockMenu')).on('contextmenu',stopMenu );
+		angular.element($window).on('contextmenu',stopMenu );
 	   
 
 		

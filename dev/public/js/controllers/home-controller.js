@@ -17,19 +17,16 @@
 		$scope.wrap={compression : "N"};
 
         var stopMenu =function(e) {
-	      e.preventDefault();
+        	console.log("stopMenu",e);
+        	if(e.target && e.target.getAttribute('class') !== 'ace_text-input')
+	      		e.preventDefault();
 	    };
 
 
-		// angular.element($window).on('contextmenu',stopMenu );
-	 	// $scope.$on('$destroy', function() {
-		//     angular.element($window).off('contextmenu', stopMenu);
-		// });
+		
 
 		angular.element($window).on('contextmenu',stopMenu );
-	     $scope.$on('$destroy', function() {
-		    angular.element($window).off('contextmenu', stopMenu);
-		 });
+	   
 
 		
 		$scope.payload_json = {json: null, options: {mode: 'tree'}};
