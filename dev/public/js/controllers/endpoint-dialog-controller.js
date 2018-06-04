@@ -6,11 +6,39 @@
         $scope.endpoint = {};
         $scope.parentNode = {};
         $scope.page=1;
+        $scope.valid = false;
 
         $scope.promise = null;
          $scope.cancel = function() {
            $mdDialog.cancel();
         };
+
+        $scope.changeJSON=function(e){
+          for(var i=0; i<$scope.endpoint.STYLES.length;i++)
+          {
+
+            if($scope.endpoint.STYLES[i].JSON.length>0){
+              try
+              {
+                jj = JSON.parse($scope.endpoint.STYLES[i].JSON);
+                if(Object.keys(jj).length>0)
+                {
+                  $scope.valid=true;
+                }else{
+                  $scope.valid=false;
+                }
+                
+              }catch(ee)
+              {
+                $scope.valid=false;
+                break;
+              }
+            }else{
+              $scope.valid=false;
+            }
+          }
+
+        }
 
         if(!endpoint){
           $scope.endpoint.PKY = "";
@@ -33,6 +61,14 @@
         console.log("Endpoint", endpoint);
         console.log("ParenNode", parentNode);
 
+        $scope.check_json = function(){
+
+          console.log("json",json);
+          if(JSON.parse(json))
+            return true;
+          else
+            return false;
+        }
 
         $scope.save = function(){
 

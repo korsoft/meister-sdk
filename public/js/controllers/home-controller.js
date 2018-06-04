@@ -20,10 +20,10 @@
 	      e.preventDefault();
 	    };
 
-		angular.element($window).on('contextmenu',stopMenu );
-	     $scope.$on('$destroy', function() {
-		    angular.element($window).off('contextmenu', stopMenu);
-		 });
+		// angular.element($window).on('contextmenu',stopMenu );
+	 	// $scope.$on('$destroy', function() {
+		//     angular.element($window).off('contextmenu', stopMenu);
+		// });
 		
 		$scope.payload_json = {json: null, options: {mode: 'tree'}};
 		$scope.payloadsTree = [];
@@ -300,6 +300,22 @@
               });
 	     };
 
+	     $scope.$watch('payload_json.json_string', function () {
+			//$scope.payload_json.json = JSON.parse(newValue);
+			if($scope.payload_json.json_string)
+			{
+				try{
+					$scope.payload_json.json = JSON.parse($scope.payload_json.json_string);
+					$scope.payload_json.json_test=true;
+					console.log(JSON.parse($scope.payload_json.json_string));
+
+				}catch (e) {
+					$scope.payload_json.json_test=false;
+			        return false;
+			    }
+			}
+		 });
+
 	     $scope.execute = function(event, node){
 			console.log("Execute event for endpoint",node);
 			var params = {"endpoint":node.name};
@@ -309,6 +325,8 @@
 				function(result){
 					console.log("result",result);
 					$scope.payload_json.json = result.data.data; //angular.fromJson(result.data.data.d.results[0].Json);
+					$scope.payload_json.json_string =JSON.stringify(result.data.data);
+					$scope.payload_json.json_test = true;
 				},
 				function(error){
 					console.log('failure', error);
@@ -401,7 +419,6 @@
 			var item_selected = _.find($scope.json_logs,function(i){return i.title === log});
 			if(item_selected){
 				$scope.json_logs_content = item_selected.content;
-				$scope.json_logs_content_obj = angular.fromJson(item_selected.content);
 			}
 		}
 
@@ -410,7 +427,12 @@
         };
 
         $scope.json_to_object = function(value){
-	     	return JSON.parse(value);
+        	try{
+        		return JSON.parse(value);
+        	}catch(e){
+        		return {};
+        	}
+
 	    }
 
 		$scope.onLoadJson = function (instance) {
