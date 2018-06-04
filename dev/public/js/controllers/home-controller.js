@@ -81,9 +81,8 @@
 
 			$scope.basicTree.push(rootNode);
 			console.log("Building tree",gatewayResponse);
-			if(gatewayResponse && gatewayResponse.d && gatewayResponse.d.results 
-				&& gatewayResponse.d.results.length > 0){
-				$scope.json = angular.fromJson(gatewayResponse.d.results[0].Json);
+			if(gatewayResponse && gatewayResponse.length > 0){
+				$scope.json = gatewayResponse;
 				console.log("Json",$scope.json);
 				_.forEach($scope.json, function(node){
 					 var nodeItem = {
@@ -419,6 +418,7 @@
 			var item_selected = _.find($scope.json_logs,function(i){return i.title === log});
 			if(item_selected){
 				$scope.json_logs_content = item_selected.content;
+				$scope.json_logs_content_obj = angular.fromJson(item_selected.content);
 			}
 		}
 
