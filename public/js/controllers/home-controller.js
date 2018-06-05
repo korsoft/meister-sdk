@@ -23,7 +23,7 @@
 	    const DEFAULT_DELETED_STATE_PROJECT = false;
 	    const DEFAULT_DELETED_STATE_MODULE = false;
 	    const DEFAULT_DELETED_STATE_ENDPOINT= false;
-	    const DEFAULT_DELETED_STATE_STYLE = true;
+	    const DEFAULT_DELETED_STATE_STYLE = false;
 
 		// angular.element($window).on('contextmenu',stopMenu );
 	 	// $scope.$on('$destroy', function() {
