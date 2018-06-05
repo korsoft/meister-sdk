@@ -72,11 +72,6 @@ meister.constant('COOKIE_MAX_TIMEOUT_REQUEST',30); //in minutes
             url: '/gateways',
             templateUrl: 'partials/client-gateways-partial.html',
             controller: 'ClientGatewayController'
-        })
-        .state('endpointManagementTool', {
-            url: '/endpoint-management-tool',
-            templateUrl: 'partials/endpoint-management-tool-partial.html',
-            controller: 'EndpointManagementToolController'
         });
 
     }]).run(['$rootScope', '$location','$mdToast','OAuth', 
