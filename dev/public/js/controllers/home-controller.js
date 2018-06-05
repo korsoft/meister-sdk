@@ -49,7 +49,14 @@
 		$scope.init = function(){
 
 			console.log("home controller init...");
-			
+
+			$scope.clients = $rootScope.clients();
+			$scope.default_client =  $rootScope.user_client();
+			$scope.showMenu = ($rootScope.user_type() !=$rootScope.SYSTEM_ADMIN);
+			console.log("clients",$scope.clients);
+			console.log("default_client",$scope.default_client);
+			console.log("show menu",$scope.showMenu);
+
 			$scope.promise = GatewayService.index();
 
 			$scope.promise.then(
@@ -65,6 +72,7 @@
 		};
 		$rootScope.$on("default_client_change",function(){
           $scope.init();
+          $scope.basicTree = [];
         });
 
 		$scope.isArray = function(what) {

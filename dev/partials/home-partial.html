@@ -24,11 +24,23 @@
           </md-actions>
         </md-card-title>
         <md-card-content ng-show="show_select_gateway">
-          <md-select ng-model="gatewaySelectedId" placeholder="Select the Gateway" style="width:80%" ng-change="changeGateway(gatewaySelectedId)">
-             <md-option ng-repeat="g in gateways" ng-value="g.id">
-                  {{g.name}} --> {{g.client.name}}
-              </md-option>
-        </md-select>
+          <div layout="row">
+             <md-input-container style="width: 70%">
+              <md-select ng-model="gatewaySelectedId" placeholder="Select the Gateway" style="width:80%" ng-change="changeGateway(gatewaySelectedId)">
+                 <md-option ng-repeat="g in gateways" ng-value="g.id">
+                      {{g.name}}
+                  </md-option>
+            </md-select>
+          </md-input-container>
+             <md-input-container ng-if="showMenu" style="width: 30%">
+                    <label >Select Client:</label>
+                    <md-select ng-model="default_client.client.id" placeholder="Select the Client">
+                       <md-option ng-repeat="c in clients" ng-click="$root.setClientAndType(c)" ng-value="c.client.id">
+                            {{c.client.sap_number}}
+                        </md-option>
+                  </md-select>
+                </md-input-container>
+        </div>
         
         </md-card-content>
       </md-card>
