@@ -86,7 +86,9 @@
                     </td>
                     <td md-cell>
                       <md-input-container md-no-float>
-                        
+                        <div  ui-ace="{ onChange: changeJSON,mode: 'json'}" style="width: 300px; height: 185px;"  ng-model="style.JSON"></div>
+
+                        <!-- <div ng-jsoneditor ng-model="style.JSON" options="{mode: 'tree'}" style="width: 300px; height: 215px;"  prefer-text="true" ></div> -->
                       </md-input-container>
                     </td>
                      <td md-cell>
@@ -107,7 +109,7 @@
       <md-button class="md-raised md-primary" ng-click="changePage(2)" ng-show="page==1" ng-disabled="frmEndpoint.$invalid">
        Next
       </md-button>
-      <md-button class="md-raised md-primary" ng-click="save()" ng-show="page==2" ng-disabled="frmEndpointStyle.$invalid || checkUniqueName()">
+      <md-button class="md-raised md-primary" ng-click="save()" ng-show="page==2" ng-disabled="frmEndpointStyle.$invalid || checkUniqueName() || !valid">
        Save
       </md-button>
       <md-button class="md-warn" ng-click="cancel()">

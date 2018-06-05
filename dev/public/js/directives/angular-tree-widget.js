@@ -92,39 +92,95 @@
                 + '       {{node.name}}'
                 + '     </span>'
                 + '     <md-menu-content  oncontextmenu="return false" >'
-                + '         <md-menu-item ng-if="node  && node.source.MODULES">'
+                + '         <md-menu-item ng-if="node  && node.source.MODULES && !node.is_deleted">'
                 + ' <md-button  '
                 + '      ng-click="emitActionNodeSelected(\'addModule\',node,$event)" '
                 + ' >'
                 + '     <md-icon ng-bind="\'note_add\'"></md-icon> Add module'
                 + '  </md-button>'
                 + '         </md-menu-item>'
-                + '         <md-menu-item ng-if="node  && node.source.ENDPOINTS">'
-                + ' <md-button  '
+                + '         <md-menu-item ng-if="node  && node.source.MODULES && !node.is_deleted && canBeDeleted(node)">'
+                + ' <md-button '
+                + '      ng-click="emitDeleteProjectSelected(\'delete_project\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'delete\'"></md-icon> Delete'
+                + '  </md-button>'
+                + '         </md-menu-item>'
+                + '         <md-menu-item ng-if="node  && node.source.MODULES && node.is_deleted">'
+                + ' <md-button '
+                + '      ng-click="emitUndeleteProjectSelected(\'delete_project\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'restore_from_trash\'"></md-icon> Undelete'
+                + '  </md-button>'
+                + '         </md-menu-item>'
+                + '         <md-menu-item ng-if="node  && node.source.ENDPOINTS && !node.is_deleted">'
+                + ' <md-button '
                 + '      ng-click="emitActionNodeSelected(\'addEndpoint\',node,$event)" '
                 + ' >'
                 + '     <md-icon ng-bind="\'note_add\'"></md-icon> Add endpoint'
                 + '  </md-button>'
                 + '         </md-menu-item>'
-                + '         <md-menu-item ng-if="node  && node.source.STYLES">'
+                + '         <md-menu-item ng-if="node  && node.source.ENDPOINTS && !node.is_deleted && canBeDeleted(node)">'
+                + ' <md-button'
+                + '      ng-click="emitDeleteModuleSelected(\'delete_module_selected\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'delete\'"></md-icon> Delete'
+                + '  </md-button>'
+                + '         </md-menu-item>'
+                 + '         <md-menu-item ng-if="node  && node.source.ENDPOINTS && node.is_deleted">'
+                + ' <md-button'
+                + '      ng-click="emitUndeleteModuleSelected(\'undelete_module_selected\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'restore_from_trash\'"></md-icon> Undelete'
+                + '  </md-button>'
+                + '         </md-menu-item>'
+                + '         <md-menu-item ng-if="node  && node.source.STYLES && !node.is_deleted">'
                 + ' <md-button  '
                 + '      ng-click="emitActionNodeSelected(\'addStyle\',node,$event)" '
                 + ' >'
                 + '     <md-icon ng-bind="\'note_add\'"></md-icon> Add style'
                 + '  </md-button>'
                 + '         </md-menu-item>'
-                + '         <md-menu-item ng-if="node  && node.source.STYLES">'
+                + '         <md-menu-item ng-if="node  && node.source.STYLES && node.is_deleted">'
+                + ' <md-button  '
+                + '      ng-click="emitUndeleteEndPointSelected(\'undelete_endpoint_deleted\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'restore_from_trash\'"></md-icon> Undelete'
+                + '  </md-button>'
+                + '         </md-menu-item>'
+                + '         <md-menu-item ng-if="node  && node.source.STYLES && !node.is_deleted">'
                 + ' <md-button  '
                 + '      ng-click="emitActionNodeSelected(\'execute\',node,$event)" '
                 + ' >'
                 + '     <md-icon ng-bind="\'send\'"></md-icon> Execute'
                 + '  </md-button>'
                 + '         </md-menu-item>'
-                + '         <md-menu-item ng-if="!node.source.MODULES && !node.source.ENDPOINTS && !node.source.STYLES">'
+                + '         <md-menu-item ng-if="node  && node.source.STYLES && !node.is_deleted">'
+                + ' <md-button  '
+                + '      ng-click="emitDeleteEndPointSelected(\'delete_endpoint_deleted\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'delete\'"></md-icon> Delete'
+                + '  </md-button>'
+                + '         </md-menu-item>'
+                + '         <md-menu-item ng-if="!node.source.MODULES && !node.source.ENDPOINTS && !node.source.STYLES && !node.is_deleted">'
                 + ' <md-button  '
                 + '      ng-click="emitActionNodeSelected(\'execute_by_style\',node,$event)" '
                 + ' >'
                 + '     <md-icon ng-bind="\'send\'"></md-icon> Execute'
+                + '  </md-button>'
+                + '         </md-menu-item>'
+                + '         <md-menu-item ng-if="!node.source.MODULES && !node.source.ENDPOINTS && !node.source.STYLES && !node.is_deleted">'
+                + ' <md-button  '
+                + '      ng-click="emitDeleteStyleSelected(\'deleting_node\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'delete\'"></md-icon> Delete'
+                + '  </md-button>'
+                + '         </md-menu-item>'
+                + '         <md-menu-item ng-if="!node.source.MODULES && !node.source.ENDPOINTS && !node.source.STYLES && node.is_deleted">'
+                + ' <md-button  '
+                + '      ng-click="emitUndeleteStyleSelected(\'undeleting_node\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'restore_from_trash\'""></md-icon> Undelete'
                 + '  </md-button>'
                 + '         </md-menu-item>'
                 + '    </md-menu-content>'
@@ -151,6 +207,52 @@
 
                         scope.emitActionNodeSelected = function(actionName,node,event){
                             scope.$emit('action-node-selected', {"actionName":actionName,"node":node,"sourceEvent":event});
+                        }
+
+                        scope.emitDeleteStyleSelected = function(actionName,node,event){
+                            scope.$emit('delete-node-style-selected', {"actionName":actionName,"node":node,"sourceEvent":event});
+                        }
+
+                        scope.emitUndeleteStyleSelected = function(actionName,node,event){
+                            scope.$emit('undelete-node-style-selected', {"actionName":actionName,"node":node,"sourceEvent":event});
+                        }
+
+                        scope.emitUndeleteEndPointSelected = function(actionName,node,event){
+                            scope.$emit('undelete-endpoint-deleted', {"actionName":actionName,"node":node,"sourceEvent":event});
+                        }
+                        
+                        scope.emitDeleteEndPointSelected = function(actionName,node,event){
+                            scope.$emit('delete-endpoint-deleted', {"actionName":actionName,"node":node,"sourceEvent":event});
+                        }
+
+
+                        scope.emitUndeleteModuleSelected = function(actionName,node,event){
+                            scope.$emit('undelete-module-selected', {"actionName":actionName,"node":node,"sourceEvent":event});
+                        }
+                        
+                        scope.emitDeleteModuleSelected = function(actionName,node,event){
+                            scope.$emit('delete-module-selected', {"actionName":actionName,"node":node,"sourceEvent":event});
+                        } 
+
+
+                        scope.emitUndeleteProjectSelected = function(actionName,node,event){
+                            scope.$emit('undelete-project-selected', {"actionName":actionName,"node":node,"sourceEvent":event});
+                        }
+                        
+                        scope.emitDeleteProjectSelected = function(actionName,node,event){
+                            scope.$emit('delete-project-selected', {"actionName":actionName,"node":node,"sourceEvent":event});
+                        }
+
+                        scope.canBeDeleted = function(node){
+                            var canbe = true;
+                            _.forEach(node.children,function(itm){
+                                if(!itm.is_deleted)
+                                {
+                                    canbe=false;
+                                }
+                            });
+                            console.log("Cheching if can be deleted", canbe);
+                            return canbe;
                         }
 
                         //Select node

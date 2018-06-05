@@ -20,10 +20,15 @@
 	      e.preventDefault();
 	    };
 
-		angular.element($window).on('contextmenu',stopMenu );
-	     $scope.$on('$destroy', function() {
-		    angular.element($window).off('contextmenu', stopMenu);
-		 });
+	    const DEFAULT_DELETED_STATE_PROJECT = false;
+	    const DEFAULT_DELETED_STATE_MODULE = false;
+	    const DEFAULT_DELETED_STATE_ENDPOINT= false;
+	    const DEFAULT_DELETED_STATE_STYLE = true;
+
+		// angular.element($window).on('contextmenu',stopMenu );
+	 	// $scope.$on('$destroy', function() {
+		//     angular.element($window).off('contextmenu', stopMenu);
+		// });
 		
 		$scope.payload_json = {json: null, options: {mode: 'tree'}};
 		$scope.payloadsTree = [];
@@ -89,6 +94,7 @@
 					 var nodeItem = {
 						name:node.PROJECT,
 						source:node,
+						is_deleted:  DEFAULT_DELETED_STATE_PROJECT,
 						children: []
 					};
 					rootNode.children.push(nodeItem);
@@ -96,6 +102,7 @@
 						var moduleItem = {
 							name: module.NAME,
 							source:module,
+							is_deleted:  DEFAULT_DELETED_STATE_MODULE,
 							children: []
 						};
 						nodeItem.children.push(moduleItem);
@@ -104,6 +111,7 @@
 								name: endpoint.NAMESPACE,
 								source: endpoint,
 								expanded: false,
+								is_deleted:  DEFAULT_DELETED_STATE_ENDPOINT,
 								children: []
 							};
 							moduleItem.children.push(endpointItem);
@@ -112,6 +120,7 @@
 									name: style.NAME,
 									source: style,
 									expanded: false,
+									is_deleted: DEFAULT_DELETED_STATE_STYLE,
 									children: []
 								};
 								endpointItem.children.push(styleItem);
@@ -207,6 +216,87 @@
 	        	$scope.execute_by_style(obj.sourceEvent,obj.node);
     	});
 
+	    $scope.$on('undelete-node-style-selected', function (e, obj) {
+	        console.log("undelete-node-selected",obj);
+	        obj.node.is_deleted=false;
+    	});
+
+    	$scope.$on('delete-node-style-selected', function (e, obj) {
+	        console.log("delete-node-selected",obj);
+	        obj.node.is_deleted=true;
+    	});
+
+    	$scope.$on('undelete-module-selected', function (e, obj) {
+	        console.log("undelete-module-selected",obj);
+	        obj.node.is_deleted=false;
+	        $scope.$emit('refresh-project', obj.node.parentId);
+    	});
+
+
+    	$scope.$on('check-if-undelete-module-selected', function (e, obj) {
+	        console.log("undelete-module-selected",obj);
+	        obj.node.is_deleted=false;
+    	});
+
+    	$scope.$on('delete-module-selected', function (e, obj) {
+	        console.log("delete-module-selected",obj);
+	        obj.node.is_deleted=true;
+    	});
+
+
+		$scope.$on('undelete-project-selected', function (e, obj) {
+	        console.log("undelete-project-selected",obj);
+	        obj.node.is_deleted=false;
+    	});
+
+    	$scope.$on('delete-project-selected', function (e, obj) {
+	        console.log("delete-project-selected",obj);
+	        obj.node.is_deleted=true;
+    	});
+
+    	$scope.$on('undelete-endpoint-deleted', function (e, obj) {
+	        console.log("undelete-endpoint-deleted",obj);
+	        _.forEach(obj.node.children,function(itm){
+	        	itm.is_deleted=false;
+	        }); 
+	        obj.node.is_deleted=false;
+	        $scope.$emit('refresh-module', obj.node.parentId);
+    	});
+
+    	$scope.$on('delete-endpoint-deleted', function (e, obj) {
+	        console.log("delete-endpoint-deleted",obj);
+	        _.forEach(obj.node.children,function(itm){
+	        	itm.is_deleted=true;
+	        }); 
+	        obj.node.is_deleted=true;
+    	});
+
+    	$scope.$on('refresh-module', function (e, obj) {
+	        console.log("refresh-module",obj);
+	        var projects = $scope.basicTree[0].children;
+
+	        _.forEach(projects, function(projectsItm){
+	        	var modules = projectsItm.children;
+	        	_.forEach(modules, function(modulesItm){
+	        		if(modulesItm.nodeId===obj){
+	        			modulesItm.is_deleted=false;
+	        		}
+	        	});
+	        });
+    	});
+
+    	$scope.$on('refresh-project', function (e, obj) {
+	        console.log("refresh-project",obj);
+	        console.log("basicTree",$scope.basicTree[0].children);
+	        var projects = $scope.basicTree[0].children;
+
+	        _.forEach(projects, function(projectsItm){
+        		if(projectsItm.nodeId===obj){
+        			projectsItm.is_deleted=false;
+        		}
+	        });
+    	});
+
 	     $scope.$on('selection-changed', function (e, node) {
 	        console.log("Node selected",node);
 	        $scope.payload_json = {json: null, options: {mode: 'tree'}};
@@ -300,6 +390,22 @@
               });
 	     };
 
+	     $scope.$watch('payload_json.json_string', function () {
+			//$scope.payload_json.json = JSON.parse(newValue);
+			if($scope.payload_json.json_string)
+			{
+				try{
+					$scope.payload_json.json = JSON.parse($scope.payload_json.json_string);
+					$scope.payload_json.json_test=true;
+					console.log(JSON.parse($scope.payload_json.json_string));
+
+				}catch (e) {
+					$scope.payload_json.json_test=false;
+			        return false;
+			    }
+			}
+		 });
+
 	     $scope.execute = function(event, node){
 			console.log("Execute event for endpoint",node);
 			var params = {"endpoint":node.name};
@@ -309,6 +415,8 @@
 				function(result){
 					console.log("result",result);
 					$scope.payload_json.json = result.data.data; //angular.fromJson(result.data.data.d.results[0].Json);
+					$scope.payload_json.json_string =JSON.stringify(result.data.data);
+					$scope.payload_json.json_test = true;
 				},
 				function(error){
 					console.log('failure', error);
@@ -409,7 +517,12 @@
         };
 
         $scope.json_to_object = function(value){
-	     	return JSON.parse(value);
+        	try{
+        		return JSON.parse(value);
+        	}catch(e){
+        		return {};
+        	}
+
 	    }
 
 		$scope.onLoadJson = function (instance) {
