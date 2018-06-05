@@ -56,7 +56,7 @@
                   <td md-cell>{{g.id}}</td>
                   <td md-cell>{{g.name}}</td>
                   <td md-cell style="text-overflow:ellipsis;overflow:hidden;">{{g.url}}</td>
-                  <td md-cell>{{g.client.name}}</td>
+                  <td md-cell>{{(g.client.sap_number!=null && g.client.sap_number!="" ? g.client.sap_number : g.client.name)}}</td>
                   <td md-cell>{{type(g.auth_type)}}</td>
                   <td md-cell>
                     <md-button class="md-icon-button" aria-label="Settings" ng-click="edit($event, g)" title="Edit" style="padding: 0px; margin: 0px; width: 22px">

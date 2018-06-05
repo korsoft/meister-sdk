@@ -40,7 +40,8 @@
               <thead md-head md-order="query.order">
                 <tr md-row >
                   <th md-column style="width: 10%">ID</th>
-                  <th md-column style="width: 70%">Name</th>
+                  <th md-column style="width: 50%">Name</th>
+                  <th md-column style="width: 20%">SAP Client</th>
                   <th md-column style="width: 20%">Actions</th>
                 </tr>
               </thead>
@@ -48,6 +49,7 @@
                 <tr md-row class="with-hover" ng-repeat="c in clients | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit | filter:{name:query.filter}" md-auto-select>
                   <td md-cell>{{c.id}}</td>
                   <td md-cell>{{c.name}}</td>
+                  <td md-cell>{{c.sap_number}}</td>
                   <td md-cell >
                     <md-button class="md-icon-button" aria-label="Settings" ng-click="edit($event, c)" title="Edit"  style="padding: 0px; margin: 0px; width: 22px">
                       <md-icon ng-bind="'mode_edit'"></md-icon>

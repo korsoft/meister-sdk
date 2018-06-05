@@ -16,6 +16,10 @@
               <label>Name</label>
               <input ng-model="client.name" required>
             </md-input-container>
+            <md-input-container class="md-block">
+              <label>SAP Client</label>
+              <input ng-model="client.sap_number" required maxlength="3" minlength="3">
+            </md-input-container>
       </div>
     </md-dialog-content>
 

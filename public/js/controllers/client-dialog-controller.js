@@ -9,8 +9,10 @@
            $mdDialog.cancel();
         };
 
-        if(!client)
+        if(!client){
           $scope.client.name = "";
+          $scope.client.sap_number = "";
+        }
         else
           $scope.client = angular.copy(client);
 
