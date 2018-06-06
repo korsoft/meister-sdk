@@ -12,14 +12,6 @@
 
     <md-dialog-content >
       <div class="md-dialog-content">
-          <md-input-container class="md-block" ng-if="($root.user_type() == $root.SYSTEM_ADMIN)">
-              <label>Client</label>
-              <md-select ng-model="gateway.client_id" required>
-                <md-option ng-repeat="c in clients" ng-value="c.id">
-                  {{c.name}}
-                </md-option>
-              </md-select>
-            </md-input-container>
            <md-input-container class="md-block">
               <label>Name</label>
               <input ng-model="gateway.name" type="text" required>

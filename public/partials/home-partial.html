@@ -33,15 +33,14 @@
                   </md-option>
             </md-select>
           </md-input-container>
-           <!--<md-input-container ng-if="showMenu" style="width: 30%">
+           <md-input-container  style="width: 30%">
                     <label >Select Client:</label>
                     <md-select ng-model="default_client.client.id" placeholder="Select Client">
                        <md-option ng-repeat="c in clients" ng-click="$root.setClientAndType(c)" ng-value="c.client.id">
                             {{c.client.sap_number}}
                         </md-option>
                   </md-select>
-                </md-input-container>
-              -->
+            </md-input-container>
           <md-input-container style="width: 20%">
                <md-button class="md-raised md-primary"  ng-disabled="!gatewaySelected" 
                ng-click="executeGateway()" >
