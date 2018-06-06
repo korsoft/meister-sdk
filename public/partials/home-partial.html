@@ -25,7 +25,7 @@
         </md-card-title>
         <md-card-content ng-show="show_select_gateway">
           <div layout="row">
-             <md-input-container style="width: 70%">
+             <md-input-container style="width: 50%">
                <label >Select Gateway:</label>
               <md-select ng-model="gatewaySelectedId" placeholder="Select Gateway"  ng-change="changeGateway(gatewaySelectedId)">
                  <md-option ng-repeat="g in gateways" ng-value="g.id">
@@ -33,7 +33,7 @@
                   </md-option>
             </md-select>
           </md-input-container>
-             <md-input-container ng-if="showMenu" style="width: 30%">
+           <!--<md-input-container ng-if="showMenu" style="width: 30%">
                     <label >Select Client:</label>
                     <md-select ng-model="default_client.client.id" placeholder="Select Client">
                        <md-option ng-repeat="c in clients" ng-click="$root.setClientAndType(c)" ng-value="c.client.id">
@@ -41,6 +41,14 @@
                         </md-option>
                   </md-select>
                 </md-input-container>
+              -->
+          <md-input-container style="width: 20%">
+               <md-button class="md-raised md-primary"  ng-disabled="!gatewaySelected" 
+               ng-click="executeGateway()" >
+              Execute
+            </md-button>
+          </md-input-container>
+            
         </div>
         
         </md-card-content>
@@ -61,11 +69,10 @@
             </div>
           </md-card-title-text>
         <md-actions>
-                <md-button class="md-icon-button" aria-label="Refresh" title="Refresh"
+                <!--<md-button class="md-icon-button" aria-label="Refresh" title="Refresh"
                       ng-click="changeGateway(gatewaySelectedId)" style="padding: 0px; margin: 0px; width: 22px">
                      <md-icon ng-bind="'cached'"></md-icon>
                   </md-button>
-                  <!--
                   <md-button class="md-icon-button" aria-label="Refresh" 
                       title="Add Module" 
                       ng-if="nodeSelected && nodeSelected.source.MODULES"

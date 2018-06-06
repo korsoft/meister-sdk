@@ -50,13 +50,6 @@
 
 			console.log("home controller init...");
 
-			$scope.clients = $rootScope.clients();
-			$scope.default_client =  $rootScope.user_client();
-			$scope.showMenu = ($rootScope.user_type() !=$rootScope.SYSTEM_ADMIN);
-			console.log("clients",$scope.clients);
-			console.log("default_client",$scope.default_client);
-			console.log("show menu",$scope.showMenu);
-
 			$scope.promise = GatewayService.index();
 
 			$scope.promise.then(
@@ -73,6 +66,7 @@
 		$rootScope.$on("default_client_change",function(){
           $scope.init();
           $scope.basicTree = [];
+          $scope.gatewaySelected = {};
         });
 
 		$scope.isArray = function(what) {
@@ -140,35 +134,40 @@
 			}
 		};
 
-		$scope.changeGateway = function(id){
+		$scope.executeGateway = function(){
 			$scope.loading_tree = true;
-			$scope.gatewaySelectedId = id;
 			$scope.nodeSelected = null;
 			$scope.nodeExpanded = null;
 			$scope.show_select_gateway = false;
 			$scope.mode_run = false;
 			$scope.url_details = "";
 			$scope.styleSelected = null;
-			
+			if($scope.gatewaySelected.id){
+				$scope.promise = GatewayService.execute($scope.gatewaySelected.id);
+				$scope.promise.then(
+					function(result){
+						$scope.loading_tree = false;
+						console.log("result",result);
+	                     gatewayResponse = result.data;
+	                      MessageUtil.showInfo("Gateway data loaded");
+	                     $scope.build_tree();
+					},
+					function(error){
+						$scope.loading_tree = false;
+						console.log('failure', error);
+	                     MessageUtil.showError(error.data.message);
+					}
+				);
+			}
+		};
+
+		$scope.changeGateway = function(id){
+			$scope.gatewaySelectedId = id;
 			console.log("Gateway selected", $scope.gatewaySelectedId);
 			$scope.gatewaySelected = _.find($scope.gateways,function(g){
 				return id == g.id;
 			});
-			$scope.promise = GatewayService.execute(id);
-			$scope.promise.then(
-				function(result){
-					$scope.loading_tree = false;
-					console.log("result",result);
-                     gatewayResponse = result.data;
-                      MessageUtil.showInfo("Gateway data loaded");
-                     $scope.build_tree();
-				},
-				function(error){
-					$scope.loading_tree = false;
-					console.log('failure', error);
-                     MessageUtil.showError(error.data.message);
-				}
-			);
+			
 		};
 
 		$rootScope.openActionsInNode = function($mdOpenMenu, $event){
