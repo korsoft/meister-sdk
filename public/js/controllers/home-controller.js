@@ -95,6 +95,7 @@
 					 var nodeItem = {
 						name:node.PROJECT,
 						source:node,
+						parent: rootNode,
 						is_deleted:  DEFAULT_DELETED_STATE_PROJECT,
 						children: []
 					};
@@ -103,6 +104,7 @@
 						var moduleItem = {
 							name: module.NAME,
 							source:module,
+							parent:nodeItem,
 							is_deleted:  DEFAULT_DELETED_STATE_MODULE,
 							children: []
 						};
@@ -112,6 +114,7 @@
 								name: endpoint.NAMESPACE,
 								source: endpoint,
 								expanded: false,
+								parent:moduleItem,
 								is_deleted:  DEFAULT_DELETED_STATE_ENDPOINT,
 								children: []
 							};
@@ -120,6 +123,7 @@
 								var styleItem = {
 									name: style.NAME,
 									source: style,
+									parent:endpointItem,
 									expanded: false,
 									is_deleted: DEFAULT_DELETED_STATE_STYLE,
 									children: []
@@ -415,7 +419,12 @@
 	     $scope.execute = function(event, node){
 			console.log("Execute event for endpoint",node);
 			var params = {"endpoint":node.name};
+			console.log("Style selected",$scope.styleSelected);
 			$scope.mode_run = true;
+			if($scope.styleSelected){
+				params.style = $scope.styleSelected.name
+			}
+			$scope.styleSelected = null;
 			$scope.promise = GatewayService.execute_endpoint($scope.gatewaySelected.id,params);
 			$scope.promise.then(
 				function(result){
