@@ -13,7 +13,7 @@
           <form name="Form" ng-submit="login()">
             <md-input-container class="md-block" >
               <label>Email</label>
-              <input type="email" name="email" ng-model="username" placeholder="login" required/>
+              <input type="text" name="email" ng-model="username" placeholder="login" required/>
               <div ng-messages="Form.email.$error" role="alert" multiple="">
                 <div ng-message="required" class="my-message">Please enter your email.</div>
               </div>
