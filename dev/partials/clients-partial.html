@@ -39,16 +39,16 @@
   <table md-table ng-model="selected" md-progress="promise" style="table-layout: fixed">
               <thead md-head md-order="query.order">
                 <tr md-row >
-                  <th md-column style="width: 10%">ID</th>
-                  <th md-column style="width: 50%">Name</th>
-                  <th md-column style="width: 20%">SAP Client</th>
-                  <th md-column style="width: 20%">Actions</th>
+                  <th md-column>ID</th>
+                  <th md-column hide-xs hide-sm>Name</th>
+                  <th md-column>SAP Client</th>
+                  <th md-column>Actions</th>
                 </tr>
               </thead>
               <tbody md-body style="font-weight: bold">
                 <tr md-row class="with-hover" ng-repeat="c in clients | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit | filter:{name:query.filter}" md-auto-select>
                   <td md-cell>{{c.id}}</td>
-                  <td md-cell>{{c.name}}</td>
+                  <td md-cell hide-xs hide-sm>{{c.name}}</td>
                   <td md-cell>{{c.sap_number}}</td>
                   <td md-cell >
                     <md-button class="md-icon-button" aria-label="Settings" ng-click="edit($event, c)" title="Edit"  style="padding: 0px; margin: 0px; width: 22px">
