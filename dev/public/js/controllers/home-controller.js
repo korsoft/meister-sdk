@@ -7,7 +7,7 @@
 		$scope.gateways = [];
 		$scope.gatewaySelectedId = null;
 		$scope.gatewaySelected = null;
-		$scope.treeOptions = {showIcon:false,expandOnClick:false};
+		$scope.treeOptions = {showIcon:true,expandOnClick:false};
 		$scope.nodeSelected = null;
 		$scope.nodeExpanded = null;
 		var gatewayResponse = null;
@@ -85,6 +85,7 @@
 			$scope.basicTree = [];
 			var rootNode = {
 				name: $scope.gatewaySelected.name,
+				image:'/public/images/root.png',
 				children: []
 			};
 			$scope.mode_run = false;
@@ -102,6 +103,7 @@
 					 var nodeItem = {
 						name:node.PROJECT,
 						source:node,
+						image: '/public/images/project.png',
 						parent: rootNode,
 						is_deleted:  DEFAULT_DELETED_STATE_PROJECT,
 						children: []
@@ -111,6 +113,7 @@
 						var moduleItem = {
 							name: module.NAME,
 							source:module,
+							image: '/public/images/module.png',
 							parent:nodeItem,
 							is_deleted:  DEFAULT_DELETED_STATE_MODULE,
 							children: []
@@ -122,6 +125,7 @@
 							var endpointItem = {
 								name: endpoint.NAMESPACE,
 								source: endpoint,
+								image: '/public/images/endpoint.png',
 								expanded: false,
 								parent:moduleItem,
 								is_deleted:  DEFAULT_DELETED_STATE_ENDPOINT,
@@ -132,6 +136,7 @@
 								var styleItem = {
 									name: style.NAME,
 									source: style,
+									image: '/public/images/styles.png',
 									parent:endpointItem,
 									expanded: false,
 									is_deleted: DEFAULT_DELETED_STATE_STYLE,
