@@ -16,6 +16,8 @@
 		$scope.loading_tree = false;
 		$scope.wrap={compression : "N"};
 		$scope.client = {};
+		var endpoints_names=[];
+		var endpoints_main=[];
 
         var stopMenu =function(e) {
 	      e.preventDefault();
@@ -113,6 +115,8 @@
 						};
 						nodeItem.children.push(moduleItem);
 						_.forEach(module.ENDPOINTS, function(endpoint){
+							endpoints_names.push(endpoint.NAMESPACE);
+							endpoints_main.push(endpoint.ENDPOINT_MAIN);
 							var endpointItem = {
 								name: endpoint.NAMESPACE,
 								source: endpoint,
@@ -378,7 +382,9 @@
                  endpoint: null,
                  parentNode: parentNode,
                  gateway: $scope.gatewaySelected,
-                 json: $scope.json
+                 json: $scope.json,
+                 endpoints_names: endpoints_names,
+                 endpoints_main: endpoints_main
                }
               })
               .then(function(result) {

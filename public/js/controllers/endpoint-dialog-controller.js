@@ -1,17 +1,41 @@
 (function(app) {
 	app.controller('EndpointDialogController',
-    ['$scope','$mdDialog','endpoint','parentNode','gateway','json','GatewayService','MessageUtil',
-    function ($scope, $mdDialog, endpoint, parentNode, gateway,json, GatewayService, MessageUtil) {
-  
+    ['$scope','$mdDialog','endpoint','parentNode','gateway','json','GatewayService','MessageUtil','endpoints_names','endpoints_main',
+    function ($scope, $mdDialog, endpoint, parentNode, gateway,json, GatewayService, MessageUtil,endpoints_names,endpoints_main) {
         $scope.endpoint = {};
         $scope.parentNode = {};
         $scope.page=1;
         $scope.valid = false;
+        $scope.uniqueName=false;
 
         $scope.promise = null;
          $scope.cancel = function() {
            $mdDialog.cancel();
         };
+
+        $scope.$watch('endpoint.NAMESPACE',  function () {
+          var band = true;
+          $scope.uniqueName=true;
+          _.forEach(endpoints_names,function(item){
+            console.log("item "+item + " value "+ $scope.endpoint.NAMESPACE + " logic ", item==$scope.endpoint.NAMESPACE);
+            if(item==$scope.endpoint.NAMESPACE){
+              $scope.uniqueName=false;
+            }
+          });
+
+          
+        });
+
+        $scope.$watch('endpoint.ENDPOINT_MAIN',  function () {
+          var band = true;
+          $scope.uniqueMain=true;
+          _.forEach(endpoints_main,function(item){
+            if(item==$scope.endpoint.ENDPOINT_MAIN){
+              $scope.uniqueMain=false;
+            }
+          });
+
+        });
 
         $scope.changeJSON=function(e){
           for(var i=0; i<$scope.endpoint.STYLES.length;i++)
@@ -126,6 +150,7 @@
           }
           return false;
         }
+
         
     }]);
 })(meister);

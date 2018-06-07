@@ -22,7 +22,7 @@
               </md-input-container>
                <md-input-container class="md-block">
                 <label>Endpoint Main</label>
-                <input ng-model="endpoint.ENDPOINT_MAIN" required>
+                <input ng-model="endpoint.ENDPOINT_MAIN" required maxlength="30">
               </md-input-container>
                <md-input-container class="md-block">
                 <label>Handler</label>
@@ -106,10 +106,10 @@
       <md-button class="md-raised" ng-click="changePage(1)" ng-show="page==2" >
        Back
       </md-button>
-      <md-button class="md-raised md-primary" ng-click="changePage(2)" ng-show="page==1" ng-disabled="frmEndpoint.$invalid">
+      <md-button class="md-raised md-primary" ng-click="changePage(2)" ng-show="page==1" ng-disabled="frmEndpoint.$invalid || !uniqueName  || !uniqueMain">
        Next
       </md-button>
-      <md-button class="md-raised md-primary" ng-click="save()" ng-show="page==2" ng-disabled="frmEndpointStyle.$invalid || checkUniqueName() || !valid">
+      <md-button class="md-raised md-primary" ng-click="save()" ng-show="page==2" ng-disabled="frmEndpointStyle.$invalid || checkUniqueName() || !valid || !uniqueName || !uniqueMain">
        Save
       </md-button>
       <md-button class="md-warn" ng-click="cancel()">
