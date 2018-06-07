@@ -28,9 +28,7 @@
 
        
 		angular.element( document.getElementById("treeCointaner")).on('contextmenu',stopMenu );
-	 /*	$scope.$on('$destroy', function() {
-		    angular.element($window).off('contextmenu', stopMenu);
-		});*/
+	
 		
 		$scope.payload_json = {json: null, options: {mode: 'tree'}};
 		$scope.payloadsTree = [];
