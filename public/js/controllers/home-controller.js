@@ -20,7 +20,8 @@
 		var endpoints_main=[];
 
         var stopMenu =function(e) {
-	      e.preventDefault();
+        	if(e.target.getAttribute('class') !== "ace_text-input")
+	      		e.preventDefault();
 	    };
 
 	    const DEFAULT_DELETED_STATE_PROJECT = false;
@@ -29,8 +30,10 @@
 	    const DEFAULT_DELETED_STATE_STYLE = false;
 
        
-		angular.element( document.getElementById("treeCointaner")).on('contextmenu',stopMenu );
-	
+		angular.element( $window).on('contextmenu',stopMenu );
+		$scope.$on('$destroy', function() {
+		    angular.element($window).off('contextmenu', stopMenu);
+		});
 		
 		$scope.payload_json = {json: null, options: {mode: 'tree'}};
 		$scope.payloadsTree = [];

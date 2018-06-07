@@ -16,9 +16,12 @@
 		$scope.loading_tree = false;
 		$scope.wrap={compression : "N"};
 		$scope.client = {};
+		var endpoints_names=[];
+		var endpoints_main=[];
 
         var stopMenu =function(e) {
-	      e.preventDefault();
+        	if(e.target.getAttribute('class') !== "ace_text-input")
+	      		e.preventDefault();
 	    };
 
 	    const DEFAULT_DELETED_STATE_PROJECT = false;
@@ -26,10 +29,11 @@
 	    const DEFAULT_DELETED_STATE_ENDPOINT= false;
 	    const DEFAULT_DELETED_STATE_STYLE = false;
 
-		// angular.element($window).on('contextmenu',stopMenu );
-	 	// $scope.$on('$destroy', function() {
-		//     angular.element($window).off('contextmenu', stopMenu);
-		// });
+       
+		angular.element( $window).on('contextmenu',stopMenu );
+		$scope.$on('$destroy', function() {
+		    angular.element($window).off('contextmenu', stopMenu);
+		});
 		
 		$scope.payload_json = {json: null, options: {mode: 'tree'}};
 		$scope.payloadsTree = [];
@@ -113,6 +117,8 @@
 						};
 						nodeItem.children.push(moduleItem);
 						_.forEach(module.ENDPOINTS, function(endpoint){
+							endpoints_names.push(endpoint.NAMESPACE);
+							endpoints_main.push(endpoint.ENDPOINT_MAIN);
 							var endpointItem = {
 								name: endpoint.NAMESPACE,
 								source: endpoint,
@@ -378,7 +384,9 @@
                  endpoint: null,
                  parentNode: parentNode,
                  gateway: $scope.gatewaySelected,
-                 json: $scope.json
+                 json: $scope.json,
+                 endpoints_names: endpoints_names,
+                 endpoints_main: endpoints_main
                }
               })
               .then(function(result) {
