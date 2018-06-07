@@ -194,6 +194,9 @@
 				$scope.client = {};
 				GatewayClientService.getbyGatewayId($scope.gatewaySelectedId).then(function(result){
                    $scope.clients = result.data;
+                   if($scope.clients.length){
+                   	 $scope.client=$scope.clients[0].client;
+                   }
 		        });
 			}
 		};
