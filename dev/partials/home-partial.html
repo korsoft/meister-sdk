@@ -9,7 +9,7 @@
     <md-card md-theme-watch>
         <md-card-title style="padding:5px 5px 5px">
           <md-card-title-text>
-            <span class="md-headline"  style="font-size: 18px">SAP Gateway {{gatewaySelected.name ? ': ' + gatewaySelected.name : ''}}</span>
+            <span class="md-headline"  style="font-size: 18px">SAP Gateway {{gatewaySelected.name ? ': ' + gatewaySelected.name : ''}} - {{client.sap_number}}</span>
           </md-card-title-text>
           <md-card-title-media>
             <div class="md-media-xs card-media"></div>
@@ -33,17 +33,16 @@
                   </md-option>
             </md-select>
           </md-input-container>
-           <!--<md-input-container ng-if="showMenu" style="width: 30%">
+          <md-input-container  style="width: 30%">
                     <label >Select Client:</label>
-                    <md-select ng-model="default_client.client.id" placeholder="Select Client">
-                       <md-option ng-repeat="c in clients" ng-click="$root.setClientAndType(c)" ng-value="c.client.id">
+                    <md-select ng-model="client" placeholder="Select Client">
+                       <md-option ng-repeat="c in clients" ng-value="c.client">
                             {{c.client.sap_number}}
                         </md-option>
                   </md-select>
-                </md-input-container>
-              -->
+            </md-input-container>
           <md-input-container style="width: 20%">
-               <md-button class="md-raised md-primary"  ng-disabled="!gatewaySelected" 
+               <md-button class="md-raised md-primary"  ng-disabled="!gatewaySelected || (clients.length && !client.id)" 
                ng-click="executeGateway()" >
               Execute
             </md-button>

@@ -5,6 +5,7 @@
         
         $scope.gateways = [];
         $scope.promise = null;
+        $scope.editR = ($rootScope.user_type() ==$rootScope.SYSTEM_ADMIN);
         
         $scope.filter = {
           show: false
@@ -135,5 +136,23 @@
               );
          };
         
+         $scope.editClient = function(ev, gateway) {
+              $mdDialog.show({
+                controller: 'GatewayClientsDialogController',
+                templateUrl: 'templates/gateway-client-dialog-form.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:false,
+                escapeToClose: false,
+                locals: {
+                 gateway: gateway
+               }
+              })
+              .then(function(result) {
+  
+              }, function() {
+               
+              });
+         };
     }]);
 })(meister);
