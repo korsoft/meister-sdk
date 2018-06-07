@@ -30,7 +30,7 @@
 	    const DEFAULT_DELETED_STATE_STYLE = false;
 
        
-		//angular.element( $window).on('contextmenu',stopMenu );
+		angular.element( $window).on('contextmenu',stopMenu );
 		$scope.$on('$destroy', function() {
 		    angular.element($window).off('contextmenu', stopMenu);
 		});
