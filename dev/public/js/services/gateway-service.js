@@ -28,8 +28,10 @@
             return $http.get(SERVER_BASE_URL + '/api/clientgateways/'+id+'/test_connection');
         };
 
-        service.execute = function(id){
-            return $http.get(SERVER_BASE_URL + '/api/clientgateways/'+id+'/execute');
+        service.execute = function(id,params){
+            return $http({url: SERVER_BASE_URL + '/api/clientgateways/'+id+'/execute', 
+                 method: "GET",
+                 params: params});
         };
 
         service.execute_changes = function(id,params){

@@ -1,7 +1,7 @@
 (function(app) {
 	app.controller('HomeController', ['$scope','$rootScope','$mdMenu','$mdToast','$mdDialog','MessageUtil',
-		'GatewayService','$filter','$window',
-		function($scope, $rootScope, $mdMenu, $mdToast,$mdDialog,MessageUtil,GatewayService,$filter,$window) {
+		'GatewayService','$filter','$window','GatewayClientService',
+		function($scope, $rootScope, $mdMenu, $mdToast,$mdDialog,MessageUtil,GatewayService,$filter,$window,GatewayClientService) {
 
 		$scope.promise = null;
 		$scope.gateways = [];
@@ -15,6 +15,7 @@
 		$scope.show_select_gateway = true;
 		$scope.loading_tree = false;
 		$scope.wrap={compression : "N"};
+		$scope.client = {};
 
         var stopMenu =function(e) {
 	      e.preventDefault();
@@ -55,7 +56,9 @@
 			$scope.promise.then(
 				function(result){
 					console.log("result",result);
-                     $scope.gateways = result.data;
+                    $scope.gateways = result.data;
+
+
 				},
 				function(error){
 					 console.log('failure', error);
@@ -63,11 +66,11 @@
 				}
 			);
 		};
-		$rootScope.$on("default_client_change",function(){
+	/*	$rootScope.$on("default_client_change",function(){
           $scope.init();
           $scope.basicTree = [];
           $scope.gatewaySelected = {};
-        });
+        });*/
 
 		$scope.isArray = function(what) {
 			    return Object.prototype.toString.call(what) === '[object Array]';
@@ -147,7 +150,12 @@
 			$scope.url_details = "";
 			$scope.styleSelected = null;
 			if($scope.gatewaySelected.id){
-				$scope.promise = GatewayService.execute($scope.gatewaySelected.id);
+				params={};
+				if($scope.client.id){
+					params.client_number = $scope.client.sap_number;
+				}
+				console.log(params);
+				$scope.promise = GatewayService.execute($scope.gatewaySelected.id,params);
 				$scope.promise.then(
 					function(result){
 						$scope.loading_tree = false;
@@ -171,7 +179,12 @@
 			$scope.gatewaySelected = _.find($scope.gateways,function(g){
 				return id == g.id;
 			});
-			
+			if($scope.gatewaySelected){
+				$scope.client = {};
+				GatewayClientService.getbyGatewayId($scope.gatewaySelectedId).then(function(result){
+                   $scope.clients = result.data;
+		        });
+			}
 		};
 
 		$rootScope.openActionsInNode = function($mdOpenMenu, $event){
@@ -423,6 +436,9 @@
 			$scope.mode_run = true;
 			if($scope.styleSelected){
 				params.style = $scope.styleSelected.name
+			}
+			if($scope.client.id){
+				params.client_number = $scope.client.sap_number;
 			}
 			$scope.styleSelected = null;
 			$scope.promise = GatewayService.execute_endpoint($scope.gatewaySelected.id,params);
