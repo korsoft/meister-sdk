@@ -134,7 +134,7 @@
                 + '     <md-icon ng-bind="\'restore_from_trash\'"></md-icon> Undelete'
                 + '  </md-button>'
                 + '         </md-menu-item>'
-                + '         <md-menu-item ng-if="node  && node.source.STYLES && !node.is_deleted">'
+                + '         <md-menu-item ng-if="node  && node.source.STYLES && !node.is_deleted && node.source.TYPE!=\'L\'">'
                 + ' <md-button  '
                 + '      ng-click="emitActionNodeSelected(\'addStyle\',node,$event)" '
                 + ' >'
