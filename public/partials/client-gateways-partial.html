@@ -45,8 +45,7 @@
                 <tr md-row >
                   <th md-column style="width: 5%">ID</th>
                   <th md-column style="width: 20%">Name</th>
-                  <th md-column style="width: 40%">Url</th>
-                  <th md-column style="width: 10%">Auth Type</th>
+                  <th md-column style="width: 50%">Url</th>
                   <th md-column style="width: 10%">Actions</th>
                 </tr>
               </thead>
@@ -55,13 +54,12 @@
                   <td md-cell>{{g.id}}</td>
                   <td md-cell>{{g.name}}</td>
                   <td md-cell style="text-overflow:ellipsis;overflow:hidden;">{{g.url}}</td>
-                  <td md-cell>{{type(g.auth_type)}}</td>
                   <td md-cell>
                     <md-button class="md-icon-button" aria-label="Settings" ng-click="edit($event, g)" title="Edit" style="padding: 0px; margin: 0px; width: 22px">
                       <md-icon ng-bind="'mode_edit'"></md-icon>
                     </md-button>
                     <md-button class="md-icon-button" ng-if="editR" aria-label="Clients" ng-click="editClient($event, g)" title="Clients" style="padding: 0px; margin: 0px; width: 22px">
-                      <md-icon ng-bind="'assignment_ind'"></md-icon>
+                      <md-icon ng-bind="'business'"></md-icon>
                     </md-button>
                      <md-button class="md-icon-button" aria-label="Settings" ng-click="test_connection($event, g)" title="Test connection" style="padding: 0px; margin: 0px; width: 22px">
                       <md-icon ng-bind="'play_arrow'"></md-icon>

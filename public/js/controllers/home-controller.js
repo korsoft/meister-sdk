@@ -447,7 +447,7 @@
 				function(result){
 					console.log("result",result);
 					$scope.payload_json.json = result.data.data; //angular.fromJson(result.data.data.d.results[0].Json);
-					$scope.payload_json.json_string =JSON.stringify(result.data.data);
+					$scope.payload_json.json_string =JSON.stringify(result.data.data,null, '\t');
 					$scope.payload_json.json_test = true;
 				},
 				function(error){

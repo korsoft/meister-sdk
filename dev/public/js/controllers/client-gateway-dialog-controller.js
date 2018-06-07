@@ -4,7 +4,7 @@
     function ($scope,$rootScope, $mdDialog, gateway, GatewayService,ClientService, MessageUtil) {
   
         $scope.gateway = {};
-        $scope.clients = [];
+       // $scope.clients = [];
         $scope.types = [
           {id:0,name:"BASIC"},
           {id:1,name:"FORM"},
@@ -38,20 +38,7 @@
 
         console.log("gateway", gateway);
 
-        if($rootScope.user_type() == $rootScope.SYSTEM_ADMIN){
-          $scope.promise = ClientService.index();
-
-          $scope.promise.then(
-              function(result){
-                console.log("result",result);
-                $scope.clients = result.data;
-              },
-              function(error){
-                console.log("error",error);
-                    MessageUtil.showError(error.data.message);
-              }
-          );
-        }
+       
 
         $scope.changeAuthType = function(type){
           $scope.gateway.auth_type = type;
