@@ -110,7 +110,7 @@
                 -->
         </md-actions>
         </md-card-title>
-       <md-card-content style="height: 400px; overflow-y: auto" ng-if="!loading_tree">
+       <md-card-content style="height: 600px; overflow-y: auto" ng-if="!loading_tree">
         <tree nodes='basicTree' options='treeOptions' ></tree>
        </md-card-content>
       </md-card>
@@ -126,7 +126,7 @@
           </md-card-title-text>
          
         </md-card-title>
-        <md-card-content style="height: 400px; overflow-y: auto" >
+        <md-card-content style="height: 600px; overflow-y: auto" >
            <table md-table style="table-layout: fixed">
                     <thead md-head>
                       <tr md-row >
@@ -181,7 +181,7 @@
             </md-button> -->
           </md-actions>
         </md-card-title>
-        <md-card-content style="height: 400px; overflow-y: auto"  ng-if="!loading_tree">
+        <md-card-content style="min-height: 400px; overflow-y: auto"  ng-if="!loading_tree">
           <md-input-container class="md-block" ng-if="payload_json.json && url_details!=''">
             <label >Url Details</label>
             <input ng-model="url_details" type="text" readonly="true">
@@ -201,7 +201,7 @@
               
                 <md-input-container flex ng-if="payload_json.json" style="margin-bottom: 0px">
                   <label>JSON</label>
-                  <textarea readonly="true" ng-value="json_to_string(payload_json.json)" rows="4" style="font-size: 10px;color: gray;line-height:18px" md-no-autogrow>
+                  <textarea readonly="true" ng-value="json_to_string(payload_json.json)"  style="font-size: 10px;color: gray;line-height:18px">
                   </textarea>
                 </md-input-container>
             </div>
@@ -250,7 +250,7 @@
             </md-tab>
             <md-tab label="Tree format">
               <br/><span class="title-log-result">{{json_logs_title}}: Result</span><br/>
-                <div ng-jsoneditor="onLoadJson" ng-model="json_logs_content_obj" options="payload_json.options" style="width: 100%; height: 300px;"></div>
+                <div ng-jsoneditor="onLoadJson" ng-model="json_logs_content_obj" options="payload_json.options" style="width: 100%;"></div>
             </md-tab>
           </md-tabs>
         </md-card-content>
