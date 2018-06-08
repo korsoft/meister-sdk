@@ -15,6 +15,31 @@
 		$scope.show_select_gateway = true;
 		$scope.loading_tree = false;
 		$scope.wrap={compression : "N"};
+		$scope.jsonReq={};
+		$scope.jsonResp={}
+		$scope.opt={selectedIndex:0, show:false};
+
+		$scope.payload_json = {json: null, options: {mode: 'tree'}};
+		$scope.payloadsTree = [];
+		$scope.basicTree = [];
+		$scope.styleSelected = null;
+		$scope.styles = [];
+		$scope.show_select_gateway = true;
+		
+		$scope.json_details = "";
+		$scope.json_logs = [];
+		$scope.json_logs_title = null;
+		$scope.json_logs_content = null;
+		$scope.json_logs_content_obj = null;
+
+		$scope.json_logs_executes = [];
+		$scope.json_logs_executes_title = null;
+		$scope.json_logs_executes_content = null;
+		$scope.json_logs_executes_content_obj = null;
+
+		$scope.url_details = "";
+
+
 		$scope.client = {};
 		var endpoints_names=[];
 		var endpoints_main=[];
@@ -35,19 +60,7 @@
 		    angular.element($window).off('contextmenu', stopMenu);
 		});
 		
-		$scope.payload_json = {json: null, options: {mode: 'tree'}};
-		$scope.payloadsTree = [];
-		$scope.basicTree = [];
-		$scope.styleSelected = null;
-		$scope.styles = [];
-		$scope.show_select_gateway = true;
 		
-		$scope.json_details = "";
-		$scope.json_logs = [];
-		$scope.json_logs_title = null;
-		$scope.json_logs_content = null;
-		$scope.json_logs_content_obj = null;
-		$scope.url_details = "";
 
 		$scope.mode_run = false;
 
@@ -194,6 +207,9 @@
 				$scope.client = {};
 				GatewayClientService.getbyGatewayId($scope.gatewaySelectedId).then(function(result){
                    $scope.clients = result.data;
+                   if($scope.clients.length){
+                   	 $scope.client=$scope.clients[0].client;
+                   }
 		        });
 			}
 		};
@@ -443,9 +459,11 @@
 		 });
 
 	     $scope.execute = function(event, node){
-			console.log("Execute event for endpoint",node);
+		
 			var params = {"endpoint":node.name};
-			console.log("Style selected",$scope.styleSelected);
+			var node={};
+			$scope.payload_json = {};
+			$scope.json_logs_executes_title=null;
 			$scope.mode_run = true;
 			if($scope.styleSelected){
 				params.style = $scope.styleSelected.name
@@ -453,14 +471,33 @@
 			if($scope.client.id){
 				params.client_number = $scope.client.sap_number;
 			}
+
+			if($scope.styleSelected)
+				node = $scope.styleSelected.parent;
+			else
+				node = $scope.nodeSelected;
+
 			$scope.styleSelected = null;
 			$scope.promise = GatewayService.execute_endpoint($scope.gatewaySelected.id,params);
 			$scope.promise.then(
 				function(result){
 					console.log("result",result);
-					$scope.payload_json.json = result.data.data; //angular.fromJson(result.data.data.d.results[0].Json);
-					$scope.payload_json.json_string =JSON.stringify(result.data.data,null, '\t');
+					$scope.json_logs_executes_title = null;
+					if(node.source.TYPE && node.source.TYPE=="L"){
+						$scope.opt.selectedIndex=0;
+						$scope.opt.show=true;
+						$scope.jsonReq=result.data.data.REQUEST;
+						$scope.jsonResp=result.data.data.RESPONSE;
+						$scope.payload_json.json = $scope.jsonReq; //angular.fromJson(result.data.data.d.results[0].Json);
+						$scope.payload_json.json_string =JSON.stringify($scope.jsonReq,null, '\t');            
+					}else{
+						$scope.opt.selectedIndex=0;
+						$scope.opt.show=false;
+						$scope.payload_json.json = result.data.data; //angular.fromJson(result.data.data.d.results[0].Json);
+						$scope.payload_json.json_string =JSON.stringify(result.data.data,null, '\t');
+					}
 					$scope.payload_json.json_test = true;
+					
 				},
 				function(error){
 					console.log('failure', error);
@@ -498,6 +535,7 @@
 			$scope.promise.then(
 				function(result){
 					console.log("result",result);
+					
 					var end_time = new Date();
 					var difference = end_time-execution_time;
 					$scope.url_details = result.data.url;
@@ -509,8 +547,10 @@
 					    var data  = pako.inflate(binData);
 
 					    // Convert gunzipped byteArray back to ascii string:
-					    json=(String.fromCharCode.apply(null, new Uint16Array(data)));
-					    json_text_content = $filter('json')(angular.fromJson(json));
+					    
+						json=(String.fromCharCode.apply(null, new Uint16Array(data)));
+						json_text_content = $filter('json')(angular.fromJson(json));
+					    
 					}
 					else{
 			   		   json_text_content = $filter('json')(result.data.data, 2);
@@ -521,10 +561,24 @@
 						content:json_text_content
 					};
 
+					var json_execute_text_item = {
+						title:node.name+"-"+json_text_title,
+						nodeSelected : node,
+						opt: $scope.opt,
+						selectedIndex: $scope.opt.selectedIndex,
+						payload_json: $scope.payload_json,
+						styleSelected: $scope.styleSelected
+					};
+
 					$scope.json_logs_title = json_text_item.title;
 					$scope.json_logs_content = json_text_item.content;
 					$scope.json_logs_content_obj = result.data.data; //angular.fromJson(result.data.data.d.results[0].Json);
 					$scope.json_logs.push(json_text_item);
+
+					$scope.json_logs_executes_title = json_execute_text_item.title;
+					$scope.json_logs_executes_content = json_text_item.content;
+					$scope.json_logs_excutes_content_obj = result.data.data; //angular.fromJson(result.data.data.d.results[0].Json);
+					$scope.json_logs_executes.push(json_execute_text_item);
 
 					//$scope.json_details += "<span class=\"title-log-result\">" + json_text_title + ": Result</span><br/>";
 					//$scope.json_details += "<span class=\"content-log-result\"> <code><pre>"+json_text_content+"</pre></code></span><br/><br/>";
@@ -546,6 +600,17 @@
 				}
 			);
 		};
+
+		$scope.changeJsonLogExecute = function(log){
+			var item_selected = _.find($scope.json_logs_executes,function(i){return i.title === log});
+			if(item_selected){
+				$scope.nodeSelected =item_selected.nodeSelected;
+				$scope.opt = item_selected.opt;
+				$scope.payload_json = item_selected.payload_json;
+				$scope.styleSelected = item_selected.styleSelected;
+				console.log($scope.styleSelected);
+			}
+		}
 
 		$scope.changeJsonLog = function(log){
 			console.log("changeJsonLog",log);
@@ -577,8 +642,18 @@
          $scope.changeStyle = function(style){
         	$scope.styleSelected = style;
         	$scope.styleSelected.parent = $scope.nodeSelected;
-        	console.log("changeStyle",style);
+        	console.log("changeStyle",$scope.styleSelected);
         };
+
+        $scope.setRequest= function(){
+			$scope.payload_json.json = $scope.jsonReq;
+			$scope.payload_json.json_string =JSON.stringify($scope.jsonReq,null, '\t');
+        }
+
+        $scope.setResponse = function(){
+        	$scope.payload_json.json = $scope.jsonResp;
+			$scope.payload_json.json_string =JSON.stringify($scope.jsonResp,null, '\t');
+        }
 
 	}]);
 })(meister);

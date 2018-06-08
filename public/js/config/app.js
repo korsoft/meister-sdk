@@ -9,7 +9,7 @@ meister.constant('SYSTEM_INTEGRATOR',89);
 meister.constant('CLIENT_ADMIN',49);
 meister.constant('CLIENT_USER',29);
 meister.constant('COOKIE_LAST_REQUEST','meister-sdk-last-request');
-meister.constant('COOKIE_MAX_TIMEOUT_REQUEST',30); //in minutes
+meister.constant('COOKIE_MAX_TIMEOUT_REQUEST',60); //in minutes
 
 (function(app) {
     app.config(['$stateProvider','$compileProvider', '$mdDateLocaleProvider', '$urlRouterProvider','OAuthProvider',

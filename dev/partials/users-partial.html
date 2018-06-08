@@ -50,24 +50,24 @@
 
 <md-table-container>
 
-  <table md-table ng-model="selected" md-progress="promise" style="table-layout: fixed">
+  <table md-table ng-model="selected" md-progress="promise">
               <thead md-head md-order="query.order">
                 <tr md-row >
-                  <th md-column style="width: 5%">ID</th>
-                  <th md-column style="width: 25%">First Name</th>
-                  <th md-column style="width: 25%">Last Name</th>
-                  <th md-column style="width: 15%">Email</th>
-                  <th md-column style="width: 10%">Type</th>
-                  <th md-column style="width: 10%">Actions</th>
+                  <th md-column>ID</th>
+                  <th md-column hide-xs hide-sm>First Name</th>
+                  <th md-column hide-xs hide-sm>Last Name</th>
+                  <th md-column>Email</th>
+                  <th md-column hide-xs hide-sm>Type</th>
+                  <th md-column>Actions</th>
                 </tr>
               </thead>
               <tbody md-body style="font-weight: bold">
                 <tr md-row class="with-hover" ng-repeat="u in users | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit | filter:{email:query.filterByEmail} | filter:{first_name:query.filterByFirstName} | filter:{last_name:query.filterByLastName}" md-auto-select>
                   <td md-cell>{{u.id}}</td>
-                  <td md-cell>{{u.first_name}}</td>
-                  <td md-cell>{{u.last_name}}</td>
+                  <td md-cell hide-xs hide-sm>{{u.first_name}}</td>
+                  <td md-cell hide-xs hide-sm>{{u.last_name}}</td>
                   <td md-cell>{{u.email}}</td>
-                  <td md-cell>{{type(u)}}</td>
+                  <td md-cell hide-xs hide-sm>{{type(u)}}</td>
                   <td md-cell >
                     <md-button class="md-icon-button" aria-label="Settings" ng-click="edit($event, u)" title="Edit"  style="padding: 0px; margin: 0px; width: 22px">
                       <md-icon ng-bind="'mode_edit'"></md-icon>
