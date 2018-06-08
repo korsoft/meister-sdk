@@ -498,6 +498,7 @@
 					}
 					$scope.payload_json.json_test = true;
 					
+					
 				},
 				function(error){
 					console.log('failure', error);
@@ -505,6 +506,12 @@
 				}
 			);
 		};
+		
+		$scope.editorLoaded=function()
+		{
+			console.log("broascastng");
+			$scope.$broadcast('md-resize-textarea')
+		}
 
 		$scope.execute_by_style = function(event, node){
 			console.log("execute_by_style",$scope.basicTree);
@@ -623,7 +630,7 @@
 		}
 
         $scope.json_to_string = function(obj){
-        	return JSON.stringify(obj);
+        	return JSON.stringify(obj,null,"\t");
         };
 
         $scope.json_to_object = function(value){
@@ -654,6 +661,8 @@
         	$scope.payload_json.json = $scope.jsonResp;
 			$scope.payload_json.json_string =JSON.stringify($scope.jsonResp,null, '\t');
         }
+        
+        
 
 	}]);
 })(meister);

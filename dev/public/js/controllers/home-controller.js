@@ -17,7 +17,27 @@
 		$scope.wrap={compression : "N"};
 		$scope.jsonReq={};
 		$scope.jsonResp={}
-		$scope.opt={selectedIndex:0, show:false}
+		$scope.opt={selectedIndex:0, show:false};
+
+		$scope.payload_json = {json: null, options: {mode: 'tree'}};
+		$scope.payloadsTree = [];
+		$scope.basicTree = [];
+		$scope.styleSelected = null;
+		$scope.styles = [];
+		$scope.show_select_gateway = true;
+		
+		$scope.json_details = "";
+		$scope.json_logs = [];
+		$scope.json_logs_title = null;
+		$scope.json_logs_content = null;
+		$scope.json_logs_content_obj = null;
+
+		$scope.json_logs_executes = [];
+		$scope.json_logs_executes_title = null;
+		$scope.json_logs_executes_content = null;
+		$scope.json_logs_executes_content_obj = null;
+
+		$scope.url_details = "";
 
 
 		$scope.client = {};
@@ -40,19 +60,7 @@
 		    angular.element($window).off('contextmenu', stopMenu);
 		});
 		
-		$scope.payload_json = {json: null, options: {mode: 'tree'}};
-		$scope.payloadsTree = [];
-		$scope.basicTree = [];
-		$scope.styleSelected = null;
-		$scope.styles = [];
-		$scope.show_select_gateway = true;
 		
-		$scope.json_details = "";
-		$scope.json_logs = [];
-		$scope.json_logs_title = null;
-		$scope.json_logs_content = null;
-		$scope.json_logs_content_obj = null;
-		$scope.url_details = "";
 
 		$scope.mode_run = false;
 
@@ -451,10 +459,11 @@
 		 });
 
 	     $scope.execute = function(event, node){
-			console.log("Execute event for endpoint",node);
+		
 			var params = {"endpoint":node.name};
 			var node={};
-			console.log("Style selected",$scope.styleSelected);
+			$scope.payload_json = {};
+			$scope.json_logs_executes_title=null;
 			$scope.mode_run = true;
 			if($scope.styleSelected){
 				params.style = $scope.styleSelected.name
@@ -473,6 +482,7 @@
 			$scope.promise.then(
 				function(result){
 					console.log("result",result);
+					$scope.json_logs_executes_title = null;
 					if(node.source.TYPE && node.source.TYPE=="L"){
 						$scope.opt.selectedIndex=0;
 						$scope.opt.show=true;
@@ -488,6 +498,7 @@
 					}
 					$scope.payload_json.json_test = true;
 					
+					
 				},
 				function(error){
 					console.log('failure', error);
@@ -495,6 +506,12 @@
 				}
 			);
 		};
+		
+		$scope.editorLoaded=function()
+		{
+			console.log("broascastng");
+			$scope.$broadcast('md-resize-textarea')
+		}
 
 		$scope.execute_by_style = function(event, node){
 			console.log("execute_by_style",$scope.basicTree);
@@ -525,6 +542,7 @@
 			$scope.promise.then(
 				function(result){
 					console.log("result",result);
+					
 					var end_time = new Date();
 					var difference = end_time-execution_time;
 					$scope.url_details = result.data.url;
@@ -550,10 +568,24 @@
 						content:json_text_content
 					};
 
+					var json_execute_text_item = {
+						title:node.name+"-"+json_text_title,
+						nodeSelected : node,
+						opt: $scope.opt,
+						selectedIndex: $scope.opt.selectedIndex,
+						payload_json: $scope.payload_json,
+						styleSelected: $scope.styleSelected
+					};
+
 					$scope.json_logs_title = json_text_item.title;
 					$scope.json_logs_content = json_text_item.content;
 					$scope.json_logs_content_obj = result.data.data; //angular.fromJson(result.data.data.d.results[0].Json);
 					$scope.json_logs.push(json_text_item);
+
+					$scope.json_logs_executes_title = json_execute_text_item.title;
+					$scope.json_logs_executes_content = json_text_item.content;
+					$scope.json_logs_excutes_content_obj = result.data.data; //angular.fromJson(result.data.data.d.results[0].Json);
+					$scope.json_logs_executes.push(json_execute_text_item);
 
 					//$scope.json_details += "<span class=\"title-log-result\">" + json_text_title + ": Result</span><br/>";
 					//$scope.json_details += "<span class=\"content-log-result\"> <code><pre>"+json_text_content+"</pre></code></span><br/><br/>";
@@ -576,6 +608,17 @@
 			);
 		};
 
+		$scope.changeJsonLogExecute = function(log){
+			var item_selected = _.find($scope.json_logs_executes,function(i){return i.title === log});
+			if(item_selected){
+				$scope.nodeSelected =item_selected.nodeSelected;
+				$scope.opt = item_selected.opt;
+				$scope.payload_json = item_selected.payload_json;
+				$scope.styleSelected = item_selected.styleSelected;
+				console.log($scope.styleSelected);
+			}
+		}
+
 		$scope.changeJsonLog = function(log){
 			console.log("changeJsonLog",log);
 			$scope.json_logs_title = log;
@@ -587,7 +630,7 @@
 		}
 
         $scope.json_to_string = function(obj){
-        	return JSON.stringify(obj);
+        	return JSON.stringify(obj,null,"\t");
         };
 
         $scope.json_to_object = function(value){
@@ -606,7 +649,7 @@
          $scope.changeStyle = function(style){
         	$scope.styleSelected = style;
         	$scope.styleSelected.parent = $scope.nodeSelected;
-        	console.log("changeStyle",style);
+        	console.log("changeStyle",$scope.styleSelected);
         };
 
         $scope.setRequest= function(){
@@ -618,6 +661,8 @@
         	$scope.payload_json.json = $scope.jsonResp;
 			$scope.payload_json.json_string =JSON.stringify($scope.jsonResp,null, '\t');
         }
+        
+        
 
 	}]);
 })(meister);
