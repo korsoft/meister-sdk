@@ -181,7 +181,7 @@
             </md-button> -->
           </md-actions>
         </md-card-title>
-        <md-card-content style="min-height: 400px; overflow-y: auto"  ng-if="!loading_tree">
+        <md-card-content style="height: 600px;  overflow-y: auto"  ng-if="!loading_tree">
           <md-select ng-model="json_logs_executes_title" placeholder="Select the JSON execute" 
             style="width:80%" ng-change="changeJsonLogExecute(json_logs_executes_title)">
              <md-option ng-repeat="g in json_logs_executes" ng-value="g.title">
@@ -246,7 +246,7 @@
             </md-button>
           </md-actions>
         </md-card-title>
-        <md-card-content style="height: 400px; overflow-y: auto"  >
+        <md-card-content  >
           <md-select ng-model="json_logs_title" placeholder="Select the JSON Result" 
             style="width:80%" ng-change="changeJsonLog(json_logs_title)">
              <md-option ng-repeat="g in json_logs" ng-value="g.title">

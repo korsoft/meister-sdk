@@ -110,7 +110,7 @@
                 -->
         </md-actions>
         </md-card-title>
-       <md-card-content style="height: 400px; overflow-y: auto" ng-if="!loading_tree">
+       <md-card-content style="height: 600px; overflow-y: auto" ng-if="!loading_tree">
         <tree nodes='basicTree' options='treeOptions' ></tree>
        </md-card-content>
       </md-card>
@@ -126,7 +126,7 @@
           </md-card-title-text>
          
         </md-card-title>
-        <md-card-content style="height: 400px; overflow-y: auto" >
+        <md-card-content style="height: 600px; overflow-y: auto" >
            <table md-table style="table-layout: fixed">
                     <thead md-head>
                       <tr md-row >
@@ -181,7 +181,13 @@
             </md-button> -->
           </md-actions>
         </md-card-title>
-        <md-card-content style="height: 400px; overflow-y: auto"  ng-if="!loading_tree">
+        <md-card-content style="height: 600px;  overflow-y: auto"  ng-if="!loading_tree">
+          <md-select ng-model="json_logs_executes_title" placeholder="Select the JSON execute" 
+            style="width:80%" ng-change="changeJsonLogExecute(json_logs_executes_title)">
+             <md-option ng-repeat="g in json_logs_executes" ng-value="g.title">
+                  {{g.title}}
+              </md-option>
+          </md-select>
           <md-input-container class="md-block" ng-if="payload_json.json && url_details!=''">
             <label >Url Details</label>
             <input ng-model="url_details" type="text" readonly="true">
@@ -190,9 +196,9 @@
             <div layout-gt-sm="row">
               
                 <md-input-container flex ng-if="payload_json.json && styles && styles.length>0" style="margin-bottom: 0px">
-                    <label >Select the Style</label>
-                    <md-select ng-model="styleSelected"  style="width: 50%" placeholder="Select the Style"  ng-change="changeStyle(styleSelected)">
-                       <md-option ng-repeat="style in styles" ng-value="style">
+                    <label >Select the Style </label>
+                    <md-select ng-model="styleSelected"  style="width: 50%" placeholder="Select the Style"  ng-change="changeStyle(styleSelected)" >
+                       <md-option ng-repeat="style in styles" ng-value="style" ng-selected="styleSelected.name == style.name">
                             {{style.name}}
                         </md-option>
                   </md-select>
@@ -240,7 +246,7 @@
             </md-button>
           </md-actions>
         </md-card-title>
-        <md-card-content style="height: 400px; overflow-y: auto"  >
+        <md-card-content  >
           <md-select ng-model="json_logs_title" placeholder="Select the JSON Result" 
             style="width:80%" ng-change="changeJsonLog(json_logs_title)">
              <md-option ng-repeat="g in json_logs" ng-value="g.title">
