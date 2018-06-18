@@ -122,7 +122,7 @@
 					  * Data Style Simulator
 					  */
 					 var style_template= {
-							 name: node.PROJECT+ "style_template" + style_counter,
+							 name: "STYLE_LIB",
 					 		image: '/public/images/template.png',
 					 		type: "style_template",
 					 		children: []
