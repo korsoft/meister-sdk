@@ -86,8 +86,8 @@
                 + '<span class="node-title pointer" ng-click="selectNode(node, $event)" ng-class="{\'disabled\':node.disabled}">'
                 + '<span><i class="tree-node-ico" ng-if="options.showIcon" ng-class="{\'tree-node-image\':node.children, \'tree-node-leaf\':!node.children}" ng-style="node.image && {\'background-image\':\'url(\'+node.image+\')\'}"></i>'
                 + '     <span class="node-name" tabindex="{{::(node.focusable ? 0 : -1)}}" ng-class="{selected: node.selected&& !node.disabled}">'
-                + ' <span ng-if="!node.source || node.type==\'style_template\'"">{{node.name}}</span>'
-                + ' <md-menu ng-if="node.source && node.type!=\'style_template\'">'
+                + ' <span ng-if="!showMenu(node)">{{node.name}}</span>'
+                + ' <md-menu ng-if="showMenu(node)">'
                 + '     <span ng-click="$mdMenu.open()"  ng-mouseup="openMenu($mdOpenMenu,$event,node)">'
                 + '       {{node.name}}'
                 + '     </span>'
@@ -304,13 +304,25 @@
                             }
                         }
 
+                        scope.showMenu = function (node) {
+
+                            if ( node.source && node.type=='style_template') {
+                               return false;
+                            }
+
+                            if(node.parent && node.parent.source && node.parent.source.STYLES){
+                                return false;
+                            }
+                            return true;
+                        }
+
                         scope.openMenu = function (menu,e,node) {
                             if(e.which==3){
                                 var itemSelected = getSelectedNodes();
                                 e.preventDefault();
                                 e.stopPropagation();
                                 if(itemSelected.length==1 &&
-                                    itemSelected[0].nodeId==node.nodeId){
+                                    itemSelected[0].nodeId==node.nodeId ){
                                     menu(e);
                                     $timeout(function() {
                                         var element = document.getElementsByClassName('md-menu-backdrop');
