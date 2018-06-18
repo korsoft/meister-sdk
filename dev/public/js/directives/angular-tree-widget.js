@@ -86,8 +86,8 @@
                 + '<span class="node-title pointer" ng-click="selectNode(node, $event)" ng-class="{\'disabled\':node.disabled}">'
                 + '<span><i class="tree-node-ico" ng-if="options.showIcon" ng-class="{\'tree-node-image\':node.children, \'tree-node-leaf\':!node.children}" ng-style="node.image && {\'background-image\':\'url(\'+node.image+\')\'}"></i>'
                 + '     <span class="node-name" tabindex="{{::(node.focusable ? 0 : -1)}}" ng-class="{selected: node.selected&& !node.disabled}">'
-                + ' <span ng-if="!node.source || node.type==\'style_template\'"">{{node.name}}</span>'
-                + ' <md-menu ng-if="node.source && node.type!=\'style_template\'">'
+                + ' <span ng-if="!showMenu(node)">{{node.name}}</span>'
+                + ' <md-menu ng-if="showMenu(node)">'
                 + '     <span ng-click="$mdMenu.open()"  ng-mouseup="openMenu($mdOpenMenu,$event,node)">'
                 + '       {{node.name}}'
                 + '     </span>'
@@ -113,13 +113,13 @@
                 + '     <md-icon ng-bind="\'restore_from_trash\'"></md-icon> Undelete'
                 + '  </md-button>'
                 + '         </md-menu-item>'
-                + '         <md-menu-item ng-if="node  && node.source.ENDPOINTS && !node.is_deleted">'
+                + '<md-menu-item ng-if="node  && node.source.ENDPOINTS && !node.is_deleted">'
                 + ' <md-button '
                 + '      ng-click="emitActionNodeSelected(\'addEndpoint\',node,$event)" '
                 + ' >'
                 + '     <md-icon ng-bind="\'note_add\'"></md-icon> Add endpoint'
                 + '  </md-button>'
-                + '         </md-menu-item>'
+                + '</md-menu-item>'
                 + '         <md-menu-item ng-if="node  && node.source.ENDPOINTS && !node.is_deleted && canBeDeleted(node)">'
                 + ' <md-button'
                 + '      ng-click="emitDeleteModuleSelected(\'delete_module_selected\',node,$event)" '
@@ -141,6 +141,20 @@
                 + '     <md-icon ng-bind="\'note_add\'"></md-icon> Add style'
                 + '  </md-button>'
                 + '         </md-menu-item>'
+                + '<md-menu-item ng-if="node  && node.source.STYLES && !node.is_deleted && !node.source.LOCKED ">'
+                + ' <md-button '
+                + '      ng-click="emitLockEndPointSelected(\'lock_endpoint_deleted\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'lock_open\'"></md-icon> Lock'
+                + '  </md-button>'
+                + '</md-menu-item>'
+                + '<md-menu-item ng-if="node  && node.source.STYLES && !node.is_deleted && node.source.LOCKED ">'
+                + ' <md-button '
+                + '      ng-click="emitUnLockEndPointSelected(\'unlock_endpoint_deleted\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'lock\'"></md-icon> UnLock'
+                + '  </md-button>'
+                + '</md-menu-item>'
                 + '         <md-menu-item ng-if="node  && node.source.STYLES && node.is_deleted">'
                 + ' <md-button  '
                 + '      ng-click="emitUndeleteEndPointSelected(\'undelete_endpoint_deleted\',node,$event)" '
@@ -221,6 +235,13 @@
                             scope.$emit('undelete-endpoint-deleted', {"actionName":actionName,"node":node,"sourceEvent":event});
                         }
                         
+                        scope.emitLockEndPointSelected = function(actionName,node,event){
+                            scope.$emit('lock-endpoint', {"actionName":actionName,"node":node,"sourceEvent":event});
+                        }
+                        scope.emitUnLockEndPointSelected = function(actionName,node,event){
+                            scope.$emit('unlock-endpoint', {"actionName":actionName,"node":node,"sourceEvent":event});
+                        }
+
                         scope.emitDeleteEndPointSelected = function(actionName,node,event){
                             scope.$emit('delete-endpoint-deleted', {"actionName":actionName,"node":node,"sourceEvent":event});
                         }
@@ -304,13 +325,25 @@
                             }
                         }
 
+                        scope.showMenu = function (node) {
+
+                            if ( node.source && node.type=='style_template') {
+                               return false;
+                            }
+
+                            if(node.parent && node.parent.source && node.parent.source.STYLES){
+                                return false;
+                            }
+                            return true;
+                        }
+
                         scope.openMenu = function (menu,e,node) {
                             if(e.which==3){
                                 var itemSelected = getSelectedNodes();
                                 e.preventDefault();
                                 e.stopPropagation();
                                 if(itemSelected.length==1 &&
-                                    itemSelected[0].nodeId==node.nodeId){
+                                    itemSelected[0].nodeId==node.nodeId ){
                                     menu(e);
                                     $timeout(function() {
                                         var element = document.getElementsByClassName('md-menu-backdrop');
