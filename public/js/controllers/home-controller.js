@@ -374,6 +374,66 @@
          
     	});
 
+    	$scope.$on('lock-endpoint', function (e, obj) {
+	        console.log("lock-endpoint",obj);
+	        
+	        obj.node.is_lock=true;
+
+	        var json_to_send =  GatewayService.buildJsonByNewEndpoint($scope.json, obj.node.parent.source, obj.node.source);
+          	json_to_send.MODULES[0].ENDPOINTS[0].STYLES = [];
+          	
+             console.log("json_to_send",json_to_send);
+	          var params = {
+	            json: angular.toJson(json_to_send),
+	            SDK_HINT:"SLK"
+	          };
+
+
+
+	            $scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
+	            
+	            $scope.promise.then(
+	                function(result){
+	                  console.log("result",result);
+	                  },
+	                function(error){
+	                  console.log("error",error);
+	                  MessageUtil.showError(error.data.message);
+	                }
+	              );
+         
+    	});
+
+    	$scope.$on('unlock-endpoint', function (e, obj) {
+	        console.log("unlock-endpoint",obj);
+	        
+	        obj.node.is_lock=false;
+
+	        var json_to_send =  GatewayService.buildJsonByNewEndpoint($scope.json, obj.node.parent.source, obj.node.source);
+          	json_to_send.MODULES[0].ENDPOINTS[0].STYLES = [];
+          	
+             console.log("json_to_send",json_to_send);
+	          var params = {
+	            json: angular.toJson(json_to_send),
+	            SDK_HINT:"RLK"
+	          };
+
+
+
+	            $scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
+	            
+	            $scope.promise.then(
+	                function(result){
+	                  console.log("result",result);
+	                  },
+	                function(error){
+	                  console.log("error",error);
+	                  MessageUtil.showError(error.data.message);
+	                }
+	              );
+         
+    	});
+
     	$scope.$on('refresh-module', function (e, obj) {
 	        console.log("refresh-module",obj);
 	        var projects = $scope.basicTree[0].children;

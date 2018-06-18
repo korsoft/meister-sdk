@@ -113,13 +113,13 @@
                 + '     <md-icon ng-bind="\'restore_from_trash\'"></md-icon> Undelete'
                 + '  </md-button>'
                 + '         </md-menu-item>'
-                + '         <md-menu-item ng-if="node  && node.source.ENDPOINTS && !node.is_deleted">'
+                + '<md-menu-item ng-if="node  && node.source.ENDPOINTS && !node.is_deleted">'
                 + ' <md-button '
                 + '      ng-click="emitActionNodeSelected(\'addEndpoint\',node,$event)" '
                 + ' >'
                 + '     <md-icon ng-bind="\'note_add\'"></md-icon> Add endpoint'
                 + '  </md-button>'
-                + '         </md-menu-item>'
+                + '</md-menu-item>'
                 + '         <md-menu-item ng-if="node  && node.source.ENDPOINTS && !node.is_deleted && canBeDeleted(node)">'
                 + ' <md-button'
                 + '      ng-click="emitDeleteModuleSelected(\'delete_module_selected\',node,$event)" '
@@ -141,6 +141,20 @@
                 + '     <md-icon ng-bind="\'note_add\'"></md-icon> Add style'
                 + '  </md-button>'
                 + '         </md-menu-item>'
+                + '<md-menu-item ng-if="node  && node.source.STYLES && !node.is_deleted && !node.source.LOCKED ">'
+                + ' <md-button '
+                + '      ng-click="emitLockEndPointSelected(\'addEndpoint\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'lock_open\'"></md-icon> Lock'
+                + '  </md-button>'
+                + '</md-menu-item>'
+                + '<md-menu-item ng-if="node  && node.source.STYLES && !node.is_deleted && node.source.LOCKED ">'
+                + ' <md-button '
+                + '      ng-click="emitUnLockEndPointSelected(\'addEndpoint\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'lock\'"></md-icon> UnLock'
+                + '  </md-button>'
+                + '</md-menu-item>'
                 + '         <md-menu-item ng-if="node  && node.source.STYLES && node.is_deleted">'
                 + ' <md-button  '
                 + '      ng-click="emitUndeleteEndPointSelected(\'undelete_endpoint_deleted\',node,$event)" '
@@ -221,6 +235,13 @@
                             scope.$emit('undelete-endpoint-deleted', {"actionName":actionName,"node":node,"sourceEvent":event});
                         }
                         
+                        scope.emitLockEndPointSelected = function(actionName,node,event){
+                            scope.$emit('lock-endpoint', {"actionName":actionName,"node":node,"sourceEvent":event});
+                        }
+                        scope.emitUnLockEndPointSelected = function(actionName,node,event){
+                            scope.$emit('unlock-endpoint', {"actionName":actionName,"node":node,"sourceEvent":event});
+                        }
+
                         scope.emitDeleteEndPointSelected = function(actionName,node,event){
                             scope.$emit('delete-endpoint-deleted', {"actionName":actionName,"node":node,"sourceEvent":event});
                         }
