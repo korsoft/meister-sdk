@@ -157,10 +157,16 @@
 						_.forEach(module.ENDPOINTS, function(endpoint){
 							endpoints_names.push(endpoint.NAMESPACE);
 							endpoints_main.push(endpoint.ENDPOINT_MAIN);
+							var icon = "";
+							console.log("endpoint",endpoint);
+							if(endpoint.TYPE == "L")
+								icon = '/public/images/endpoint_l.png';
+							else
+								icon = '/public/images/endpoint.png';
 							var endpointItem = {
 								name: endpoint.NAMESPACE,
 								source: endpoint,
-								image: '/public/images/endpoint.png',
+								image: icon,
 								expanded: false,
 								parent:moduleItem,
 								is_deleted:  endpoint.LOGICAL_DELETE,
