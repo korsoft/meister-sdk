@@ -374,8 +374,8 @@
          
     	});
 
-    	$scope.$on('lock_endpoint_deleted', function (e, obj) {
-	        console.log("lock_endpoint_deleted",obj);
+    	$scope.$on('lock-endpoint', function (e, obj) {
+	        console.log("lock-endpoint",obj);
 	        
 	        var json_to_send =  GatewayService.buildJsonByNewEndpoint($scope.json, obj.node.parent.source, obj.node.source);
           	json_to_send.MODULES[0].ENDPOINTS[0].STYLES = [];
@@ -402,8 +402,8 @@
          
     	});
 
-    	$scope.$on('unlock_endpoint_deleted', function (e, obj) {
-	        console.log("unlock_endpoint_deleted",obj);
+    	$scope.$on('unlock-endpoint', function (e, obj) {
+	        console.log("unlock-endpoint",obj);
 	        
 	        obj.node.is_lock=false;
 
