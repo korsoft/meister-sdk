@@ -90,10 +90,12 @@
                 if(module){
                     var moduleItem = {
                       PKY: module.PKY,
+                      FKY:project.PKY,
                       NAME: module.NAME,
                       DATE:module.DATE.split("-").join(""),
                       ENDPOINTS: []
                     };
+                    endpoint.FKY = module.PKY;
                     moduleItem.ENDPOINTS.push(endpoint);
                     json_to_send.MODULES.push(moduleItem);
                     return false;
