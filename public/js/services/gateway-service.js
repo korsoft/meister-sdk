@@ -62,6 +62,7 @@
                 json_to_send.MODULES = [];
                  var moduleItem = {
                       PKY: module.PKY,
+                      FKY:project.PKY,
                       NAME: module.NAME,
                       DATE: moment(module.DATE).format('YYYYMMDD'),
                       ENDPOINTS: module.ENDPOINTS
@@ -89,10 +90,12 @@
                 if(module){
                     var moduleItem = {
                       PKY: module.PKY,
+                      FKY:project.PKY,
                       NAME: module.NAME,
                       DATE:module.DATE.split("-").join(""),
                       ENDPOINTS: []
                     };
+                    endpoint.FKY = module.PKY;
                     moduleItem.ENDPOINTS.push(endpoint);
                     json_to_send.MODULES.push(moduleItem);
                     return false;

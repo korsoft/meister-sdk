@@ -48,12 +48,6 @@
         	if(e.target.getAttribute('class') !== "ace_text-input")
 	      		e.preventDefault();
 	    };
-
-	    const DEFAULT_DELETED_STATE_PROJECT = false;
-	    const DEFAULT_DELETED_STATE_MODULE = false;
-	    const DEFAULT_DELETED_STATE_ENDPOINT= false;
-	    const DEFAULT_DELETED_STATE_STYLE = false;
-
        
 		angular.element( $window).on('contextmenu',stopMenu );
 		$scope.$on('$destroy', function() {
@@ -106,6 +100,8 @@
 			$scope.payload_json = {json: null, options: {mode: 'tree'}};
 			$scope.url_details = "";
 			$scope.styleSelected = null;
+			
+			var style_counter = 1;
 
 			$scope.basicTree.push(rootNode);
 			console.log("Building tree",gatewayResponse);
@@ -118,9 +114,35 @@
 						source:node,
 						image: '/public/images/project.png',
 						parent: rootNode,
-						is_deleted:  DEFAULT_DELETED_STATE_PROJECT,
+						is_deleted:  node.LOGICAL_DELETE,
 						children: []
 					};
+					
+					 /************************
+					  * Data Style Simulator
+					  */
+					 var style_template= {
+							 name: "STYLE_LIB",
+					 		image: '/public/images/template.png',
+					 		type: "style_template",
+					 		children: []
+					 }
+					 
+					 _.forEach(node.STYLE_LIB, function(styleSrc){
+						 var style = {
+							name:styleSrc.PKY,
+							source:styleSrc,
+							type: "style_template",
+							image: '/public/images/style_template.png',
+							is_deleted:  styleSrc.LOGICAL_DELETE,
+							parent: style_template
+						 }
+						 style_template.children.push(style);
+					});
+					 
+					 
+					 nodeItem.children.push(style_template);
+					 
 					rootNode.children.push(nodeItem);
 					_.forEach(node.MODULES, function(module){
 						var moduleItem = {
@@ -128,7 +150,7 @@
 							source:module,
 							image: '/public/images/module.png',
 							parent:nodeItem,
-							is_deleted:  DEFAULT_DELETED_STATE_MODULE,
+							is_deleted:  module.LOGICAL_DELETE,
 							children: []
 						};
 						nodeItem.children.push(moduleItem);
@@ -141,7 +163,7 @@
 								image: '/public/images/endpoint.png',
 								expanded: false,
 								parent:moduleItem,
-								is_deleted:  DEFAULT_DELETED_STATE_ENDPOINT,
+								is_deleted:  endpoint.LOGICAL_DELETE,
 								children: []
 							};
 							moduleItem.children.push(endpointItem);
@@ -152,7 +174,7 @@
 									image: '/public/images/styles.png',
 									parent:endpointItem,
 									expanded: false,
-									is_deleted: DEFAULT_DELETED_STATE_STYLE,
+									is_deleted: style.LOGICAL_DELETE,
 									children: []
 								};
 								endpointItem.children.push(styleItem);
