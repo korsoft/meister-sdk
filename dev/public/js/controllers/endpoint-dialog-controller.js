@@ -76,8 +76,6 @@
           $scope.endpoint.LOCKED = "";
           $scope.endpoint.PACKAGE = "";
           $scope.endpoint.TRANSPORT = "";
-          $scope.endpoint.MEISTER_OWN = "X";
-          $scope.endpoint.LOGICAL_DELETE = "";
           $scope.endpoint.STYLES = [{PKY:"",DIRECTION:"I",NAME:"Default",JSON:"",CLASS_NAME:""}];
         } else {
           $scope.endpoint = angular.copy(endpoint);
