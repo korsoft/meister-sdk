@@ -302,6 +302,7 @@
     	$scope.$on('delete-node-style-selected', function (e, obj) {
 	        console.log("delete-node-selected",obj);
 	        obj.node.is_deleted=true;
+	        
     	});
 
     	$scope.$on('undelete-module-selected', function (e, obj) {
@@ -347,6 +348,30 @@
 	        	itm.is_deleted=true;
 	        }); 
 	        obj.node.is_deleted=true;
+
+	        var json_to_send =  GatewayService.buildJsonByNewEndpoint($scope.json, obj.node.parent.source, obj.node.source);
+          	json_to_send.MODULES[0].ENDPOINTS[0].STYLES = [];
+          	
+             console.log("json_to_send",json_to_send);
+	          var params = {
+	            json: angular.toJson(json_to_send),
+	            SDK_HINT:"SLD"
+	          };
+
+
+
+	            $scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
+	            
+	            $scope.promise.then(
+	                function(result){
+	                  console.log("result",result);
+	                  },
+	                function(error){
+	                  console.log("error",error);
+	                  MessageUtil.showError(error.data.message);
+	                }
+	              );
+         
     	});
 
     	$scope.$on('refresh-module', function (e, obj) {

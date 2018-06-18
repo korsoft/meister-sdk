@@ -59,6 +59,8 @@
                 console.log("project",project);
                 json_to_send.PKY = project.PKY;
                 json_to_send.PROJECT = project.PROJECT;
+                json_to_send.LOGICAL_DELETE = project.LOGICAL_DELETE;
+                json_to_send.MEISTER_OWN = project.MEISTER_OWN;
                 json_to_send.MODULES = [];
                  var moduleItem = {
                       PKY: module.PKY,

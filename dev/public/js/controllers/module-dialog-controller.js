@@ -26,10 +26,11 @@
         $scope.save = function(){
 
           var json_to_send =  GatewayService.buildJsonByNewModule(json, parentNode.source, $scope.module);
-          
+         
           var params = {
             json: JSON.stringify(json_to_send)
           };
+           console.log("json a enviar"+params.json);
 
             $scope.promise = GatewayService.execute_changes(gateway.id, params);
             
