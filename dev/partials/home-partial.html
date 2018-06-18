@@ -136,7 +136,7 @@
                       </tr>
                     </thead>
                     <tbody md-body>
-                      <tr md-row class="with-hover" ng-repeat="(key, value) in nodeSelected.source" ng-if="key!='PKY' && key!='FKY' && !isArray(value)">
+                      <tr md-row class="with-hover" ng-repeat="(key, value) in nodeSelected.source" ng-if="key!='PKY' && key!='FKY' && key!='MEISTER_OWN' && !isArray(value)">
                         <td md-cell style="text-overflow:ellipsis;overflow:hidden;padding:0px"><span title="{{key}}">{{key}}</span></td>
                         <td md-cell style="text-overflow:ellipsis;overflow:hidden;padding:0px"><span ng-if="!nodeSelected.source[key+$index].$edit && key!='JSON'" title="{{isArray(value) ? '(Collection)' : value}}">{{isArray(value) ? '(Collection)' : value}}</span>
                           <div ng-if="!nodeSelected.source[key+$index].$edit && key=='JSON'">
