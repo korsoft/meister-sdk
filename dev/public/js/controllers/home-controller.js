@@ -133,7 +133,7 @@
 					  * Data Style Simulator
 					  */
 					 var style_template= {
-							 name: "STYLE_LIB",
+							 name: "Style Library",
 					 		image: '/public/images/template.png',
 					 		type: "style_template",
 					 		children: []
