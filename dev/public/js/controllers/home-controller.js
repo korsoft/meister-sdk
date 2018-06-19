@@ -319,6 +319,7 @@
 	                function(result){
 	                  console.log("result",result);
 	                  MessageUtil.showInfo("Module un-deleted");
+	                  $scope.executeGateway();
 	                  },
 	                function(error){
 	                  console.log("error",error);
@@ -348,6 +349,7 @@
 	                function(result){
 	                  console.log("result",result);
 	                  MessageUtil.showInfo("Module deleted");
+	                  $scope.executeGateway();
 	                  },
 	                function(error){
 	                  console.log("error",error);
@@ -380,6 +382,7 @@
 	                function(result){
 	                  console.log("result",result);
 	                  MessageUtil.showInfo("Endpoint un-deleted");
+	                  $scope.executeGateway();
 	                  },
 	                function(error){
 	                  console.log("error",error);
@@ -405,6 +408,7 @@
 	                function(result){
 	                  console.log("result",result);
 	                  MessageUtil.showInfo("Endpoint deleted");
+	                  $scope.executeGateway();
 	                  },
 	                function(error){
 	                  console.log("error",error);
@@ -434,6 +438,7 @@
 	                function(result){
 	                  console.log("result",result);
 	                  MessageUtil.showInfo("Endpoint locked");
+	                  $scope.executeGateway();
 	                  },
 	                function(error){
 	                  console.log("error",error);
@@ -465,6 +470,7 @@
 	                function(result){
 	                  console.log("result",result);
 	                  MessageUtil.showInfo("Endpoint unlocked");
+	                  $scope.executeGateway();
 	                  },
 	                function(error){
 	                  console.log("error",error);
@@ -539,7 +545,7 @@
               })
               .then(function(result) {
                 MessageUtil.showInfo("Module was created");
-                $scope.changeGateway($scope.gatewaySelectedId);
+                $scope.executeGateway();
               }, function() {
                
               });
@@ -565,7 +571,7 @@
               })
               .then(function(result) {
                 MessageUtil.showInfo("Endpoint was created");
-                $scope.changeGateway($scope.gatewaySelectedId);
+                $scope.executeGateway();
               }, function() {
                
               });
@@ -589,7 +595,7 @@
               })
               .then(function(result) {
                 MessageUtil.showInfo("Style was created");
-                $scope.changeGateway($scope.gatewaySelectedId);
+                $scope.executeGateway();
               }, function() {
                
               });

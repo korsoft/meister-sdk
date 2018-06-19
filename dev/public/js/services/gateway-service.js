@@ -66,6 +66,8 @@
                       PKY: module.PKY,
                       FKY:project.PKY,
                       NAME: module.NAME,
+                      LOGICAL_DELETE: module.LOGICAL_DELETE,
+                      MEISTER_OWN: module.MEISTER_OWN,
                       DATE: moment(module.DATE).format('YYYYMMDD')
                       //ENDPOINTS: module.ENDPOINTS
                };
