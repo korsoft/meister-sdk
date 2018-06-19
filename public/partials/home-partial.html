@@ -58,7 +58,26 @@
  
 
  <md-content layout-xs="column" layout="row" ng-if="gatewaySelected!=null">
- <div id="treeCointaner" flex-xs flex-gt-xs="50" layout="column">
+  <div flex-xs flex-gt-xs="5" layout="column" ng-if="tree_collapsible">
+    <md-card >
+        <md-card-title style="-webkit-flex:none">
+          <md-card-title-text>
+            <div layout="row">
+                
+            </div>
+          </md-card-title-text>
+        <md-actions>
+          <md-button class="md-icon-button" aria-label="Refresh" title="Show Tree"
+                      ng-click="show_tree()" style="padding: 0px; margin: 0px; width: 22px">
+                     <md-icon ng-bind="'navigate_next'"></md-icon>
+                  </md-button>
+        </md-actions>
+        <md-card-content>
+        
+       </md-card-content>
+      </md-card>
+  </div>
+ <div id="treeCointaner" flex-xs flex-gt-xs="50" layout="column" ng-if="!tree_collapsible">
    
        <md-card >
         <md-card-title style="-webkit-flex:none">
@@ -68,6 +87,10 @@
             </div>
           </md-card-title-text>
         <md-actions>
+                  <md-button hide-xs class="md-icon-button" aria-label="Refresh" title="Hide Tree"
+                      ng-click="hide_tree()" style="padding: 0px; margin: 0px; width: 22px">
+                     <md-icon ng-bind="'navigate_before'"></md-icon>
+                  </md-button>
                 <!--<md-button class="md-icon-button" aria-label="Refresh" title="Refresh"
                       ng-click="changeGateway(gatewaySelectedId)" style="padding: 0px; margin: 0px; width: 22px">
                      <md-icon ng-bind="'cached'"></md-icon>
@@ -117,7 +140,7 @@
    
    </div>
     
-    <div flex-xs flex-gt-xs="50" layout="column">
+    <div flex-xs flex-gt-xs="{{tree_collapsible ? 95 : 50}}" layout="column">
 
       <md-card  ng-if="!mode_run">
         <md-card-title style="-webkit-flex:none;padding-bottom: 23px;">
@@ -126,7 +149,7 @@
           </md-card-title-text>
          
         </md-card-title>
-        <md-card-content style="height: 593px; overflow-y: auto" >
+        <md-card-content style="height: 600px; overflow-y: auto" >
            <table md-table style="table-layout: fixed">
                     <thead md-head>
                       <tr md-row >
@@ -188,7 +211,7 @@
             </md-button> -->
           </md-actions>
         </md-card-title>
-        <md-card-content style="height: 592px;  overflow-y: auto"  ng-if="!loading_tree">
+        <md-card-content style="height: 600px;  overflow-y: auto"  ng-if="!loading_tree">
           <md-select ng-model="json_logs_executes_title" placeholder="Select the JSON execute" 
             style="width:80%" ng-change="changeJsonLogExecute(json_logs_executes_title)">
              <md-option ng-repeat="g in json_logs_executes" ng-value="g.title">

@@ -37,6 +37,8 @@
 		$scope.json_logs_executes_content = null;
 		$scope.json_logs_executes_content_obj = null;
 
+		$scope.tree_collapsible = false;
+
 		$scope.url_details = "";
 
 		$scope.current_long_text="";
@@ -57,6 +59,13 @@
 		});
 		
 		
+		$scope.hide_tree = function(){
+			$scope.tree_collapsible = true;
+		}
+
+		$scope.show_tree = function(){
+			$scope.tree_collapsible = false;
+		}
 
 		$scope.mode_run = false;
 

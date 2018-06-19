@@ -78,9 +78,9 @@
 		 	return [];
 		};
 
-		$rootScope.isMeisterUser = function(){
+		$rootScope.isMeisterUser = function(node){
 		 	var token_data = $cookies.get('meister-sdk-token');
-		 	if(token_data){
+		 	if(token_data && node.source.MEISTER_OWN && node.source.MEISTER_OWN=="X"){
 		 		token_data = angular.fromJson(token_data);
 		 		return  (token_data.user_type==$rootScope.SYSTEM_ADMIN || 
 			 			(token_data.user_email.endsWith("@s4meister.com")
@@ -88,7 +88,7 @@
 			 			));
 		 	}
 
-		 	return false;
+		 	return true;
 		};
 
 
