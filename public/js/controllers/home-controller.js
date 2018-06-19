@@ -39,6 +39,8 @@
 
 		$scope.url_details = "";
 
+		$scope.current_long_text="";
+
 
 		$scope.client = {};
 		var endpoints_names=[];
@@ -821,6 +823,40 @@
 			$scope.payload_json.json_string =JSON.stringify($scope.jsonResp,null, '\t');
         }
         
+        $scope.editLongText = function(node,index){
+        	$scope.current_long_text= node.source.LONG_TEXT;
+        	node.source["LONG_TEXT"+index]={"$edit":true};
+        }
+
+        $scope.cancelLongText = function(node,index){
+        	node.source["LONG_TEXT"+index]={"$edit":false};
+        }
+
+        $scope.saveLongText = function(node,index,current_long_text){
+        	console.log(current_long_text);
+        	node.source.LONG_TEXT = current_long_text;
+        	delete node.source["LONG_TEXT"+index];
+        	var json_to_send =  GatewayService.buildJsonByNewEndpoint($scope.json, node.parent.source, node.source);
+          
+            console.log("json_to_send",json_to_send);
+	        var params = {
+	            json: angular.toJson(json_to_send),
+	            SDK_HINT:"ELT"
+	        };
+			$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
+	        node.source["LONG_TEXT"+index]={"$edit":false};  
+	        $scope.promise.then(
+	                function(result){
+	                  console.log("result",result);
+	                 // MessageUtil.showInfo("Endpoint deleted");
+	               //   $scope.executeGateway();
+	                  },
+	                function(error){
+	                  console.log("error",error);
+	                  MessageUtil.showError(error.data.message);
+	                }
+	              );
+        }
         
 
 	}]);

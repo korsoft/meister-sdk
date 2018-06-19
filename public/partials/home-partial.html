@@ -126,7 +126,7 @@
           </md-card-title-text>
          
         </md-card-title>
-        <md-card-content style="height: 600px; overflow-y: auto" >
+        <md-card-content style="height: 593px; overflow-y: auto" >
            <table md-table style="table-layout: fixed">
                     <thead md-head>
                       <tr md-row >
@@ -138,28 +138,35 @@
                     <tbody md-body>
                       <tr md-row class="with-hover" ng-repeat="(key, value) in nodeSelected.source" ng-if="key!='PKY' && key!='FKY' && key!='MEISTER_OWN' && key!='LOGICAL_DELETE' && !isArray(value)">
                         <td md-cell style="text-overflow:ellipsis;overflow:hidden;padding:0px"><span title="{{key}}">{{key}}</span></td>
-                        <td md-cell style="text-overflow:ellipsis;overflow:hidden;padding:0px"><span ng-if="!nodeSelected.source[key+$index].$edit && key!='JSON'" title="{{isArray(value) ? '(Collection)' : value}}">{{isArray(value) ? '(Collection)' : value}}</span>
+                        <td md-cell style="text-overflow:ellipsis;overflow:hidden;padding:0px">
+
+                          <span ng-if="!nodeSelected.source[key+$index].$edit && key!='JSON'" title="{{isArray(value) ? '(Collection)' : value}}">{{isArray(value) ? '(Collection)' : value}}</span>
                           <div ng-if="!nodeSelected.source[key+$index].$edit && key=='JSON'">
                             <pre>{{json_to_object(value)|json}}</pre>
                           </div>
-                          <md-input-container class="md-block" ng-if="nodeSelected.source[key+$index].$edit">
+                          <div ng-show="nodeSelected.source[key+$index].$edit && key=='LONG_TEXT'">
+                              <md-input-container class="md-block">
+                                <input type="text" ng-model="current_long_text">
+                              </md-input-container>
+                          </div>
+                          <md-input-container class="md-block" ng-if="nodeSelected.source[key+$index].$edit && key!='LONG_TEXT'"">
                             <label>{{key}}</label>
-                          <input type="text" ng-model="nodeSelected.source[key]" >
-                        </md-input-container>
+                            <input type="text" ng-model="nodeSelected.source[key]" >
+                          </md-input-container>
 
                         </td>
                         <td md-cell style="padding: 0px">
-                          <!--
-                            <md-button class="md-icon-button" title="Edit" ng-click="nodeSelected.source[key+$index].$edit=true" ng-if="!nodeSelected.source[key+$index].$edit" style="padding: 0px; margin: 0px; width: 22px">
-                               <md-icon ng-bind="'create'"></md-icon>
+                          <md-button class="md-icon-button" aria-label="Edit" ng-if="!nodeSelected.source[key+$index].$edit && key=='LONG_TEXT'" ng-click="editLongText(nodeSelected,$index)">
+                                <md-icon ng-bind="'edit'"></md-icon>
+                          </md-button>
+                          <div layout="row"  ng-if="nodeSelected.source[key+$index].$edit && key=='LONG_TEXT'">
+                            <md-button class="md-icon-button" aria-label="Save"  ng-click="saveLongText(nodeSelected,$index,current_long_text)">
+                              <md-icon ng-bind="'save'" ></md-icon>
                             </md-button>
-                            <md-button class="md-icon-button" title="Save" ng-click="nodeSelected.source[key+$index].$edit=false" ng-if="nodeSelected.source[key+$index].$edit" style="padding: 0px; margin: 0px;width: 22px">
-                               <md-icon ng-bind="'done'"></md-icon>
+                            <md-button class="md-icon-button" aria-label="Cancel" ng-click="cancelLongText(nodeSelected,$index)">
+                              <md-icon ng-bind="'cancel'"></md-icon>  
                             </md-button>
-                            <md-button class="md-icon-button" title="Cancel" ng-click="nodeSelected.source[key+$index].$edit=false" ng-if="nodeSelected.source[key+$index].$edit" style="padding: 0px; margin: 0px;width: 22px">
-                               <md-icon ng-bind="'clear'"></md-icon>
-                            </md-button>
-                            -->
+                          </div>
                         </td>
                       </tr>
                     </tbody>
@@ -181,7 +188,7 @@
             </md-button> -->
           </md-actions>
         </md-card-title>
-        <md-card-content style="height: 600px;  overflow-y: auto"  ng-if="!loading_tree">
+        <md-card-content style="height: 592px;  overflow-y: auto"  ng-if="!loading_tree">
           <md-select ng-model="json_logs_executes_title" placeholder="Select the JSON execute" 
             style="width:80%" ng-change="changeJsonLogExecute(json_logs_executes_title)">
              <md-option ng-repeat="g in json_logs_executes" ng-value="g.title">
@@ -270,4 +277,3 @@
 </md-content>
 </md-content>
 </div>
-<main-footer></main-footer>
