@@ -77,7 +77,7 @@
        </md-card-content>
       </md-card>
   </div>
- <div id="treeCointaner" flex-xs flex-gt-xs="50" layout="column" ng-if="!tree_collapsible">
+ <div id="treeCointaner" flex-xs flex-gt-xs="35" layout="column" ng-if="!tree_collapsible">
    
        <md-card >
         <md-card-title style="-webkit-flex:none">
@@ -133,14 +133,14 @@
                 -->
         </md-actions>
         </md-card-title>
-       <md-card-content style="height: 600px; overflow-y: auto" ng-if="!loading_tree">
+       <md-card-content style="height: 600px; overflow-y: auto;padding-left: 0px" ng-if="!loading_tree">
         <tree nodes='basicTree' options='treeOptions' ></tree>
        </md-card-content>
       </md-card>
    
    </div>
     
-    <div flex-xs flex-gt-xs="{{tree_collapsible ? 95 : 50}}" layout="column">
+    <div flex-xs flex-gt-xs="{{tree_collapsible ? 95 : 65}}" layout="column">
 
       <md-card  ng-if="!mode_run">
         <md-card-title style="-webkit-flex:none;padding-bottom: 23px;">
