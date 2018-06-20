@@ -165,7 +165,7 @@
 
                           <span ng-if="!nodeSelected.source[key+$index].$edit && key!='JSON'" title="{{isArray(value) ? '(Collection)' : value}}">{{isArray(value) ? '(Collection)' : value}}</span>
                           <div ng-if="!nodeSelected.source[key+$index].$edit && key=='JSON'">
-                            <pre>{{json_to_object(value)|json}}</pre>
+                            <div  ng-if="!nodeSelected.source[key+$index].$edit && key=='JSON'" ui-ace="{ mode: 'json'}" readonly style="width: 100%; height: 215px;"  ng-model="json_to_object(value)|json"></div>
                           </div>
                           <div ng-show="nodeSelected.source[key+$index].$edit && key=='LONG_TEXT'">
                               <md-input-container class="md-block">
