@@ -118,9 +118,18 @@
 			console.log("Building tree",gatewayResponse);
 			if(gatewayResponse && gatewayResponse.length > 0){
 				$scope.json = gatewayResponse;
-				console.log("Json",$scope.json);
-				_.forEach($scope.json, function(node){
-					 var nodeItem = {
+				var deletedProjects={
+					name:"Logically Deleted",
+					source:rootNode,
+					disabled:true,
+					image: '/public/images/trash.png',
+					parent:rootNode,
+					is_deleted:"",
+					children:[]
+				};
+				_.forEach($scope.json, function(node){				
+
+					var nodeItem = {
 						name:node.PROJECT,
 						source:node,
 						image: '/public/images/project.png',
@@ -152,9 +161,25 @@
 					});
 					 
 					 
-					 nodeItem.children.push(style_template);
-					 
-					rootNode.children.push(nodeItem);
+					nodeItem.children.push(style_template);
+					if(nodeItem.is_deleted){
+						deletedProjects.children.push(nodeItem);
+						if(deletedProjects.children.length==1){
+                          rootNode.children.unshift(deletedProjects);
+						}
+					}else{
+						rootNode.children.push(nodeItem);
+					}
+
+					var deletedModules={
+						name:"Logically Deleted",
+						source:nodeItem,
+						disabled:true,
+						image: '/public/images/trash.png',
+						parent:rootNode,
+						is_deleted:"",
+						children:[]
+					};					
 					_.forEach(node.MODULES, function(module){
 						var moduleItem = {
 							name: module.NAME,
@@ -164,7 +189,25 @@
 							is_deleted:  module.LOGICAL_DELETE,
 							children: []
 						};
-						nodeItem.children.push(moduleItem);
+						
+						
+						if(moduleItem.is_deleted){
+						    deletedModules.children.push(moduleItem);
+							if(deletedModules.children.length==1){
+	                          nodeItem.children.unshift(deletedModules);
+							}
+						}else{
+							nodeItem.children.push(moduleItem);
+						}
+						var deletedEndpoints={
+							name:"Logically Deleted",
+							disabled:true,
+							source:moduleItem,
+							image: '/public/images/trash.png',
+							parent:nodeItem,
+							is_deleted:"",
+							children:[]
+						}
 						_.forEach(module.ENDPOINTS, function(endpoint){
 							endpoints_names.push(endpoint.NAMESPACE);
 							endpoints_main.push(endpoint.ENDPOINT_MAIN);
@@ -183,7 +226,15 @@
 								is_deleted:  endpoint.LOGICAL_DELETE,
 								children: []
 							};
-							moduleItem.children.push(endpointItem);
+							
+							if(endpointItem.is_deleted){
+								deletedEndpoints.children.push(endpointItem);
+								if(deletedEndpoints.children.length==1){
+		                          moduleItem.children.unshift(deletedEndpoints);
+								}
+							}else{
+								moduleItem.children.push(endpointItem);
+							}							
 							_.forEach(endpoint.STYLES, function(style){
 								var styleItem = {
 									name: style.NAME,
