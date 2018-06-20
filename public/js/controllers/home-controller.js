@@ -121,6 +121,7 @@
 				var deletedProjects={
 					name:"Logically Deleted",
 					source:rootNode,
+					disabled:true,
 					image: '/public/images/trash.png',
 					parent:rootNode,
 					is_deleted:"",
@@ -173,6 +174,7 @@
 					var deletedModules={
 						name:"Logically Deleted",
 						source:nodeItem,
+						disabled:true,
 						image: '/public/images/trash.png',
 						parent:rootNode,
 						is_deleted:"",
@@ -199,6 +201,7 @@
 						}
 						var deletedEndpoints={
 							name:"Logically Deleted",
+							disabled:true,
 							source:moduleItem,
 							image: '/public/images/trash.png',
 							parent:nodeItem,
