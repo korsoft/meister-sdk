@@ -91,13 +91,16 @@
                 <tbody md-body >
                   <tr md-row ng-repeat="style in endpoint.STYLES ">
                     <td md-cell>
-                      <md-input-container md-no-float>
-                          <input ng-model="style.NAME" required placeholder="Name" style="width: 100px">
+                      <md-input-container ng-show="style.DIRECTION==='I'" md-no-float>
+                          <input ng-show="style.DIRECTION==='I'" ng-readonly="!style.BAND" ng-style="{ 'backgound-color' : (!style.BAND) ? '#cccccc' : '#ffffff' }" ng-model="style.NAME"  required placeholder="Name" style="width: 100px">
+                      </md-input-container>
+                      <md-input-container ng-show="style.DIRECTION==='O'"  md-no-float>
+                          <input ng-show="style.DIRECTION==='O'" ng-readonly="!style.BAND" ng-style="{ 'backgound-color' : (!style.BAND) ? '#cccccc' : '#ffffff' }"  ng-model="style.NAME"  required placeholder="Name" style="width: 100px">
                       </md-input-container>
                     </td>
                     <td md-cell>
                       <md-input-container md-no-float>
-                          <md-select ng-model="style.DIRECTION" required placeholder="Direction">
+                          <md-select ng-model="style.DIRECTION" required placeholder="Direction" ng-change="directionChanged(style)">
                             <md-option value="I">inbound</md-option>
                             <md-option value="O">outbound</md-option>
                           </md-select>
@@ -111,7 +114,7 @@
                       </md-input-container>
                     </td>
                      <td md-cell>
-                      <md-button class="md-icon-button" ng-click="deleteStyle($index)" ng-if="$index!=0"><md-icon ng-bind="'delete_sweep'"></md-icon></md-button>
+                      <md-button class="md-icon-button" ng-click="deleteStyle($index)" ng-if="$index>1"><md-icon ng-bind="'delete_sweep'"></md-icon></md-button>
                     </td>
                   </tr>
                 </tbody>

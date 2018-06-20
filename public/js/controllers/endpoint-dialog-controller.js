@@ -7,6 +7,8 @@
         $scope.page=1;
         $scope.valid = false;
         $scope.uniqueName=false;
+        $scope.band_i=1;
+        $scope.band_o=1;
 
         $scope.promise = null;
          $scope.cancel = function() {
@@ -76,7 +78,7 @@
           $scope.endpoint.LOCKED = "";
           $scope.endpoint.PACKAGE = "";
           $scope.endpoint.TRANSPORT = "";
-          $scope.endpoint.STYLES = [{PKY:"",DIRECTION:"I",NAME:"Default",JSON:"",CLASS_NAME:""}];
+          $scope.endpoint.STYLES = [{PKY:"",DIRECTION:"I",NAME:"Default_I",JSON:"",CLASS_NAME:"",BAND:false},{PKY:"",DIRECTION:"O",NAME:"Default_O",JSON:"",CLASS_NAME:"",BAND:false} ];
         } else {
           $scope.endpoint = angular.copy(endpoint);
         }
@@ -130,11 +132,50 @@
         }
 
         $scope.addStyle = function () {
-          $scope.endpoint.STYLES.push({PKY:"",DIRECTION:"",NAME:"",JSON:"",CLASS_NAME:""});
+          $scope.band_i++;
+          $scope.endpoint.STYLES.push({PKY:"",DIRECTION:"I",NAME:"",JSON:"",CLASS_NAME:"",BAND: $scope.band_i>1});
         }
 
         $scope.deleteStyle = function (index) {
+          if($scope.endpoint.STYLES[i].DIRECTION==="I"){
+        	  $scope.band_i--;
+          }
+          if($scope.endpoint.STYLES[i].DIRECTION==="O"){
+        	  $scope.band_o--;
+          }
           $scope.endpoint.STYLES.splice(index, 1);
+        }
+        
+        $scope.verifyStyles = function(){
+    		var band_o=false, band_i=false;
+    		_foreach($scope.endpoint.STYLES,function(itm){
+    			if(itm.DIRECTION==="I"){
+    				$scope.band_i=true;
+    			}
+    			if(itm.DIRECTION==="O"){
+    				$scope.band_o=true;
+    			}
+    		});
+    		
+    		console.log("Verifyng value" )
+    	
+        }
+        
+        $scope.directionChanged = function(style){
+        	var i=0,o=0;
+        	_foreach($scope.endpoint.STYLES,function(itm){
+        		if(itm.DIRECTION==="I"){
+        			i++;
+        		}
+        		
+        		if(itm.DIRECTION==="O"){
+        			o++;
+        		}
+        	});
+        	
+        	$scope.band_i=i;
+        	$scope.band_o=o;
+        	console.log("Style Direction: " +style.DIRECTION + "$scope.band_o: " + $scope.band_o + "$scope.band_i" + $scope.band_i);
         }
 
 
