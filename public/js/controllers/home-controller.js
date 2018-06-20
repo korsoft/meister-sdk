@@ -14,7 +14,7 @@
 		$scope.json = null;
 		$scope.show_select_gateway = true;
 		$scope.loading_tree = false;
-		$scope.wrap={compression : "N"};
+		$scope.wrap={compression : "N",testRun:false,callMode:"S",callBack:""};
 		$scope.jsonReq={};
 		$scope.jsonResp={}
 		$scope.opt={selectedIndex:0, show:false};
@@ -767,10 +767,32 @@
 			var params = {
 				"endpoint": node.name,
 				"json": JSON.stringify($scope.payload_json.json,null,""),
-				"style": $scope.styleSelected ? $scope.styleSelected.name : 'DEFAULT'
+				"style": $scope.styleSelected ? $scope.styleSelected.name : 'DEFAULT',
+				"Test_Run":"",
+				"Asynch":"",
+				"Queued":"",
+				"BPM":"",
 			};
+			
 			if($scope.wrap.compression!="N")
 				params.compression=$scope.wrap.compression;
+
+
+			if($scope.wrap.testRun)
+				params.Test_Run="X";
+		
+			
+			switch($scope.wrap.callMode){
+				case "A":
+				  params.Asynch="X";
+				  break;
+				case "Q":
+				  params.Queued="X";
+				  break;
+				case "B":
+				  params.BPM="X";
+				  break;
+			}
 
 			var execution_time = new Date();
 			$scope.promise = GatewayService.execute_endpoint($scope.gatewaySelected.id,params);
