@@ -92,10 +92,10 @@
                   <tr md-row ng-repeat="style in endpoint.STYLES ">
                     <td md-cell>
                       <md-input-container ng-show="style.DIRECTION==='I'" md-no-float>
-                          <input ng-show="style.DIRECTION==='I'" ng-readonly="!style.BAND" ng-style="{ 'backgound-color' : (!style.BAND) ? '#cccccc' : '#ffffff' }" ng-model="style.NAME"  required placeholder="Name" style="width: 100px">
+                          <input ng-show="style.DIRECTION==='I'" ng-disabled="!style.BAND" ng-model="style.NAME"  required placeholder="Name" style="width: 100px">
                       </md-input-container>
                       <md-input-container ng-show="style.DIRECTION==='O'"  md-no-float>
-                          <input ng-show="style.DIRECTION==='O'" ng-readonly="!style.BAND" ng-style="{ 'backgound-color' : (!style.BAND) ? '#cccccc' : '#ffffff' }"  ng-model="style.NAME"  required placeholder="Name" style="width: 100px">
+                          <input ng-show="style.DIRECTION==='O'" ng-disabled="!style.BAND" ng-model="style.NAME"  required placeholder="Name" style="width: 100px">
                       </md-input-container>
                     </td>
                     <td md-cell>
