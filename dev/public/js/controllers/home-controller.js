@@ -125,6 +125,7 @@
 					source:rootNode,
 					image: '/public/images/trash.png',
 					parent:rootNode,
+					disabled:true,
 					is_deleted:"",
 					children:[]
 				};
@@ -181,6 +182,7 @@
 						name:"Logically Deleted",
 						source:nodeItem,
 						image: '/public/images/trash.png',
+						disabled:true,
 						parent:rootNode,
 						is_deleted:"",
 						children:[]
@@ -212,6 +214,7 @@
 						var deletedEndpoints={
 							name:"Logically Deleted",
 							source:moduleItem,
+							disabled:true,
 							image: '/public/images/trash.png',
 							parent:nodeItem,
 							is_deleted:"",
