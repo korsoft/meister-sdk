@@ -14,7 +14,10 @@
         <div class="md-dialog-content" ng-show="page==1">
                <md-input-container class="md-block">
                 <label>Namespace</label>
-                <input ng-model="endpoint.NAMESPACE" required>
+                <input ng-model="endpoint.NAMESPACE"  name="endpoint" required>
+                 <div ng-messages="frmEndpoint.endpoint.$error">
+		          <div ng-message="required">This is required.</div>
+		         </div>
               </md-input-container>
                <md-input-container class="md-block">
                 <label>Long Text</label>
@@ -22,12 +25,20 @@
               </md-input-container>
                <md-input-container class="md-block">
                 <label>Endpoint Main</label>
-                <input ng-model="endpoint.ENDPOINT_MAIN" required maxlength="30" 
+                <input name="endpoint_main" ng-model="endpoint.ENDPOINT_MAIN" required maxlength="30" md-maxlength="30"
                   pattern="[A-Za-z_\/]{1,30}">
+                <div ng-messages="frmEndpoint.endpoint_main.$error">
+		          <div ng-message="required">This is required.</div>
+		          <div ng-message="md-maxlength">This field must be 30 characters max.</div>
+		          <div ng-message="pattern">This field must have [A-Za-z_\/]{1,30} pattern.</div>
+		         </div>
               </md-input-container>
                <md-input-container class="md-block">
                 <label>Handler</label>
-                <input ng-model="endpoint.HANDLER" required>
+                <input name="handler" ng-model="endpoint.HANDLER" required>
+                <div ng-messages="frmEndpoint.handler.$error">
+		          <div ng-message="required">This is required.</div>
+		        </div>
               </md-input-container>
                <md-input-container class="md-block">
                 <label>Bus Name</label>
@@ -35,10 +46,13 @@
               </md-input-container>
                <md-input-container class="md-block">
                 <label>Type</label>
-                <md-select ng-model="endpoint.TYPE" required>
+                <md-select name="type" ng-model="endpoint.TYPE" required>
                   <md-option value="D">Dynamic</md-option>
                   <md-option value="L">Static</md-option>
                 </md-select>
+                 <div ng-messages="frmEndpoint.type.$error">
+		          <div ng-message="required">You must select an option.</div>
+		        </div>
               </md-input-container>
               <md-input-container class="md-block">
                 <label>Version</label>
@@ -49,7 +63,11 @@
               </md-input-container>
               <md-input-container class="md-block">
                 <label>Package</label>
-                <input ng-model="endpoint.PACKAGE" pattern="(Y|Z|\/Meister\/)([A-Za-z]{1,})" required>
+                <input name="package" ng-model="endpoint.PACKAGE" pattern="(Y|Z|\/Meister\/)([A-Za-z]{1,})" required>
+                 <div ng-messages="frmEndpoint.package.$error">
+		          <div ng-message="required">This is required.</div>
+		          <div ng-message="pattern">This field must have (Y|Z|\/Meister\/)([A-Za-z]{1,}) pattern.</div>
+		         </div>
               </md-input-container>
               <md-input-container class="md-block">
                 <label>Transport</label>
@@ -73,13 +91,16 @@
                 <tbody md-body >
                   <tr md-row ng-repeat="style in endpoint.STYLES ">
                     <td md-cell>
-                      <md-input-container md-no-float>
-                          <input ng-model="style.NAME" required placeholder="Name" style="width: 100px">
+                      <md-input-container ng-show="style.DIRECTION==='I'" md-no-float>
+                          <input ng-show="style.DIRECTION==='I'" ng-disabled="!style.BAND" ng-model="style.NAME"  required placeholder="Name" style="width: 100px">
+                      </md-input-container>
+                      <md-input-container ng-show="style.DIRECTION==='O'"  md-no-float>
+                          <input ng-show="style.DIRECTION==='O'" ng-disabled="!style.BAND" ng-model="style.NAME"  required placeholder="Name" style="width: 100px">
                       </md-input-container>
                     </td>
                     <td md-cell>
                       <md-input-container md-no-float>
-                          <md-select ng-model="style.DIRECTION" required placeholder="Direction">
+                          <md-select ng-model="style.DIRECTION" required placeholder="Direction" ng-change="directionChanged(style)">
                             <md-option value="I">inbound</md-option>
                             <md-option value="O">outbound</md-option>
                           </md-select>
@@ -93,7 +114,7 @@
                       </md-input-container>
                     </td>
                      <td md-cell>
-                      <md-button class="md-icon-button" ng-click="deleteStyle($index)" ng-if="$index!=0"><md-icon ng-bind="'delete_sweep'"></md-icon></md-button>
+                      <md-button class="md-icon-button" ng-click="deleteStyle($index)" ng-if="$index>1"><md-icon ng-bind="'delete_sweep'"></md-icon></md-button>
                     </td>
                   </tr>
                 </tbody>

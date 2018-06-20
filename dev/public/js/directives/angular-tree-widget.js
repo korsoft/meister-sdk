@@ -272,7 +272,7 @@
                                     canbe=false;
                                 }
                             });
-                            console.log("Cheching if can be deleted", canbe);
+                            
                             return canbe;
                         }
 
