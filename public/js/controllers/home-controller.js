@@ -44,7 +44,7 @@
 
 		$scope.current_long_text="";
 
-
+		$scope.style_template = {};
 		$scope.client = {};
 		var endpoints_names=[];
 		var endpoints_main=[];
@@ -149,7 +149,7 @@
 					 /************************
 					  * Data Style Simulator
 					  */
-					 var style_template= {
+					 $scope.style_template= {
 							name: "Style Library",
 					 		image: '/public/images/template.png',
 					 		type: "STYLE_TEMPLATE_PARENT",
@@ -164,13 +164,13 @@
 							type: "style_template",
 							image: '/public/images/style_template.png',
 							is_deleted:  styleSrc.LOGICAL_DELETE,
-							parent: style_template
+							parent: $scope.style_template
 						 }
-						 style_template.children.push(style);
+						 $scope.style_template.children.push(style);
 					});
 					 
 					 
-					nodeItem.children.push(style_template);
+					nodeItem.children.push($scope.style_template);
 					if(nodeItem.is_deleted){
 						deletedProjects.children.push(nodeItem);
 						if(deletedProjects.children.length==1){
@@ -661,7 +661,8 @@
                  gateway: $scope.gatewaySelected,
                  json: $scope.json,
                  endpoints_names: endpoints_names,
-                 endpoints_main: endpoints_main
+                 endpoints_main: endpoints_main,
+                 style_library: $scope.style_template
                }
               })
               .then(function(result) {

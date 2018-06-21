@@ -13,13 +13,12 @@
         if(!style){
           $scope.style.PKY = "";
           $scope.style.DESCRIPTION = "";
-          $scope.style.NAME = "";
           $scope.style.JSON = "";
         } else {
           $scope.style = angular.copy(style);
         }
 
-        console.log("Style", style);
+        console.log("Style", parentNode);
 
         $scope.changeJSON=function(e){
           try{
@@ -37,7 +36,7 @@
 
         $scope.save = function(){
 
-          var json_to_send =  GatewayService.buildJsonByNewStyleTemplate(json, parentNode.source, $scope.style);
+          var json_to_send =  GatewayService.buildJsonByNewStyleTemplate(json, parentNode, $scope.style);
           
           var params = {
             json: JSON.stringify(json_to_send),

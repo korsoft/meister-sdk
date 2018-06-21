@@ -1,7 +1,7 @@
 (function(app) {
 	app.controller('EndpointDialogController',
-    ['$scope','$mdDialog','endpoint','parentNode','gateway','json','GatewayService','MessageUtil','endpoints_names','endpoints_main',
-    function ($scope, $mdDialog, endpoint, parentNode, gateway,json, GatewayService, MessageUtil,endpoints_names,endpoints_main) {
+    ['$scope','$mdDialog','endpoint','parentNode','gateway','json','GatewayService','MessageUtil','endpoints_names','endpoints_main','style_library',
+    function ($scope, $mdDialog, endpoint, parentNode, gateway,json, GatewayService, MessageUtil,endpoints_names,endpoints_main,style_library) {
         $scope.endpoint = {};
         $scope.parentNode = {};
         $scope.page=1;
@@ -15,6 +15,7 @@
            $mdDialog.cancel();
         };
 
+        console.log("style_library",style_library);
         $scope.$watch('endpoint.NAMESPACE',  function () {
           var band = true;
           $scope.uniqueName=true;
