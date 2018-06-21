@@ -43,6 +43,8 @@
 		$scope.url_details = "";
 
 		$scope.current_long_text="";
+		$scope.current_description="";
+
 
 		$scope.style_template = {};
 		$scope.client = {};
@@ -158,8 +160,10 @@
 					 }
 					 
 					 _.forEach(node.STYLE_LIB, function(styleSrc){
+					 	var name = styleSrc.DESCRIPTION.length==0 ? 
+					 	    styleSrc.PKY : styleSrc.DESCRIPTION;
 						 var style = {
-							name:styleSrc.PKY,
+							name:name,
 							source:styleSrc,
 							type: "style_template",
 							image: '/public/images/style_template.png',
@@ -374,6 +378,8 @@
 	        }
 	    });
 
+	    
+
 	     $scope.$on('action-node-selected', function (e, obj) {
 	        console.log("action-node-selected",obj);
 	        if(obj.actionName === "addModule")
@@ -389,14 +395,52 @@
 
     	});
 
-	    $scope.$on('undelete-node-style-selected', function (e, obj) {
-	        console.log("undelete-node-selected",obj);
-	        obj.node.is_deleted=false;
+	    $scope.$on('undelete-style-lib', function (e, obj) {
+	        
+            var json_to_send =  GatewayService.buildJsonByNewStyleTemplate($scope.json, obj.node.parent.parent, obj.node.source);
+          
+            var params = {
+             json: JSON.stringify(json_to_send),
+             SDK_HINT:"RLD"
+            };
+
+            $scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
+            
+            $scope.promise.then(
+	                function(result){
+	                  console.log("result",result);
+	                  MessageUtil.showInfo("Style un-deleted");
+	                  $scope.executeGateway();
+	                  },
+	                function(error){
+	                  console.log("error",error);
+	                  MessageUtil.showError(error.data.message);
+	                }
+	              );
+         
     	});
 
-    	$scope.$on('delete-node-style-selected', function (e, obj) {
-	        console.log("delete-node-selected",obj);
-	        obj.node.is_deleted=true;
+    	$scope.$on('delete-style-lib', function (e, obj) {
+	       var json_to_send =  GatewayService.buildJsonByNewStyleTemplate($scope.json, obj.node.parent.parent, obj.node.source);
+          
+            var params = {
+             json: JSON.stringify(json_to_send),
+             SDK_HINT:"SLD"
+            };
+
+            $scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
+            
+            $scope.promise.then(
+	                function(result){
+	                  console.log("result",result);
+	                  MessageUtil.showInfo("Style deleted");
+	                  $scope.executeGateway();
+	                  },
+	                function(error){
+	                  console.log("error",error);
+	                  MessageUtil.showError(error.data.message);
+	                }
+	              );
 	        
     	});
 
@@ -960,7 +1004,42 @@
 	            SDK_HINT:"ELT"
 	        };
 			$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
-	        node.source["LONG_TEXT"+index]={"$edit":false};  
+	        $scope.promise.then(
+	                function(result){
+	                  console.log("result",result);
+	                 // MessageUtil.showInfo("Endpoint deleted");
+	               //   $scope.executeGateway();
+	                  },
+	                function(error){
+	                  console.log("error",error);
+	                  MessageUtil.showError(error.data.message);
+	                }
+	              );
+        }
+
+
+        $scope.editDescription = function(node){
+        	$scope.current_description= node.source.DESCRIPTION;
+        	node.$edit=true;
+        }
+
+        $scope.cancelDescription = function(node,index){
+        	node.$edit=false;
+        }
+
+        $scope.saveDescription = function(node,current_description){
+        	console.log(node);
+        	node.source.DESCRIPTION = current_description;
+
+        	delete node["$edit"];
+        	var json_to_send =  GatewayService.buildJsonByNewStyleTemplate($scope.json, node.parent.parent, node.source);
+          
+            console.log("json_to_send",json_to_send);
+	        var params = {
+	            json: angular.toJson(json_to_send),
+	            SDK_HINT:"ELT"
+	        };
+			$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	        $scope.promise.then(
 	                function(result){
 	                  console.log("result",result);

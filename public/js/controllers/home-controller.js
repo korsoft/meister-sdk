@@ -378,6 +378,8 @@
 	        }
 	    });
 
+	    
+
 	     $scope.$on('action-node-selected', function (e, obj) {
 	        console.log("action-node-selected",obj);
 	        if(obj.actionName === "addModule")

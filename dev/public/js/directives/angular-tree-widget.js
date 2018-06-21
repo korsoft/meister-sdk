@@ -214,7 +214,7 @@
                 + '</md-menu-item>'
                 + '<md-menu-item ng-if="node  && node.type && node.type==\'style_template\' && !node.is_deleted && canBeDeleted(node) && $root.isMeisterUser(node)">'
                 + ' <md-button'
-                + '      ng-click="emitDeleteStyleLibSelected(\'delete_style_lib_\',node,$event)" '
+                + '      ng-click="emitDeleteStyleLibSelected(\'delete_style_lib_selected\',node,$event)" '
                 + ' >'
                 + '     <md-icon ng-bind="\'delete\'"></md-icon> Delete'
                 + '  </md-button>'

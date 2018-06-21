@@ -78,7 +78,7 @@
       <form  id="frmEndpointStyle" name="frmEndpointStyle" ng-cloak>
         <div class="md-dialog-content" ng-show="page==2" layout-gt-sm="row" layout="column">
 
-      <div flex-gt-sm="75" flex>
+      <div flex-gt-sm="70" flex>
 
     <md-content>
     
@@ -112,7 +112,7 @@
                     </td>
                     <td md-cell>
                       <md-input-container md-no-float>
-                        <div  ui-ace="{ onChange: changeJSON,mode: 'json'}" style="width: 280px; height: 100px;"  ng-model="style.JSON"></div>
+                        <div  ui-ace="{ onChange: changeJSON,mode: 'json'}" style="width: 250px; height: 100px;"  ng-model="style.JSON"></div>
 
                         <!-- <div ng-jsoneditor ng-model="style.JSON" options="{mode: 'tree'}" style="width: 300px; height: 215px;"  prefer-text="true" ></div> -->
                       </md-input-container>
@@ -130,7 +130,7 @@
 
   <md-divider></md-divider>
 
-  <div flex-gt-sm="25" flex>
+  <div flex-gt-sm="30" flex>
 
     <md-toolbar layout="row">
       <div class="md-toolbar-tools">
@@ -139,11 +139,21 @@
     </md-toolbar>
 
     <md-content style="overflow-y: auto;height: 350px">
-       <md-list-item class="secondary-button-padding" ng-click="doPrimaryAction($event)" ng-repeat="s in style_library.children">
-        <p>{{s.name}}</p>
-      </md-list-item>
+      <div flex-xs flex-gt-xs="100" layout="column" ng-init="s.$show = false" ng-click="s.$show = !s.$show"  ng-repeat="s in style_library.children">
 
+        <md-card md-theme-watch style="padding: 1px;margin: 1px">
+            <md-card-title style="padding:0px">
+              <md-card-title-text>
+                <span class="md-headline"  style="font-size: 12px;color: gray">{{s.name}}</span>
+              </md-card-title-text>
+            </md-card-title>
+            <md-card-content style="padding: 0px">
+               <div  ng-show="s.$show" ui-ace="{ mode: 'json'}" readonly style="width: 100%; height: 100px; background-color:#cccccc;" ng-init="format_json(s)"  ng-model="s.source.$JSON" ></div>
+            </md-card-content>
+          </md-card>
+    </div>
     </md-content>
+
   </div>
            
             

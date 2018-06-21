@@ -9,7 +9,7 @@
         $scope.uniqueName=false;
         $scope.band_i=1;
         $scope.band_o=1;
-        $scope.style_library = style_library;
+        $scope.style_library = angular.copy(style_library);
 
         $scope.promise = null;
          $scope.cancel = function() {
@@ -40,6 +40,10 @@
           });
 
         });
+
+         $scope.format_json = function(style){
+          style.source.$JSON = JSON.stringify(JSON.parse(style.source.JSON),null,"\t");
+        };
 
         $scope.changeJSON=function(e){
           for(var i=0; i<$scope.endpoint.STYLES.length;i++)
