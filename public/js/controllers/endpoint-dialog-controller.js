@@ -78,7 +78,7 @@
           $scope.endpoint.LOCKED = "";
           $scope.endpoint.PACKAGE = "";
           $scope.endpoint.TRANSPORT = "";
-          $scope.endpoint.STYLES = [{PKY:"",DIRECTION:"I",NAME:"Default_I",JSON:"",CLASS_NAME:"",BAND:false},{PKY:"",DIRECTION:"O",NAME:"Default_O",JSON:"",CLASS_NAME:"",BAND:false} ];
+          $scope.endpoint.STYLES = [{PKY:"",DIRECTION:"I",NAME:"Default",JSON:"",CLASS_NAME:"",BAND:false},{PKY:"",DIRECTION:"O",NAME:"Default",JSON:"",CLASS_NAME:"",BAND:false} ];
         } else {
           $scope.endpoint = angular.copy(endpoint);
         }

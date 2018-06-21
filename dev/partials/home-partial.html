@@ -24,7 +24,7 @@
           </md-actions>
         </md-card-title>
         <md-card-content ng-show="show_select_gateway">
-          <div layout="row">
+          <md-section layout="row" layout-align="left center" layout-wrap> 
              <md-input-container style="width: 200px">
                <label >Select Gateway:</label>
               <md-select ng-model="gatewaySelectedId" placeholder="Select Gateway"  ng-change="changeGateway(gatewaySelectedId)">
@@ -33,9 +33,9 @@
                   </md-option>
             </md-select>
           </md-input-container>
-          <md-input-container  style="width: 150px">
+          <md-input-container  style="width: 100px">
                     <label >Select Client:</label>
-                    <md-select ng-model="client" placeholder="Select Client" ng-model-options="{trackBy: '$value.id'}">
+                    <md-select style="width: 40px" ng-model="client" placeholder="Select Client" ng-model-options="{trackBy: '$value.id'}">
                        <md-option ng-repeat="c in clients" ng-value="c.client">
                             {{c.client.sap_number}}
                         </md-option>
@@ -48,7 +48,7 @@
             </md-button>
           </md-input-container>
             
-        </div>
+        </md-section>
         
         </md-card-content>
       </md-card>
@@ -161,11 +161,11 @@
                       </tr>
                     </thead>
                     <tbody md-body>
-                      <tr md-row class="with-hover" ng-repeat="(key, value) in nodeSelected.source" ng-if="key!='PKY' && key!='FKY' && key!='MEISTER_OWN' && key!='LOGICAL_DELETE' && !isArray(value)">
+                      <tr md-row class="with-hover" ng-repeat="(key, value) in nodeSelected.source" ng-if="key!='PKY' && key!='FKY' && key!='MEISTER_OWN' && key!='LOGICAL_DELETE' && key!='LOCKED' && !isArray(value) && value && value!=''">
                         <td md-cell style="text-overflow:ellipsis;overflow:hidden;padding:0px;vertical-align:top;padding-top: 12px"><span title="{{key}}">{{key}}</span></td>
                         <td md-cell style="text-overflow:ellipsis;overflow:hidden;padding:0px">
 
-                          <span ng-if="!nodeSelected.source[key+$index].$edit && key!='JSON'" title="{{isArray(value) ? '(Collection)' : value}}">{{isArray(value) ? '(Collection)' : value}}</span>
+                          <span ng-if="!nodeSelected.source[key+$index].$edit && key!='JSON'"  title="{{isArray(value) ? '(Collection)' : value}}">{{isArray(value) ? '(Collection)' : value}}</span>
                           <div ng-if="!nodeSelected.source[key+$index].$edit && key=='JSON'">
                             <div  ng-if="!nodeSelected.source[key+$index].$edit && key=='JSON'" ui-ace="{ mode: 'json'}" readonly style="width: 100%; height: 215px; background-color:#cccccc;"  ng-model="json_global_string" ></div>
                           </div>
