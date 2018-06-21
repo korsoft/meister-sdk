@@ -2,7 +2,7 @@
   <form id="frmStyle" name="frmStyle" ng-cloak>
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2>Add/Edit a Style</h2>
+        <h2>Add/Edit a Style Template</h2>
         <span flex></span>
         <md-button class="md-icon-button" ng-click="cancel()" title="close">
           <md-icon ng-bind="'highlight_off'"></md-icon>
@@ -17,21 +17,19 @@
               <input ng-model="style.NAME" required>
             </md-input-container>
             <md-input-container class="md-block" required>
-              <label>Direction</label>
-              <md-select ng-model="style.DIRECTION" >
-                            <md-option value="I">inbound</md-option>
-                            <md-option value="O">outbound</md-option>
-              </md-select>
+              <label>Description</label>
+              <input type="text" ng-model="style.DESCRIPTION">
             </md-input-container>
-            <md-input-container class="md-block">
-              <label>Json</label>
-              <input ng-model="style.JSON">
+            <md-input-container md-no-float>
+                <div  ui-ace="{ onChange: changeJSON,mode: 'json'}" style="width: 100%; height: 185px;"  ng-model="style.JSON"></div>
+
+                        <!-- <div ng-jsoneditor ng-model="style.JSON" options="{mode: 'tree'}" style="width: 300px; height: 215px;"  prefer-text="true" ></div> -->
             </md-input-container>
       </div>
     </md-dialog-content>
 
     <md-dialog-actions layout="row">
-      <md-button class="md-raised md-primary" ng-click="save()" ng-disabled="frmStyle.$invalid">
+      <md-button class="md-raised md-primary" ng-click="save()" ng-disabled="!valid || frmStyle.$invalid">
        Save
       </md-button>
       <md-button class="md-raised" ng-click="cancel()">

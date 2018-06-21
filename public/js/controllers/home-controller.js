@@ -150,9 +150,10 @@
 					  * Data Style Simulator
 					  */
 					 var style_template= {
-							 name: "Style Library",
+							name: "Style Library",
 					 		image: '/public/images/template.png',
-					 		type: "style_template",
+					 		type: "STYLE_TEMPLATE_PARENT",
+					 		parent: node,
 					 		children: []
 					 }
 					 
@@ -370,12 +371,13 @@
 	        	$scope.addModule(obj.sourceEvent,obj.node);
 	        else if(obj.actionName == "addEndpoint")
 	        	$scope.addEndpoint(obj.sourceEvent,obj.node);
-	        else if(obj.actionName == "addStyle")
-	        	$scope.addStyle(obj.sourceEvent,obj.node);
+	        else if(obj.actionName == "add_style_lib")
+	        	$scope.addStyle(obj.sourceEvent,obj.node.parent);
 	        else if(obj.actionName == "execute")
 	        	$scope.execute(obj.sourceEvent,obj.node);
 	        else if(obj.actionName == "execute_by_style")
 	        	$scope.execute_by_style(obj.sourceEvent,obj.node);
+
     	});
 
 	    $scope.$on('undelete-node-style-selected', function (e, obj) {
