@@ -161,7 +161,7 @@
                       </tr>
                     </thead>
                     <tbody md-body>
-                      <tr md-row class="with-hover" ng-repeat="(key, value) in nodeSelected.source" ng-if="key!='PKY' && key!='FKY' && key!='MEISTER_OWN' && key!='LOGICAL_DELETE' && key!='LOCKED' && !isArray(value) && value && value!=''">
+                      <tr md-row class="with-hover" ng-repeat="(key, value) in nodeSelected.source" ng-if="key!='PKY' && key!='FKY' && key!='MEISTER_OWN' && key!='LOGICAL_DELETE' && key!='LOCKED' && !isArray(value) && (nodeSelected.type==='style_template' || (value && value!=''))">
                         <td md-cell style="text-overflow:ellipsis;overflow:hidden;padding:0px;vertical-align:top;padding-top: 12px"><span title="{{key}}">{{key}}</span></td>
                         <td md-cell style="text-overflow:ellipsis;overflow:hidden;padding:0px">
 
