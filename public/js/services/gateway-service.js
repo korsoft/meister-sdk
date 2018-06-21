@@ -155,13 +155,14 @@
         service.buildJsonByNewStyleTemplate = function(json, parentNode, style){
             var json_to_send = {};
             var project = _.find(json, function(p){
-                        return p.PKY == parentNode.PKY;
+                return p.PKY == parentNode.PKY;
             });
           
             console.log("project",project);
             json_to_send.PKY = project.PKY;
             json_to_send.PROJECT = project.PROJECT;
             json_to_send.STYLE_LIB = [];
+            style.FKY = project.PKY;
             
 
             json_to_send.STYLE_LIB.push(style);
