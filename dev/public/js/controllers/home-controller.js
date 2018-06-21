@@ -18,6 +18,7 @@
 		$scope.jsonReq={};
 		$scope.jsonResp={}
 		$scope.opt={selectedIndex:0, show:false};
+		$scope.json_global_string="";
 
 		$scope.payload_json = {json: null, options: {mode: 'tree'}};
 		$scope.payloadsTree = [];
@@ -356,6 +357,10 @@
 	        	$scope.styles = node.children;
 	        	$scope.styleSelected = node.children[0];
 	        	$scope.styleSelected.parent = node;
+	        }
+	        
+	        if($scope.nodeSelected.source.hasOwnProperty("JSON")){
+	        	$scope.json_global_string=JSON.stringify(JSON.parse($scope.nodeSelected.source.JSON),null,"\t");
 	        }
 	    });
 

@@ -87,14 +87,16 @@
             </div>
           </md-card-title-text>
         <md-actions>
+           <md-button class="md-icon-button" aria-label="Refresh" title="Refresh"
+                      ng-click="executeGateway()" style="padding: 0px; margin: 0px; width: 22px">
+                     <md-icon ng-bind="'cached'"></md-icon>
+                  </md-button>
                   <md-button hide-xs class="md-icon-button" aria-label="Refresh" title="Hide Tree"
                       ng-click="hide_tree()" style="padding: 0px; margin: 0px; width: 22px">
                      <md-icon ng-bind="'navigate_before'"></md-icon>
                   </md-button>
-                <!--<md-button class="md-icon-button" aria-label="Refresh" title="Refresh"
-                      ng-click="changeGateway(gatewaySelectedId)" style="padding: 0px; margin: 0px; width: 22px">
-                     <md-icon ng-bind="'cached'"></md-icon>
-                  </md-button>
+               
+                  <!--
                   <md-button class="md-icon-button" aria-label="Refresh" 
                       title="Add Module" 
                       ng-if="nodeSelected && nodeSelected.source.MODULES"
