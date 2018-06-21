@@ -134,23 +134,23 @@
                 + '     <md-icon ng-bind="\'restore_from_trash\'"></md-icon> Undelete'
                 + '  </md-button>'
                 + '         </md-menu-item>'
-                + '<md-menu-item ng-if="node  && node.source.STYLES && !node.is_deleted && node.source.TYPE!=\'L\' && $root.isMeisterUser(node)">'
+                + '<md-menu-item ng-if="node  && node.source.STYLES && !node.is_deleted  && $root.isMeisterUser(node)">'
                 + ' <md-button  '
-                + '      ng-click="emitActionNodeSelected(\'addStyle\',node,$event)" '
+                + '      ng-click="pasteEndPointSelected(\'addStyle\',node,$event)" '
                 + ' >'
-                + '     <md-icon ng-bind="\'note_add\'"></md-icon> Add style'
+                + '     <md-icon ng-bind="\'library_books\'"></md-icon> Paste'
                 + '  </md-button>'
                 + '         </md-menu-item>'
                 + '<md-menu-item ng-if="node  && node.source.STYLES && !node.is_deleted && !node.source.LOCKED && $root.isMeisterUser(node)">'
                 + ' <md-button '
-                + '      ng-click="emitLockEndPointSelected(\'lock_endpoint_deleted\',node,$event)" '
+                + '      ng-click="emitLockEndPointSelected(\'lock_endpoint\',node,$event)" '
                 + ' >'
                 + '     <md-icon ng-bind="\'lock\'"></md-icon> Lock'
                 + '  </md-button>'
                 + '</md-menu-item>'
                 + '<md-menu-item ng-if="node  && node.source.STYLES && !node.is_deleted && node.source.LOCKED && $root.isMeisterUser(node)">'
                 + ' <md-button '
-                + '      ng-click="emitUnLockEndPointSelected(\'unlock_endpoint_deleted\',node,$event)" '
+                + '      ng-click="emitUnLockEndPointSelected(\'unlock_endpoint\',node,$event)" '
                 + ' >'
                 + '     <md-icon ng-bind="\'lock_open\'"></md-icon> UnLock'
                 + '  </md-button>'
@@ -176,20 +176,20 @@
                 + '     <md-icon ng-bind="\'delete\'"></md-icon> Delete'
                 + '  </md-button>'
                 + '         </md-menu-item>'
-                + '         <md-menu-item ng-if="!node.source.MODULES && !node.source.ENDPOINTS && !node.source.STYLES && !node.is_deleted">'
+                + '         <md-menu-item ng-if="!node.type && !node.source.MODULES && !node.source.ENDPOINTS && !node.source.STYLES && !node.is_deleted">'
                 + ' <md-button  '
                 + '      ng-click="emitActionNodeSelected(\'execute_by_style\',node,$event)" '
                 + ' >'
                 + '     <md-icon ng-bind="\'send\'"></md-icon> Execute'
                 + '  </md-button>'
                 + '         </md-menu-item>'
-                + '         <md-menu-item ng-if="!node.source.MODULES && !node.source.ENDPOINTS && !node.source.STYLES && !node.is_deleted && $root.isMeisterUser(node)">'
+                + '<md-menu-item ng-if="!node.type && !node.source.MODULES && !node.source.ENDPOINTS && !node.source.STYLES && !node.is_deleted && $root.isMeisterUser(node)">'
                 + ' <md-button  '
                 + '      ng-click="emitDeleteStyleSelected(\'deleting_node\',node,$event)" '
                 + ' >'
                 + '     <md-icon ng-bind="\'delete\'"></md-icon> Delete'
                 + '  </md-button>'
-                + '         </md-menu-item>'
+                + '</md-menu-item>'
                 + '         <md-menu-item ng-if="!node.source.MODULES && !node.source.ENDPOINTS && !node.source.STYLES && node.is_deleted && $root.isMeisterUser(node)">'
                 + ' <md-button  '
                 + '      ng-click="emitUndeleteStyleSelected(\'undeleting_node\',node,$event)" '
@@ -197,7 +197,29 @@
                 + '     <md-icon ng-bind="\'restore_from_trash\'""></md-icon> Undelete'
                 + '  </md-button>'
                 + '         </md-menu-item>'
-                + '    </md-menu-content>'
+                + '</md-menu-item>'
+                + '<md-menu-item ng-if="node  && node.type && node.type==\'style_template\' && !node.is_deleted && $root.isMeisterUser(node)">'
+                + ' <md-button'
+                + '      ng-click="emitCopyStyleLibSelected(\'copy_style_lib\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'file_copy\'"></md-icon> Copy'
+                + '  </md-button>'
+                + '</md-menu-item>'
+                + '<md-menu-item ng-if="node  && node.type && node.type==\'style_template\' && !node.is_deleted && canBeDeleted(node) && $root.isMeisterUser(node)">'
+                + ' <md-button'
+                + '      ng-click="emitDeleteStyleLibSelected(\'delete_style_lib_\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'delete\'"></md-icon> Delete'
+                + '  </md-button>'
+                + '</md-menu-item>'
+                + '<md-menu-item ng-if="node  && node.type && node.type==\'style_template\' && node.is_deleted && $root.isMeisterUser(node)">'
+                + ' <md-button'
+                + '      ng-click="emitUndeleteStyleLibSelected(\'undelete_style_lib_selected\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'restore_from_trash\'"></md-icon> Undelete'
+                + '  </md-button>'
+                + '</md-menu-item>'
+                + ' </md-menu-content>'
                 + ' </md-menu>'
                 + '         <span ng-if="node.badge != null" class="label" ng-class="node.badge.type">{{node.badge.title}}</span>'
                 + '     </span>'
@@ -244,6 +266,22 @@
 
                         scope.emitDeleteEndPointSelected = function(actionName,node,event){
                             scope.$emit('delete-endpoint-deleted', {"actionName":actionName,"node":node,"sourceEvent":event});
+                        }
+
+                        scope.emitDeleteStyleLibSelected = function(actionName,node,event){
+                            scope.$emit('delete-style-lib', {"actionName":actionName,"node":node,"sourceEvent":event});
+                        }
+
+                        scope.emitUndeleteStyleLibSelected = function(actionName,node,event){
+                            scope.$emit('undelete-style-lib', {"actionName":actionName,"node":node,"sourceEvent":event});
+                        }
+
+                        scope.copyStyleLibSelected = function(actionName,node,event){
+                            scope.$emit('copy-style-lib', {"actionName":actionName,"node":node,"sourceEvent":event});
+                        }
+
+                        scope.pasteEndPointSelected = function(actionName,node,event){
+                            scope.$emit('paste-endpoint', {"actionName":actionName,"node":node,"sourceEvent":event});
                         }
 
 
@@ -329,9 +367,7 @@
                             if(!node.parent)
                                 return false;
 
-                            if ( node.source && node.type=='style_template') {
-                               return false;
-                            }
+                           
 
                             if(node.parent.source && node.parent.source.STYLES){
                                 return false;

@@ -14,7 +14,7 @@
 		$scope.json = null;
 		$scope.show_select_gateway = true;
 		$scope.loading_tree = false;
-		$scope.wrap={compression : "N"};
+		$scope.wrap={compression : "N",testRun:false,callMode:"S",callBack:""};
 		$scope.jsonReq={};
 		$scope.jsonResp={}
 		$scope.opt={selectedIndex:0, show:false};
@@ -101,6 +101,8 @@
 		$scope.build_tree = function(){
 
 			$scope.basicTree = [];
+			var isMeister= $rootScope.isMeister();
+			
 			var rootNode = {
 				name: $scope.gatewaySelected.name,
 				image:'/public/images/root.png',
@@ -121,13 +123,18 @@
 				var deletedProjects={
 					name:"Logically Deleted",
 					source:rootNode,
-					disabled:true,
 					image: '/public/images/trash.png',
 					parent:rootNode,
+					disabled:true,
 					is_deleted:"",
 					children:[]
 				};
-				_.forEach($scope.json, function(node){				
+				_.forEach($scope.json, function(node){		
+				    if(node.MEISTER_OWN && 
+				    	node.MEISTER_OWN=="X"
+				    	&& !isMeister){
+				    	return;
+				    }	
 
 					var nodeItem = {
 						name:node.PROJECT,
@@ -150,7 +157,7 @@
 					 
 					 _.forEach(node.STYLE_LIB, function(styleSrc){
 						 var style = {
-							name:(styleSrc.DESCRIPTION && styleSrc.DESCRIPTION.length>0) ? styleSrc.DESCRIPTION :  styleSrc.PKY,
+							name:styleSrc.PKY,
 							source:styleSrc,
 							type: "style_template",
 							image: '/public/images/style_template.png',
@@ -174,13 +181,18 @@
 					var deletedModules={
 						name:"Logically Deleted",
 						source:nodeItem,
-						disabled:true,
 						image: '/public/images/trash.png',
+						disabled:true,
 						parent:rootNode,
 						is_deleted:"",
 						children:[]
 					};					
 					_.forEach(node.MODULES, function(module){
+						if(module.MEISTER_OWN && 
+					    	module.MEISTER_OWN=="X"
+					    	&& !isMeister){
+					    	return;
+					    }
 						var moduleItem = {
 							name: module.NAME,
 							source:module,
@@ -201,14 +213,19 @@
 						}
 						var deletedEndpoints={
 							name:"Logically Deleted",
-							disabled:true,
 							source:moduleItem,
+							disabled:true,
 							image: '/public/images/trash.png',
 							parent:nodeItem,
 							is_deleted:"",
 							children:[]
 						}
 						_.forEach(module.ENDPOINTS, function(endpoint){
+							if(endpoint.MEISTER_OWN && 
+						    	endpoint.MEISTER_OWN=="X"
+						    	&& !isMeister){
+						    	return;
+						    }
 							endpoints_names.push(endpoint.NAMESPACE);
 							endpoints_main.push(endpoint.ENDPOINT_MAIN);
 							var icon = "";
@@ -753,10 +770,32 @@
 			var params = {
 				"endpoint": node.name,
 				"json": JSON.stringify($scope.payload_json.json,null,""),
-				"style": $scope.styleSelected ? $scope.styleSelected.name : 'DEFAULT'
+				"style": $scope.styleSelected ? $scope.styleSelected.name : 'DEFAULT',
+				"Test_Run":"",
+				"Asynch":"",
+				"Queued":"",
+				"BPM":"",
 			};
+			
 			if($scope.wrap.compression!="N")
 				params.compression=$scope.wrap.compression;
+
+
+			if($scope.wrap.testRun)
+				params.Test_Run="X";
+		
+			
+			switch($scope.wrap.callMode){
+				case "A":
+				  params.Asynch="X";
+				  break;
+				case "Q":
+				  params.Queued="X";
+				  break;
+				case "B":
+				  params.BPM="X";
+				  break;
+			}
 
 			var execution_time = new Date();
 			$scope.promise = GatewayService.execute_endpoint($scope.gatewaySelected.id,params);
