@@ -24,7 +24,7 @@
           </md-actions>
         </md-card-title>
         <md-card-content ng-show="show_select_gateway">
-          <div layout="row">
+          <md-section layout="row" layout-align="left center" layout-wrap> 
              <md-input-container style="width: 200px">
                <label >Select Gateway:</label>
               <md-select ng-model="gatewaySelectedId" placeholder="Select Gateway"  ng-change="changeGateway(gatewaySelectedId)">
@@ -33,9 +33,9 @@
                   </md-option>
             </md-select>
           </md-input-container>
-          <md-input-container  style="width: 150px">
+          <md-input-container  style="width: 100px">
                     <label >Select Client:</label>
-                    <md-select ng-model="client" placeholder="Select Client" ng-model-options="{trackBy: '$value.id'}">
+                    <md-select style="width: 40px" ng-model="client" placeholder="Select Client" ng-model-options="{trackBy: '$value.id'}">
                        <md-option ng-repeat="c in clients" ng-value="c.client">
                             {{c.client.sap_number}}
                         </md-option>
@@ -48,7 +48,7 @@
             </md-button>
           </md-input-container>
             
-        </div>
+        </md-section>
         
         </md-card-content>
       </md-card>
