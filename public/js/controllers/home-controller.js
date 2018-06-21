@@ -391,14 +391,52 @@
 
     	});
 
-	    $scope.$on('undelete-node-style-selected', function (e, obj) {
-	        console.log("undelete-node-selected",obj);
-	        obj.node.is_deleted=false;
+	    $scope.$on('undelete-style-lib', function (e, obj) {
+	        
+            var json_to_send =  GatewayService.buildJsonByNewStyleTemplate($scope.json, obj.node.parent.parent, obj.node.source);
+          
+            var params = {
+             json: JSON.stringify(json_to_send),
+             SDK_HINT:"RLD"
+            };
+
+            $scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
+            
+            $scope.promise.then(
+	                function(result){
+	                  console.log("result",result);
+	                  MessageUtil.showInfo("Style un-deleted");
+	                  $scope.executeGateway();
+	                  },
+	                function(error){
+	                  console.log("error",error);
+	                  MessageUtil.showError(error.data.message);
+	                }
+	              );
+         
     	});
 
-    	$scope.$on('delete-node-style-selected', function (e, obj) {
-	        console.log("delete-node-selected",obj);
-	        obj.node.is_deleted=true;
+    	$scope.$on('delete-style-lib', function (e, obj) {
+	       var json_to_send =  GatewayService.buildJsonByNewStyleTemplate($scope.json, obj.node.parent.parent, obj.node.source);
+          
+            var params = {
+             json: JSON.stringify(json_to_send),
+             SDK_HINT:"SLD"
+            };
+
+            $scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
+            
+            $scope.promise.then(
+	                function(result){
+	                  console.log("result",result);
+	                  MessageUtil.showInfo("Style deleted");
+	                  $scope.executeGateway();
+	                  },
+	                function(error){
+	                  console.log("error",error);
+	                  MessageUtil.showError(error.data.message);
+	                }
+	              );
 	        
     	});
 
