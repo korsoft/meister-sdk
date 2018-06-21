@@ -1,4 +1,4 @@
-<md-dialog aria-label="Endpoints" style="width:800px">
+<md-dialog aria-label="Endpoints" style="width:1000px;height: 600px">
     <md-toolbar>
       <div class="md-toolbar-tools">
         <h2>Add/Edit a Endpoint</h2>
@@ -76,9 +76,13 @@
         </div>
       </form>
       <form  id="frmEndpointStyle" name="frmEndpointStyle" ng-cloak>
-        <div class="md-dialog-content" ng-show="page==2">
-            <h2>Add styles</h2>
-            <md-table-container>
+        <div class="md-dialog-content" ng-show="page==2" layout-gt-sm="row" layout="column">
+
+      <div flex-gt-sm="75" flex>
+
+    <md-content>
+    
+        <md-table-container>
               <table md-table>
                 <thead md-head>
                   <tr md-row>
@@ -92,10 +96,10 @@
                   <tr md-row ng-repeat="style in endpoint.STYLES ">
                     <td md-cell>
                       <md-input-container ng-show="style.DIRECTION==='I'" md-no-float>
-                          <input ng-show="style.DIRECTION==='I'" ng-disabled="!style.BAND" ng-model="style.NAME"  required placeholder="Name" style="width: 100px">
+                          <input ng-show="style.DIRECTION==='I'" ng-disabled="!style.BAND" ng-model="style.NAME"  required placeholder="Name" style="width: 80px">
                       </md-input-container>
                       <md-input-container ng-show="style.DIRECTION==='O'"  md-no-float>
-                          <input ng-show="style.DIRECTION==='O'" ng-disabled="!style.BAND" ng-model="style.NAME"  required placeholder="Name" style="width: 100px">
+                          <input ng-show="style.DIRECTION==='O'" ng-disabled="!style.BAND" ng-model="style.NAME"  required placeholder="Name" style="width: 80px">
                       </md-input-container>
                     </td>
                     <td md-cell>
@@ -108,7 +112,7 @@
                     </td>
                     <td md-cell>
                       <md-input-container md-no-float>
-                        <div  ui-ace="{ onChange: changeJSON,mode: 'json'}" style="width: 300px; height: 185px;"  ng-model="style.JSON"></div>
+                        <div  ui-ace="{ onChange: changeJSON,mode: 'json'}" style="width: 280px; height: 100px;"  ng-model="style.JSON"></div>
 
                         <!-- <div ng-jsoneditor ng-model="style.JSON" options="{mode: 'tree'}" style="width: 300px; height: 215px;"  prefer-text="true" ></div> -->
                       </md-input-container>
@@ -120,6 +124,29 @@
                 </tbody>
               </table>
             </md-table-container>
+ 
+    </md-content>
+  </div>
+
+  <md-divider></md-divider>
+
+  <div flex-gt-sm="25" flex>
+
+    <md-toolbar layout="row">
+      <div class="md-toolbar-tools">
+        <span>Styles Library</span>
+      </div>
+    </md-toolbar>
+
+    <md-content style="overflow-y: auto;height: 350px">
+       <md-list-item class="secondary-button-padding" ng-click="doPrimaryAction($event)" ng-repeat="s in style_library.children">
+        <p>{{s.name}}</p>
+      </md-list-item>
+
+    </md-content>
+  </div>
+           
+            
         </div>
       </form>
     </md-dialog-content>
@@ -128,7 +155,10 @@
       <md-button class="md-raised" ng-click="changePage(1)" ng-show="page==2" >
        Back
       </md-button>
-      <md-button class="md-raised md-primary" ng-click="changePage(2)" ng-show="page==1" ng-disabled="frmEndpoint.$invalid || !uniqueName  || !uniqueMain">
+      <!--md-button class="md-raised md-primary" ng-click="changePage(2)" ng-show="page==1" ng-disabled="frmEndpoint.$invalid || !uniqueName  || !uniqueMain">
+       Next
+      </md-button -->
+      <md-button class="md-raised md-primary" ng-click="changePage(2)" ng-show="page==1">
        Next
       </md-button>
       <md-button class="md-raised md-primary" ng-click="save()" ng-show="page==2" ng-disabled="frmEndpointStyle.$invalid || checkUniqueName() || !valid || !uniqueName || !uniqueMain">

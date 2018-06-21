@@ -160,8 +160,10 @@
 					 }
 					 
 					 _.forEach(node.STYLE_LIB, function(styleSrc){
+					 	var name = styleSrc.DESCRIPTION.length==0 ? 
+					 	    styleSrc.PKY : styleSrc.DESCRIPTION;
 						 var style = {
-							name:styleSrc.PKY,
+							name:name,
 							source:styleSrc,
 							type: "style_template",
 							image: '/public/images/style_template.png',

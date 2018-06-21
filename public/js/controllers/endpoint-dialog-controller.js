@@ -9,6 +9,7 @@
         $scope.uniqueName=false;
         $scope.band_i=1;
         $scope.band_o=1;
+        $scope.style_library = style_library;
 
         $scope.promise = null;
          $scope.cancel = function() {
