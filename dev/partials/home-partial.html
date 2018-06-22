@@ -247,12 +247,13 @@
                   </md-select>
                 </md-input-container>
                
-              
+                <!--
                 <md-input-container flex ng-if="payload_json.json" style="margin-bottom: 0px">
                   <label>JSON</label>
                   <textarea readonly="true" ng-value="json_to_string(payload_json.json)" rows="4" style="font-size: 10px;color: gray;line-height:18px" md-no-autogrow>
                   </textarea>
                 </md-input-container>
+              -->
             </div>
             <md-input-container style="margin-top: 0px">
                 <label>Compression</label>
@@ -263,6 +264,26 @@
                   <md-option value="B" >Both</md-option>
                 </md-select>
             </md-input-container>
+          </md-content>
+          <md-content layout="row" class="md-block" style="background-color: transparent;">
+              <md-input-container flex>
+                <md-checkbox ng-model="wrap.testRun">Test Run</md-checkbox>
+              </md-input-container>
+              <md-input-container flex>
+                <label>Call Mode</label>
+                <md-select  ng-model="wrap.callMode" >
+                  <md-option value="S" >Sync</md-option>
+                  <md-option value="A" >Async</md-option>
+                  <md-option value="Q" >Queued</md-option>
+                  <md-option value="B" >BPM</md-option>
+                </md-select>
+              </md-input-container>
+              <md-input-container flex>
+                <label>Call Back</label>
+                <md-select  ng-model="wrap.callBack" >
+                  
+                </md-select>
+             </md-input-container>
           </md-content>
           <md-tabs md-dynamic-height md-border-bottom md-selected="opt.selectedIndex" ng-show="opt.show">
             <md-tab label="REQUEST" md-on-select="setRequest()">
