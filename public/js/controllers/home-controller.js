@@ -519,6 +519,10 @@
 	              );
     	});
 
+    	$scope.formatKey = function(key){
+    		var keyFormat = key.replace("_"," ");
+    		return keyFormat.charAt(0).toUpperCase() + keyFormat.slice(1).toLowerCase();
+    	};
 
 		$scope.$on('undelete-project-selected', function (e, obj) {
 	        console.log("undelete-project-selected",obj);

@@ -138,7 +138,7 @@
 				    	&& !isMeister){
 				    	return;
 				    }	
-
+				   
 					var nodeItem = {
 						name:node.PROJECT,
 						source:node,
@@ -158,10 +158,21 @@
 					 		parent: node,
 					 		children: []
 					 }
+
+					 var deletedStyle_template={
+							name:"Logically Deleted",
+							source:nodeItem,
+							image: '/public/images/trash.png',
+							disabled:true,
+							parent:node,
+							is_deleted:"",
+							children:[]
+						};		
 					 
 					 _.forEach(node.STYLE_LIB, function(styleSrc){
 					 	var name = styleSrc.DESCRIPTION.length==0 ? 
 					 	    styleSrc.PKY : styleSrc.DESCRIPTION;
+					 	
 						 var style = {
 							name:name,
 							source:styleSrc,
@@ -170,7 +181,16 @@
 							is_deleted:  styleSrc.LOGICAL_DELETE,
 							parent: style_template
 						 }
-						 style_template.children.push(style);
+
+						if(style.is_deleted){
+						    deletedStyle_template.children.push(style);
+							if(deletedStyle_template.children.length==1){
+	                          style_template.children.unshift(deletedStyle_template);
+							}
+						}else{
+							style_template.children.push(style);
+						}
+						 
 					});
 					 
 					 
@@ -499,6 +519,10 @@
 	              );
     	});
 
+    	$scope.formatKey = function(key){
+    		var keyFormat = key.replace("_"," ");
+    		return keyFormat.charAt(0).toUpperCase() + keyFormat.slice(1).toLowerCase();
+    	};
 
 		$scope.$on('undelete-project-selected', function (e, obj) {
 	        console.log("undelete-project-selected",obj);
