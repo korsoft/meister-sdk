@@ -12,7 +12,7 @@
 
         if(!project){
           $scope.project.PKY = "";
-          $scope.project.NAME = "";
+          $scope.project.PROJECT = "";
         } else {
           $scope.project = angular.copy(project);
         }
@@ -23,7 +23,29 @@
 
         $scope.save = function(){
 
-         console.log("Saving Project");
+         console.log("Saving Project",$scope.project);
+         
+         var json_to_send =  GatewayService.buildJsonByNewProject(json, $scope.project);
+         
+         delete json_to_send.MODULES;
+         delete json_to_send.STYLE_LIB;
+         
+          var params = {
+            json: JSON.stringify(json_to_send)
+          };
+           
+            $scope.promise = GatewayService.execute_changes(gateway.id, params);
+            
+            $scope.promise.then(
+                function(result){
+                  console.log("result",result);
+                  $mdDialog.hide(result);
+                  },
+                function(error){
+                  console.log("error",error);
+                  MessageUtil.showError(error.data.message);
+                }
+              );
          
         };
         

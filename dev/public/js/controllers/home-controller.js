@@ -502,6 +502,30 @@
 
 		$scope.$on('undelete-project-selected', function (e, obj) {
 	        console.log("undelete-project-selected",obj);
+	        var json_to_send =  GatewayService.buildJsonByNewProject($scope.json, obj.node.source);
+          	delete json_to_send.MODULES;
+          	
+          	console.log("json_to_send",json_to_send);
+	         
+	          var params = {
+	            json: angular.toJson(json_to_send),
+	            SDK_HINT:"RLD"
+	          };
+
+				$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
+	            
+	            $scope.promise.then(
+	                function(result){
+	                  console.log("result",result);
+	                  MessageUtil.showInfo("Project un-deleted");
+	                  $scope.executeGateway();
+	                  },
+	                function(error){
+	                  console.log("error",error);
+	                  MessageUtil.showError(error.data.message);
+	                }
+	              );
+
     	});
 
     	$scope.$on('delete-project-selected', function (e, obj) {

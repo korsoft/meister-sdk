@@ -42,7 +42,20 @@
             return $http.post(SERVER_BASE_URL + '/api/clientgateways/'+id+'/execute_endpoint',params);
         };
 
-        
+        service.buildJsonByNewProject = function(json,project){
+            console.log("buildJsonByNewProject...");
+            console.log("json",json);
+            console.log("project",project);
+            var json_to_send = {};
+
+            json_to_send.PKY = project.PKY ? project.PKY : "";
+            json_to_send.PROJECT = project.PROJECT;
+            json_to_send.LOGICAL_DELETE = project.LOGICAL_DELETE;
+            json_to_send.MEISTER_OWN = project.MEISTER_OWN;
+            json_to_send.MODULES = [];
+            json_to_send.STYLE_LIB = [];    
+            return json_to_send;
+        };
 
         service.buildJsonByNewModule = function(json, parentNode,module){
             console.log("buildJsonByNewEndpoint...");
