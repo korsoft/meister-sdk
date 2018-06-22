@@ -95,7 +95,11 @@
             console.log("parentNode",parentNode);
             console.log("endpoint",endpoint);
             var json_to_send = {};
-            _.forEach(json, function(project){
+            return true;
+            var project = _.find(json, function(p){
+                return p.PKY == parentNode.PKY;
+            });
+            if(project){
                 console.log("project",project);
                 json_to_send.PKY = project.PKY;
                 json_to_send.PROJECT = project.PROJECT;
@@ -119,7 +123,7 @@
                     json_to_send.MODULES.push(moduleItem);
                     return false;
                 }
-            });
+            }
             return json_to_send;
         };
 
