@@ -1,7 +1,7 @@
 (function(app) {
 	app.controller('HomeController', ['$scope','$rootScope','$mdMenu','$mdToast','$mdDialog','MessageUtil',
-		'GatewayService','$filter','$window','GatewayClientService',
-		function($scope, $rootScope, $mdMenu, $mdToast,$mdDialog,MessageUtil,GatewayService,$filter,$window,GatewayClientService) {
+		'GatewayService','$filter','$window','GatewayClientService','$timeout',
+		function($scope, $rootScope, $mdMenu, $mdToast,$mdDialog,MessageUtil,GatewayService,$filter,$window,GatewayClientService,$timeout) {
 
 		$scope.promise = null;
 		$scope.gateways = [];
@@ -41,9 +41,9 @@
 		$scope.tree_collapsible = false;
 
 		$scope.url_details = "";
-
-		$scope.current_long_text="";
-		$scope.current_description="";
+        $scope.edit={};
+		$scope.edit.current_long_text="";
+		$scope.edit.current_description="";
 
 
 		$scope.style_template = {};
@@ -1093,8 +1093,12 @@
         $scope.editLongText = function(node,index){
         	if(node.source.LOCKED)
         		return;
-        	$scope.current_long_text= node.source.LONG_TEXT;
+        	$scope.edit.current_long_text= node.source.LONG_TEXT;
         	node.source["LONG_TEXT"+index]={"$edit":true};
+
+        	$timeout(function(){
+        		$window.document.getElementById('elementF').focus();
+        	});        
         }
 
         $scope.cancelLongText = function(node,index){
@@ -1127,8 +1131,11 @@
 
 
         $scope.editDescription = function(node){
-        	$scope.current_description= node.source.DESCRIPTION;
+        	$scope.edit.current_description= node.source.DESCRIPTION;
         	node.$edit=true;
+        	$timeout(function(){
+        		$window.document.getElementById('elementF').focus();
+        	});        	
         }
 
         $scope.cancelDescription = function(node,index){
