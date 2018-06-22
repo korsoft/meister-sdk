@@ -213,7 +213,7 @@
       <md-card ng-if="mode_run">
         <md-card-title style="padding-bottom: 9px;">
           <md-card-title-text>
-            <span class="md-headline">Call Syntax</span>
+            <span class="md-headline">Call Syntax with Endpoint</span>
           </md-card-title-text>
           <md-actions  ng-if="!loading_tree">
             <md-button class="md-raised"  ng-if="payload_json.json" ng-disabled="!payload_json.json_test" ng-click="execute_details($event)" >
@@ -238,7 +238,7 @@
           <md-content layout="column"  style="background-color: transparent;">
             <div layout-gt-sm="row">
               
-                <md-input-container flex ng-if="payload_json.json && styles && styles.length>0" style="margin-bottom: 0px">
+                <md-input-container flex ng-if="payload_json.json && styles && styles.length>0">
                     <label >Select the Style </label>
                     <md-select ng-model="styleSelected"  style="width: 50%" placeholder="Select the Style"  ng-change="changeStyle(styleSelected)" >
                        <md-option ng-repeat="style in styles" ng-value="style" ng-selected="styleSelected.name == style.name">
@@ -255,13 +255,13 @@
                 </md-input-container>
               -->
             </div>
-            <md-input-container style="margin-top: 0px">
+            <md-input-container>
                 <label>Compression</label>
                 <md-select  ng-model="wrap.compression" >
                   <md-option value="N" >None</md-option>
                   <md-option value="O" >Outbound</md-option>
-                  <md-option value="I" >Inbound</md-option>
-                  <md-option value="B" >Both</md-option>
+                  <!--md-option value="I" >Inbound</md-option -->
+                  <!--md-option value="B" >Both</md-option -->
                 </md-select>
             </md-input-container>
           </md-content>
