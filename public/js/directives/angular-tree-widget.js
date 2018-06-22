@@ -312,9 +312,10 @@
                         scope.canBeDeleted = function(node){
                             var canbe = true;
                             _.forEach(node.children,function(itm){
-                                if(!itm.is_deleted)
+                                if(itm.source && itm.source.LOGICAL_DELETE!="X")
                                 {
                                     canbe=false;
+                                    return false;
                                 }
                             });
                             
