@@ -1106,11 +1106,11 @@
         }
 
         $scope.saveLongText = function(node,index,current_long_text){
-        	console.log(current_long_text);
+        	var original=node.source.LONG_TEXT;
         	node.source.LONG_TEXT = current_long_text;
         	delete node.source["LONG_TEXT"+index];
         	var json_to_send =  GatewayService.buildJsonByNewEndpoint($scope.json, node.parent.source, node.source);
-          
+            delete json_to_send.MODULES[0].ENDPOINTS[0].STYLES;
             console.log("json_to_send",json_to_send);
 	        var params = {
 	            json: angular.toJson(json_to_send),
@@ -1124,6 +1124,7 @@
 	                  },
 	                function(error){
 	                  console.log("error",error);
+	                  node.source.LONG_TEXT=original;
 	                  MessageUtil.showError(error.data.message);
 	                }
 	              );
@@ -1143,7 +1144,7 @@
         }
 
         $scope.saveDescription = function(node,current_description){
-        	console.log(node);
+        	var original = node.source.DESCRIPTION;
         	node.source.DESCRIPTION = current_description;
 
         	delete node["$edit"];
@@ -1163,6 +1164,7 @@
 	                  },
 	                function(error){
 	                  console.log("error",error);
+	                  node.source.DESCRIPTION = original;
 	                  MessageUtil.showError(error.data.message);
 	                }
 	              );
