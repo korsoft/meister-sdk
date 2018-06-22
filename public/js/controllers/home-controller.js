@@ -1091,12 +1091,14 @@
         }
         
         $scope.editLongText = function(node,index){
+        	if(node.source.LOCKED)
+        		return;
         	$scope.current_long_text= node.source.LONG_TEXT;
         	node.source["LONG_TEXT"+index]={"$edit":true};
         }
 
         $scope.cancelLongText = function(node,index){
-        	node.source["LONG_TEXT"+index]={"$edit":false};
+        	delete node.source["LONG_TEXT"+index];
         }
 
         $scope.saveLongText = function(node,index,current_long_text){

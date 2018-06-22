@@ -187,7 +187,7 @@
                         </td>
                         <td md-cell style="padding: 0px">
                          
-                          <md-icon ng-bind="'edit'" style="cursor: pointer;" ng-if="!nodeSelected.source[key+$index].$edit && key=='LONG_TEXT'" ng-click="editLongText(nodeSelected,$index)"></md-icon>
+                          <md-icon ng-bind="'edit'" ng-style="{cursor:nodeSelected.source.LOCKED?'not-allowed':'pointer'}"  ng-if="!nodeSelected.source[key+$index].$edit && key=='LONG_TEXT'" ng-click="editLongText(nodeSelected,$index)"><md-tooltip ng-if="nodeSelected.source.LOCKED">Unlock the Endpoint first before changing the long text</md-tooltip></md-icon>
                       
                           <div layout="row"  ng-if="nodeSelected.source[key+$index].$edit && key=='LONG_TEXT'">
                           
