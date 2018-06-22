@@ -151,7 +151,7 @@
 					 /************************
 					  * Data Style Simulator
 					  */
-					 $scope.style_template= {
+					 var style_template= {
 							name: "Style Library",
 					 		image: '/public/images/template.png',
 					 		type: "STYLE_TEMPLATE_PARENT",
@@ -179,22 +179,22 @@
 							type: "style_template",
 							image: '/public/images/style_template.png',
 							is_deleted:  styleSrc.LOGICAL_DELETE,
-							parent: $scope.style_template
+							parent: style_template
 						 }
 
 						if(style.is_deleted){
 						    deletedStyle_template.children.push(style);
 							if(deletedStyle_template.children.length==1){
-	                          $scope.style_template.children.unshift(deletedStyle_template);
+	                          style_template.children.unshift(deletedStyle_template);
 							}
 						}else{
-							$scope.style_template.children.push(style);
+							style_template.children.push(style);
 						}
 						 
 					});
 					 
 					 
-					nodeItem.children.push($scope.style_template);
+					nodeItem.children.push(style_template);
 					if(nodeItem.is_deleted){
 						deletedProjects.children.push(nodeItem);
 						if(deletedProjects.children.length==1){
@@ -255,7 +255,7 @@
 							endpoints_names.push(endpoint.NAMESPACE);
 							endpoints_main.push(endpoint.ENDPOINT_MAIN);
 							var icon = "";
-							console.log("endpoint",endpoint);
+							//console.log("endpoint",endpoint);
 							if(endpoint.LOCKED && endpoint.LOCKED==="X")
 							{
 								if(endpoint.TYPE == "L")
@@ -785,6 +785,10 @@
 
 	     $scope.addEndpoint = function(ev, parentNode){
 	     	$scope.mode_run = false;
+	     	$scope.style_template = _.find(parentNode.parent.children, function(item){
+	     		return item.type === "STYLE_TEMPLATE_PARENT";
+	     	});
+	     	console.log("style Library",$scope.style_template);
 	     	$mdDialog.show({
                 controller: 'EndpointDialogController',
                 templateUrl: 'templates/endpoint-dialog-form.html',

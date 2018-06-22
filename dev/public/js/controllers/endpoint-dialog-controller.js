@@ -21,7 +21,6 @@
           var band = true;
           $scope.uniqueName=true;
           _.forEach(endpoints_names,function(item){
-            console.log("item "+item + " value "+ $scope.endpoint.NAMESPACE + " logic ", item==$scope.endpoint.NAMESPACE);
             if(item==$scope.endpoint.NAMESPACE){
               $scope.uniqueName=false;
             }
