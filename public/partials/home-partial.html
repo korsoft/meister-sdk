@@ -165,7 +165,7 @@
                         <td md-cell style="text-overflow:ellipsis;overflow:hidden;padding:0px;vertical-align:top;padding-top: 12px"><span title="{{formatKey(key)}}">{{formatKey(key)}}</span></td>
                         <td md-cell style="text-overflow:ellipsis;overflow:hidden;padding:0px">
 
-                          <span ng-if="!nodeSelected.source[key+$index].$edit && key!='JSON'"  title="{{isArray(value) ? '(Collection)' : value}}">{{isArray(value) ? '(Collection)' : value}}</span>
+                          <span ng-if="!nodeSelected.$edit&&!nodeSelected.source[key+$index].$edit && key!='JSON'"  title="{{isArray(value) ? '(Collection)' : value}}">{{isArray(value) ? '(Collection)' : value}}</span>
                           <div ng-if="!nodeSelected.source[key+$index].$edit && key=='JSON'">
                             <div  ng-if="!nodeSelected.source[key+$index].$edit && key=='JSON'" ui-ace="{ mode: 'json'}" readonly style="width: 100%; height: 215px; background-color:#cccccc;"  ng-model="json_global_string" ></div>
                           </div>
