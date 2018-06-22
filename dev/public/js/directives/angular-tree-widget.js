@@ -169,7 +169,7 @@
                 + '     <md-icon ng-bind="\'send\'"></md-icon> Execute'
                 + '  </md-button>'
                 + '         </md-menu-item>'
-                + '         <md-menu-item ng-if="node && node.parent && node.source.STYLES && !node.is_deleted && $root.isMeisterUser(node) && node.source.LOCKED && node.source.LOCKED!==\'X\'">'
+                + '         <md-menu-item ng-if="node && node.parent && node.source.STYLES && !node.is_deleted && $root.isMeisterUser(node)">'
                 + ' <md-button  '
                 + '      ng-click="emitDeleteEndPointSelected(\'delete_endpoint_deleted\',node,$event)" '
                 + ' >'

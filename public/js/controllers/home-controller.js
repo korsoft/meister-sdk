@@ -587,6 +587,8 @@
     	$scope.$on('undelete-endpoint-deleted', function (e, obj) {
 	        console.log("undelete-endpoint-deleted",obj);
 	        var json_to_send =  GatewayService.buildJsonByNewEndpoint($scope.json, obj.node.parent.source, obj.node.source);
+          	//if(json_to_send.MODULES[0].ENDPOINTS[0].STYLES.length==0)
+          	delete json_to_send.MODULES[0].ENDPOINTS[0].STYLES;
           	console.log("json_to_send",json_to_send);
 	          var params = {
 	            json: angular.toJson(json_to_send),
@@ -611,7 +613,8 @@
     	$scope.$on('delete-endpoint-deleted', function (e, obj) {
 	        console.log("delete-endpoint-deleted",obj);
 	        var json_to_send =  GatewayService.buildJsonByNewEndpoint($scope.json, obj.node.parent.source, obj.node.source);
-          	//json_to_send.MODULES[0].ENDPOINTS[0].STYLES = [];
+          	//if(json_to_send.MODULES[0].ENDPOINTS[0].STYLES.length==0)
+          	delete json_to_send.MODULES[0].ENDPOINTS[0].STYLES;
           	
              console.log("json_to_send",json_to_send);
 	          var params = {
@@ -638,7 +641,9 @@
 	        console.log("lock-endpoint",obj);
 	        
 	        var json_to_send =  GatewayService.buildJsonByNewEndpoint($scope.json, obj.node.parent.source, obj.node.source);
-          	//json_to_send.MODULES[0].ENDPOINTS[0].STYLES = [];
+          	
+	        //if(json_to_send.MODULES[0].ENDPOINTS[0].STYLES.length==0)
+          	delete json_to_send.MODULES[0].ENDPOINTS[0].STYLES;
           	
              console.log("json_to_send",json_to_send);
 	          var params = {
@@ -670,8 +675,11 @@
 	        obj.node.is_lock=false;
 
 	        var json_to_send =  GatewayService.buildJsonByNewEndpoint($scope.json, obj.node.parent.source, obj.node.source);
-          	delete json_to_send.MODULES[0].ENDPOINTS[0].STYLES;
+          	//json_to_send.MODULES[0].ENDPOINTS[0].STYLES = [];
           	
+          	 //if(json_to_send.MODULES[0].ENDPOINTS[0].STYLES.length==0)
+          	delete json_to_send.MODULES[0].ENDPOINTS[0].STYLES;
+
              console.log("json_to_send",json_to_send);
 	          var params = {
 	            json: angular.toJson(json_to_send),
