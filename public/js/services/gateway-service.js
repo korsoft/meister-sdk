@@ -95,9 +95,8 @@
             console.log("parentNode",parentNode);
             console.log("endpoint",endpoint);
             var json_to_send = {};
-            return true;
             var project = _.find(json, function(p){
-                return p.PKY == parentNode.PKY;
+                return p.PKY == parentNode.FKY;
             });
             if(project){
                 console.log("project",project);
@@ -121,33 +120,35 @@
                     endpoint.FKY = module.PKY;
                     moduleItem.ENDPOINTS.push(endpoint);
                     json_to_send.MODULES.push(moduleItem);
-                    return false;
                 }
             }
             return json_to_send;
         };
 
         service.buildJsonByNewStyle = function(json, parentNode, style){
-            console.log("buildJsonByNewEndpoint...");
+            console.log("buildJsonByNewStyle...");
             console.log("json",json);
             console.log("parentNode",parentNode);
             console.log("style",style);
             var json_to_send = {};
-            _.forEach(json, function(project){
-                console.log("project",project);
-                json_to_send.PKY = project.PKY;
+
+            var project = _.find(json, function(p){
+                return p.PKY == parentNode.source.parent.FKY;
+            });
+            if(project){
+
+                 json_to_send.PKY = project.PKY;
                 json_to_send.PROJECT = project.PROJECT;
                 json_to_send.MODULES = [];
+
                 var module = _.find(project.MODULES, function(m){
-                    var endpoint = _.find(m.ENDPOINTS, function(e){
-                        return e.PKY == parentNode.PKY;
-                    });
-                    if(endpoint)
-                        return m;
+                    return m.PKY == parentNode.FKY;
                 });
-                console.log("module",module);
-                if(module){
-                    var moduleItem = {
+                console.log("project",project);
+
+               
+               if(module){
+                 var moduleItem = {
                       PKY: module.PKY,
                       NAME: module.NAME,
                       DATE:module.DATE.split("-").join(""),
@@ -155,17 +156,21 @@
                       LOGICAL_DELETE:  module.LOGICAL_DELETE,
                       ENDPOINTS: []
                     };
-                    var endpoint = _.find(module.ENDPOINTS, function(e){
+                    var endpoint = _.find(m.ENDPOINTS, function(e){
                         return e.PKY == parentNode.PKY;
                     });
+                   
+                    if(endpoint){
 
                     endpoint.STYLES = [];
                     endpoint.STYLES.push(style);
                     moduleItem.ENDPOINTS.push(endpoint);
                     json_to_send.MODULES.push(moduleItem);
-                    return false;
+                    
+                    }
                 }
-            });
+            
+            };
             return json_to_send;
         };
 

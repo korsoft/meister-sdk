@@ -115,6 +115,7 @@
             json: angular.toJson(json_to_send)
           };
 
+          console.log(json);
             $scope.promise = GatewayService.execute_changes(gateway.id, params);
             
             $scope.promise.then(

@@ -642,7 +642,7 @@
 	        obj.node.is_lock=false;
 
 	        var json_to_send =  GatewayService.buildJsonByNewEndpoint($scope.json, obj.node.parent.source, obj.node.source);
-          	json_to_send.MODULES[0].ENDPOINTS[0].STYLES = [];
+          	delete json_to_send.MODULES[0].ENDPOINTS[0].STYLES;
           	
              console.log("json_to_send",json_to_send);
 	          var params = {
