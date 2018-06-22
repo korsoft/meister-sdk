@@ -382,7 +382,9 @@
 
 	     $scope.$on('action-node-selected', function (e, obj) {
 	        console.log("action-node-selected",obj);
-	        if(obj.actionName === "addModule")
+	        if(obj.actionName=== "addProject")
+	        	$scope.addProject(obj.sourceEvent,obj.node)
+	        else if(obj.actionName === "addModule")
 	        	$scope.addModule(obj.sourceEvent,obj.node);
 	        else if(obj.actionName == "addEndpoint")
 	        	$scope.addEndpoint(obj.sourceEvent,obj.node);
@@ -689,6 +691,30 @@
                
               });
 	     };
+	     
+	     $scope.addProject= function(ev, parentNode){
+		     	$scope.mode_run = false;
+		     	$mdDialog.show({
+	                controller: 'ProjectDialogController',
+	                templateUrl: 'templates/project-dialog-form.html',
+	                parent: angular.element(document.body),
+	                targetEvent: ev,
+	                clickOutsideToClose:false,
+	                escapeToClose: false,
+	                locals: {
+	                 project: null,
+	                 parentNode: parentNode,
+	                 gateway: $scope.gatewaySelected,
+	                 json: $scope.json
+	               }
+	              })
+	              .then(function(result) {
+	                MessageUtil.showInfo("Project was created");
+	                $scope.executeGateway();
+	              }, function() {
+	               
+	              });
+		     };
 
 	     $scope.addEndpoint = function(ev, parentNode){
 	     	$scope.mode_run = false;

@@ -92,8 +92,8 @@
                     <th md-column><md-button class="md-icon-button" ng-click="addStyle()"><md-icon ng-bind="'add_box'"></md-icon></md-button></th>
                   </tr>
                 </thead>
-                <tbody md-body >
-                  <tr md-row ng-repeat="style in endpoint.STYLES ">
+                <tbody md-body dnd-list="endpoint.STYLES">
+                  <tr md-row ng-repeat="style in endpoint.STYLES " >
                     <td md-cell>
                       <md-input-container ng-show="style.DIRECTION==='I'" md-no-float>
                           <input ng-show="style.DIRECTION==='I'" ng-disabled="!style.BAND" ng-model="style.NAME"  required placeholder="Name" style="width: 80px">
@@ -111,8 +111,12 @@
                       </md-input-container>
                     </td>
                     <td md-cell>
-                      <md-input-container md-no-float>
-                        <div  ui-ace="{ onChange: changeJSON,mode: 'json'}" style="width: 250px; height: 100px;"  ng-model="style.JSON"></div>
+                      <md-input-container md-no-float 
+                      >
+                        <div  ui-ace="{ onChange: changeJSON,mode: 'json'}" style="width: 250px; height: 100px;" 
+                          ng-model="style.JSON"
+                          ui-on-Drop="onDrop($event,$data,style)"
+                            ></div>
 
                         <!-- <div ng-jsoneditor ng-model="style.JSON" options="{mode: 'tree'}" style="width: 300px; height: 215px;"  prefer-text="true" ></div> -->
                       </md-input-container>
@@ -134,14 +138,19 @@
 
     <md-toolbar layout="row">
       <div class="md-toolbar-tools">
-        <span>Styles Library</span>
+        <span>Style Library</span>
       </div>
     </md-toolbar>
 
     <md-content style="overflow-y: auto;height: 350px">
-      <div flex-xs flex-gt-xs="100" layout="column" ng-init="s.$show = false" ng-click="s.$show = !s.$show"  ng-repeat="s in style_library.children">
+      <div flex-xs flex-gt-xs="100" layout="column" 
+            ng-init="s.$show = false"
+            ng-click="s.$show = !s.$show"  
+            ng-repeat="s in style_library.children"
+            ui-draggable="true" 
+            drag="s.source">
 
-        <md-card md-theme-watch style="padding: 1px;margin: 1px">
+        <md-card md-theme-watch style="padding: 1px;margin: 1px" >
             <md-card-title style="padding:0px">
               <md-card-title-text>
                 <span class="md-headline"  style="font-size: 12px;color: gray">{{s.name}}</span>
@@ -165,12 +174,10 @@
       <md-button class="md-raised" ng-click="changePage(1)" ng-show="page==2" >
        Back
       </md-button>
-      <!--md-button class="md-raised md-primary" ng-click="changePage(2)" ng-show="page==1" ng-disabled="frmEndpoint.$invalid || !uniqueName  || !uniqueMain">
-       Next
-      </md-button -->
-      <md-button class="md-raised md-primary" ng-click="changePage(2)" ng-show="page==1">
+      <md-button class="md-raised md-primary" ng-click="changePage(2)" ng-show="page==1" ng-disabled="frmEndpoint.$invalid || !uniqueName  || !uniqueMain">
        Next
       </md-button>
+      
       <md-button class="md-raised md-primary" ng-click="save()" ng-show="page==2" ng-disabled="frmEndpointStyle.$invalid || checkUniqueName() || !valid || !uniqueName || !uniqueMain">
        Save
       </md-button>

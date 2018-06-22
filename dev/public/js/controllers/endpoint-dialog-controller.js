@@ -45,6 +45,11 @@
           style.source.$JSON = JSON.stringify(JSON.parse(style.source.JSON),null,"\t");
         };
 
+       $scope.onDrop = function($event,$data, style){
+        console.log("onDrop",$data);
+        style.JSON = $data.$JSON;
+       };
+
         $scope.changeJSON=function(e){
           for(var i=0; i<$scope.endpoint.STYLES.length;i++)
           {
