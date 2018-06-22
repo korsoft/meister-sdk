@@ -141,13 +141,6 @@
                 + '     <md-icon ng-bind="\'restore_from_trash\'"></md-icon> Undelete'
                 + '  </md-button>'
                 + '         </md-menu-item>'
-                + '<md-menu-item ng-if="node && node.parent && node.source.STYLES && !node.is_deleted  && $root.isMeisterUser(node)">'
-                + ' <md-button  '
-                + '      ng-click="pasteEndPointSelected(\'addStyle\',node,$event)" '
-                + ' >'
-                + '     <md-icon ng-bind="\'library_books\'"></md-icon> Paste'
-                + '  </md-button>'
-                + '         </md-menu-item>'
                 + '<md-menu-item ng-if="node && node.parent && node.source.STYLES && !node.is_deleted && !node.source.LOCKED && $root.isMeisterUser(node)">'
                 + ' <md-button '
                 + '      ng-click="emitLockEndPointSelected(\'lock_endpoint\',node,$event)" '
@@ -205,14 +198,7 @@
                 + '  </md-button>'
                 + '         </md-menu-item>'
                 + '</md-menu-item>'
-                + '<md-menu-item ng-if="node && node.parent && node.type && node.type==\'style_template\' && !node.is_deleted && $root.isMeisterUser(node)">'
-                + ' <md-button'
-                + '      ng-click="emitCopyStyleLibSelected(\'copy_style_lib\',node,$event)" '
-                + ' >'
-                + '     <md-icon ng-bind="\'file_copy\'"></md-icon> Copy'
-                + '  </md-button>'
-                + '</md-menu-item>'
-                 + '<md-menu-item ng-if="node  && node.type && node.type==\'STYLE_TEMPLATE_PARENT\' ">'
+                + '<md-menu-item ng-if="node  && node.type && node.type==\'STYLE_TEMPLATE_PARENT\' ">'
                 + ' <md-button'
                 + '      ng-click="emitActionNodeSelected(\'add_style_lib\',node,$event)" '
                 + ' >'
@@ -289,15 +275,6 @@
                         scope.emitUndeleteStyleLibSelected = function(actionName,node,event){
                             scope.$emit('undelete-style-lib', {"actionName":actionName,"node":node,"sourceEvent":event});
                         }
-
-                        scope.copyStyleLibSelected = function(actionName,node,event){
-                            scope.$emit('copy-style-lib', {"actionName":actionName,"node":node,"sourceEvent":event});
-                        }
-
-                        scope.pasteEndPointSelected = function(actionName,node,event){
-                            scope.$emit('paste-endpoint', {"actionName":actionName,"node":node,"sourceEvent":event});
-                        }
-
 
                         scope.emitUndeleteModuleSelected = function(actionName,node,event){
                             scope.$emit('undelete-module-selected', {"actionName":actionName,"node":node,"sourceEvent":event});
