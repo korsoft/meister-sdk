@@ -118,7 +118,7 @@
                       ENDPOINTS: []
                     };
                     endpoint.FKY = module.PKY;
-                    moduleItem.ENDPOINTS.push(endpoint);
+                    moduleItem.ENDPOINTS.push(angular.copy(endpoint));
                     json_to_send.MODULES.push(moduleItem);
                 }
             }

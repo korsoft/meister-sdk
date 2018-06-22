@@ -254,21 +254,8 @@
 						    }
 							endpoints_names.push(endpoint.NAMESPACE);
 							endpoints_main.push(endpoint.ENDPOINT_MAIN);
-							var icon = "";
-							//console.log("endpoint",endpoint);
-							if(endpoint.LOCKED && endpoint.LOCKED==="X")
-							{
-								if(endpoint.TYPE == "L")
-									icon = '/public/images/dendpoint_l.png';
-								else
-									icon = '/public/images/dendpoint.png';
-							}else{
-								if(endpoint.TYPE == "L")
-									icon = '/public/images/endpoint_l.png';
-								else
-									icon = '/public/images/endpoint.png';
-								
-							}
+							var icon = imageEndpoint(endpoint);
+							
 							var endpointItem = {
 								name: endpoint.NAMESPACE,
 								source: endpoint,
@@ -659,7 +646,9 @@
 	                function(result){
 	                  console.log("result",result);
 	                  MessageUtil.showInfo("Endpoint locked");
-	                  $scope.executeGateway();
+	                  obj.node.source.LOCKED="X";
+	                  obj.node.image = imageEndpoint(obj.node.source);
+	                  obj.node.is_lock=true;
 	                  },
 	                function(error){
 	                  console.log("error",error);
@@ -694,7 +683,8 @@
 	                function(result){
 	                  console.log("result",result);
 	                  MessageUtil.showInfo("Endpoint unlocked");
-	                  $scope.executeGateway();
+	                  obj.node.source.LOCKED="";
+	                  obj.node.image = imageEndpoint(obj.node.source);
 	                  },
 	                function(error){
 	                  console.log("error",error);
@@ -1124,8 +1114,7 @@
 	        $scope.promise.then(
 	                function(result){
 	                  console.log("result",result);
-	                 // MessageUtil.showInfo("Endpoint deleted");
-	               //   $scope.executeGateway();
+	                  
 	                  },
 	                function(error){
 	                  console.log("error",error);
@@ -1159,9 +1148,9 @@
 			$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	        $scope.promise.then(
 	                function(result){
-	                  console.log("result",result);
-	                 // MessageUtil.showInfo("Endpoint deleted");
-	               //   $scope.executeGateway();
+	                   console.log("result",result);
+	                   node.name = current_description;
+	               
 	                  },
 	                function(error){
 	                  console.log("error",error);
@@ -1170,6 +1159,20 @@
 	              );
         }
         
+        var imageEndpoint = function(e){
+        	if(e.LOCKED && e.LOCKED==="X")
+			{
+				if(e.TYPE == "L")
+					return '/public/images/dendpoint_l.png';
+				else
+					return '/public/images/dendpoint.png';
+			}else{
+				if(e.TYPE == "L")
+					return '/public/images/endpoint_l.png';
+				else
+					return '/public/images/endpoint.png';					
+			}
+        }
 
 	}]);
 })(meister);
