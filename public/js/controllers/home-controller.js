@@ -388,9 +388,13 @@
 	        $scope.nodeSelected = node;
 	        if(node.source.STYLES && node.source.STYLES.length>0){
 	        	console.log("Styles",node.source.STYLES);
-	        	$scope.styles = node.children;
-	        	$scope.styleSelected = node.children[0];
-	        	$scope.styleSelected.parent = node;
+	        	$scope.styles = _.filter(node.children,function(n){
+	        		return n.DIRECTION =="O";
+	        	} );
+	        	if($scope.styles.length>0){
+	        		$scope.styleSelected = $scope.styles[0];
+	        	    $scope.styleSelected.parent = node;
+	        	}	        	
 	        }
 	        
 	        if($scope.nodeSelected.source.hasOwnProperty("JSON")){
@@ -733,9 +737,13 @@
 	     	$scope.nodeSelected = node;
 	        if(node.source.STYLES && node.source.STYLES.length>0){
 	        	console.log("Styles",node.source.STYLES);
-	        	$scope.styles = node.children;
-	        	$scope.styleSelected = node.children[0];
-	        	$scope.styleSelected.parent = node;
+	        	$scope.styles = _.filter(node.children,function(n){
+	        		return n.source.DIRECTION =="O";
+	        	} );
+	        	if($scope.styles.length>0){
+	        		$scope.styleSelected = $scope.styles[0];
+	        	    $scope.styleSelected.parent = node;
+	        	}	 
 	        }
 	    });
 
