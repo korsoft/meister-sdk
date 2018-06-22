@@ -1,7 +1,7 @@
 (function(app) {
 	app.controller('HomeController', ['$scope','$rootScope','$mdMenu','$mdToast','$mdDialog','MessageUtil',
-		'GatewayService','$filter','$window','GatewayClientService',
-		function($scope, $rootScope, $mdMenu, $mdToast,$mdDialog,MessageUtil,GatewayService,$filter,$window,GatewayClientService) {
+		'GatewayService','$filter','$window','GatewayClientService','$timeout',
+		function($scope, $rootScope, $mdMenu, $mdToast,$mdDialog,MessageUtil,GatewayService,$filter,$window,GatewayClientService,$timeout) {
 
 		$scope.promise = null;
 		$scope.gateways = [];
@@ -41,9 +41,9 @@
 		$scope.tree_collapsible = false;
 
 		$scope.url_details = "";
-
-		$scope.current_long_text="";
-		$scope.current_description="";
+        $scope.edit={};
+		$scope.edit.current_long_text="";
+		$scope.edit.current_description="";
 
 
 		$scope.style_template = {};
@@ -254,21 +254,8 @@
 						    }
 							endpoints_names.push(endpoint.NAMESPACE);
 							endpoints_main.push(endpoint.ENDPOINT_MAIN);
-							var icon = "";
-							//console.log("endpoint",endpoint);
-							if(endpoint.LOCKED && endpoint.LOCKED==="X")
-							{
-								if(endpoint.TYPE == "L")
-									icon = '/public/images/dendpoint_l.png';
-								else
-									icon = '/public/images/dendpoint.png';
-							}else{
-								if(endpoint.TYPE == "L")
-									icon = '/public/images/endpoint_l.png';
-								else
-									icon = '/public/images/endpoint.png';
-								
-							}
+							var icon = imageEndpoint(endpoint);
+							
 							var endpointItem = {
 								name: endpoint.NAMESPACE,
 								source: endpoint,
@@ -659,7 +646,9 @@
 	                function(result){
 	                  console.log("result",result);
 	                  MessageUtil.showInfo("Endpoint locked");
-	                  $scope.executeGateway();
+	                  obj.node.source.LOCKED="X";
+	                  obj.node.image = imageEndpoint(obj.node.source);
+	                  obj.node.is_lock=true;
 	                  },
 	                function(error){
 	                  console.log("error",error);
@@ -694,7 +683,8 @@
 	                function(result){
 	                  console.log("result",result);
 	                  MessageUtil.showInfo("Endpoint unlocked");
-	                  $scope.executeGateway();
+	                  obj.node.source.LOCKED="";
+	                  obj.node.image = imageEndpoint(obj.node.source);
 	                  },
 	                function(error){
 	                  console.log("error",error);
@@ -1101,12 +1091,18 @@
         }
         
         $scope.editLongText = function(node,index){
-        	$scope.current_long_text= node.source.LONG_TEXT;
+        	if(node.source.LOCKED)
+        		return;
+        	$scope.edit.current_long_text= node.source.LONG_TEXT;
         	node.source["LONG_TEXT"+index]={"$edit":true};
+
+        	$timeout(function(){
+        		$window.document.getElementById('elementF').focus();
+        	});        
         }
 
         $scope.cancelLongText = function(node,index){
-        	node.source["LONG_TEXT"+index]={"$edit":false};
+        	delete node.source["LONG_TEXT"+index];
         }
 
         $scope.saveLongText = function(node,index,current_long_text){
@@ -1124,8 +1120,7 @@
 	        $scope.promise.then(
 	                function(result){
 	                  console.log("result",result);
-	                 // MessageUtil.showInfo("Endpoint deleted");
-	               //   $scope.executeGateway();
+	                  
 	                  },
 	                function(error){
 	                  console.log("error",error);
@@ -1136,8 +1131,11 @@
 
 
         $scope.editDescription = function(node){
-        	$scope.current_description= node.source.DESCRIPTION;
+        	$scope.edit.current_description= node.source.DESCRIPTION;
         	node.$edit=true;
+        	$timeout(function(){
+        		$window.document.getElementById('elementF').focus();
+        	});        	
         }
 
         $scope.cancelDescription = function(node,index){
@@ -1159,9 +1157,9 @@
 			$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	        $scope.promise.then(
 	                function(result){
-	                  console.log("result",result);
-	                 // MessageUtil.showInfo("Endpoint deleted");
-	               //   $scope.executeGateway();
+	                   console.log("result",result);
+	                   node.name = current_description;
+	               
 	                  },
 	                function(error){
 	                  console.log("error",error);
@@ -1170,6 +1168,20 @@
 	              );
         }
         
+        var imageEndpoint = function(e){
+        	if(e.LOCKED && e.LOCKED==="X")
+			{
+				if(e.TYPE == "L")
+					return '/public/images/dendpoint_l.png';
+				else
+					return '/public/images/dendpoint.png';
+			}else{
+				if(e.TYPE == "L")
+					return '/public/images/endpoint_l.png';
+				else
+					return '/public/images/endpoint.png';					
+			}
+        }
 
 	}]);
 })(meister);
