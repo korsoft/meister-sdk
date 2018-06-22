@@ -43,8 +43,10 @@
 		$scope.url_details = "";
 
 		$scope.current_long_text="";
+		$scope.current_description="";
 
 
+		$scope.style_template = {};
 		$scope.client = {};
 		var endpoints_names=[];
 		var endpoints_main=[];
@@ -149,27 +151,30 @@
 					 /************************
 					  * Data Style Simulator
 					  */
-					 var style_template= {
-							 name: "Style Library",
+					 $scope.style_template= {
+							name: "Style Library",
 					 		image: '/public/images/template.png',
-					 		type: "style_template",
+					 		type: "STYLE_TEMPLATE_PARENT",
+					 		parent: node,
 					 		children: []
 					 }
 					 
 					 _.forEach(node.STYLE_LIB, function(styleSrc){
+					 	var name = styleSrc.DESCRIPTION.length==0 ? 
+					 	    styleSrc.PKY : styleSrc.DESCRIPTION;
 						 var style = {
-							name:styleSrc.PKY,
+							name:name,
 							source:styleSrc,
 							type: "style_template",
 							image: '/public/images/style_template.png',
 							is_deleted:  styleSrc.LOGICAL_DELETE,
-							parent: style_template
+							parent: $scope.style_template
 						 }
-						 style_template.children.push(style);
+						 $scope.style_template.children.push(style);
 					});
 					 
 					 
-					nodeItem.children.push(style_template);
+					nodeItem.children.push($scope.style_template);
 					if(nodeItem.is_deleted){
 						deletedProjects.children.push(nodeItem);
 						if(deletedProjects.children.length==1){
@@ -373,28 +378,69 @@
 	        }
 	    });
 
+	    
+
 	     $scope.$on('action-node-selected', function (e, obj) {
 	        console.log("action-node-selected",obj);
 	        if(obj.actionName === "addModule")
 	        	$scope.addModule(obj.sourceEvent,obj.node);
 	        else if(obj.actionName == "addEndpoint")
 	        	$scope.addEndpoint(obj.sourceEvent,obj.node);
-	        else if(obj.actionName == "addStyle")
-	        	$scope.addStyle(obj.sourceEvent,obj.node);
+	        else if(obj.actionName == "add_style_lib")
+	        	$scope.addStyle(obj.sourceEvent,obj.node.parent);
 	        else if(obj.actionName == "execute")
 	        	$scope.execute(obj.sourceEvent,obj.node);
 	        else if(obj.actionName == "execute_by_style")
 	        	$scope.execute_by_style(obj.sourceEvent,obj.node);
+
     	});
 
-	    $scope.$on('undelete-node-style-selected', function (e, obj) {
-	        console.log("undelete-node-selected",obj);
-	        obj.node.is_deleted=false;
+	    $scope.$on('undelete-style-lib', function (e, obj) {
+	        
+            var json_to_send =  GatewayService.buildJsonByNewStyleTemplate($scope.json, obj.node.parent.parent, obj.node.source);
+          
+            var params = {
+             json: JSON.stringify(json_to_send),
+             SDK_HINT:"RLD"
+            };
+
+            $scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
+            
+            $scope.promise.then(
+	                function(result){
+	                  console.log("result",result);
+	                  MessageUtil.showInfo("Style un-deleted");
+	                  $scope.executeGateway();
+	                  },
+	                function(error){
+	                  console.log("error",error);
+	                  MessageUtil.showError(error.data.message);
+	                }
+	              );
+         
     	});
 
-    	$scope.$on('delete-node-style-selected', function (e, obj) {
-	        console.log("delete-node-selected",obj);
-	        obj.node.is_deleted=true;
+    	$scope.$on('delete-style-lib', function (e, obj) {
+	       var json_to_send =  GatewayService.buildJsonByNewStyleTemplate($scope.json, obj.node.parent.parent, obj.node.source);
+          
+            var params = {
+             json: JSON.stringify(json_to_send),
+             SDK_HINT:"SLD"
+            };
+
+            $scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
+            
+            $scope.promise.then(
+	                function(result){
+	                  console.log("result",result);
+	                  MessageUtil.showInfo("Style deleted");
+	                  $scope.executeGateway();
+	                  },
+	                function(error){
+	                  console.log("error",error);
+	                  MessageUtil.showError(error.data.message);
+	                }
+	              );
 	        
     	});
 
@@ -659,7 +705,8 @@
                  gateway: $scope.gatewaySelected,
                  json: $scope.json,
                  endpoints_names: endpoints_names,
-                 endpoints_main: endpoints_main
+                 endpoints_main: endpoints_main,
+                 style_library: $scope.style_template
                }
               })
               .then(function(result) {
@@ -957,7 +1004,42 @@
 	            SDK_HINT:"ELT"
 	        };
 			$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
-	        node.source["LONG_TEXT"+index]={"$edit":false};  
+	        $scope.promise.then(
+	                function(result){
+	                  console.log("result",result);
+	                 // MessageUtil.showInfo("Endpoint deleted");
+	               //   $scope.executeGateway();
+	                  },
+	                function(error){
+	                  console.log("error",error);
+	                  MessageUtil.showError(error.data.message);
+	                }
+	              );
+        }
+
+
+        $scope.editDescription = function(node){
+        	$scope.current_description= node.source.DESCRIPTION;
+        	node.$edit=true;
+        }
+
+        $scope.cancelDescription = function(node,index){
+        	node.$edit=false;
+        }
+
+        $scope.saveDescription = function(node,current_description){
+        	console.log(node);
+        	node.source.DESCRIPTION = current_description;
+
+        	delete node["$edit"];
+        	var json_to_send =  GatewayService.buildJsonByNewStyleTemplate($scope.json, node.parent.parent, node.source);
+          
+            console.log("json_to_send",json_to_send);
+	        var params = {
+	            json: angular.toJson(json_to_send),
+	            SDK_HINT:"ELT"
+	        };
+			$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	        $scope.promise.then(
 	                function(result){
 	                  console.log("result",result);

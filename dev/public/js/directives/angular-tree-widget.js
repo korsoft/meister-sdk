@@ -205,9 +205,16 @@
                 + '     <md-icon ng-bind="\'file_copy\'"></md-icon> Copy'
                 + '  </md-button>'
                 + '</md-menu-item>'
+                + '<md-menu-item ng-if="node  && node.type && node.type==\'STYLE_TEMPLATE_PARENT\' ">'
+                + ' <md-button'
+                + '      ng-click="emitActionNodeSelected(\'add_style_lib\',node,$event)" '
+                + ' >'
+                + '     <md-icon ng-bind="\'note_add\'"></md-icon> Add style'
+                + '  </md-button>'
+                + '</md-menu-item>'
                 + '<md-menu-item ng-if="node  && node.type && node.type==\'style_template\' && !node.is_deleted && canBeDeleted(node) && $root.isMeisterUser(node)">'
                 + ' <md-button'
-                + '      ng-click="emitDeleteStyleLibSelected(\'delete_style_lib_\',node,$event)" '
+                + '      ng-click="emitDeleteStyleLibSelected(\'delete_style_lib_selected\',node,$event)" '
                 + ' >'
                 + '     <md-icon ng-bind="\'delete\'"></md-icon> Delete'
                 + '  </md-button>'
@@ -364,10 +371,13 @@
                         }
 
                         scope.showMenu = function (node) {
-                            if(!node.parent)
-                                return false;
 
-                           
+
+                            if(node.type=="STYLE_TEMPLATE_PARENT")
+                                return true
+                            
+                            if(!node.parent)
+                                return false;                           
 
                             if(node.parent.source && node.parent.source.STYLES){
                                 return false;

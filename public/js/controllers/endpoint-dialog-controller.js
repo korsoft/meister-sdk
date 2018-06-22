@@ -1,7 +1,7 @@
 (function(app) {
 	app.controller('EndpointDialogController',
-    ['$scope','$mdDialog','endpoint','parentNode','gateway','json','GatewayService','MessageUtil','endpoints_names','endpoints_main',
-    function ($scope, $mdDialog, endpoint, parentNode, gateway,json, GatewayService, MessageUtil,endpoints_names,endpoints_main) {
+    ['$scope','$mdDialog','endpoint','parentNode','gateway','json','GatewayService','MessageUtil','endpoints_names','endpoints_main','style_library',
+    function ($scope, $mdDialog, endpoint, parentNode, gateway,json, GatewayService, MessageUtil,endpoints_names,endpoints_main,style_library) {
         $scope.endpoint = {};
         $scope.parentNode = {};
         $scope.page=1;
@@ -9,12 +9,14 @@
         $scope.uniqueName=false;
         $scope.band_i=1;
         $scope.band_o=1;
+        $scope.style_library = angular.copy(style_library);
 
         $scope.promise = null;
          $scope.cancel = function() {
            $mdDialog.cancel();
         };
 
+        console.log("style_library",style_library);
         $scope.$watch('endpoint.NAMESPACE',  function () {
           var band = true;
           $scope.uniqueName=true;
@@ -38,6 +40,10 @@
           });
 
         });
+
+         $scope.format_json = function(style){
+          style.source.$JSON = JSON.stringify(JSON.parse(style.source.JSON),null,"\t");
+        };
 
         $scope.changeJSON=function(e){
           for(var i=0; i<$scope.endpoint.STYLES.length;i++)

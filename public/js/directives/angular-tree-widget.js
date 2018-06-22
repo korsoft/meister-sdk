@@ -371,6 +371,11 @@
                         }
 
                         scope.showMenu = function (node) {
+
+
+                            if(node.type=="STYLE_TEMPLATE_PARENT")
+                                return true
+                            
                            if(!node.parent)
                         	   return true;
                            if((node.parent.source && node.parent.source.STYLES) || 
