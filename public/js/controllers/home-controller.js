@@ -378,10 +378,10 @@
 	        	$scope.styles = _.filter(node.children,function(n){
 	        		return n.DIRECTION =="O";
 	        	} );
-	        	if($scope.styles.length>0){
+	        	/*if($scope.styles.length>0){
 	        		$scope.styleSelected = $scope.styles[0];
 	        	    $scope.styleSelected.parent = node;
-	        	}	        	
+	        	}*/	        	
 	        }
 	        
 	        if($scope.nodeSelected.source.hasOwnProperty("JSON")){
@@ -738,10 +738,10 @@
 	        	$scope.styles = _.filter(node.children,function(n){
 	        		return n.source.DIRECTION =="O";
 	        	} );
-	        	if($scope.styles.length>0){
+	        	/*if($scope.styles.length>0){
 	        		$scope.styleSelected = $scope.styles[0];
 	        	    $scope.styleSelected.parent = node;
-	        	}	 
+	        	}*/	 
 	        }
 	    });
 
@@ -871,16 +871,17 @@
 			$scope.payload_json = {};
 			$scope.json_logs_executes_title=null;
 			$scope.mode_run = true;
-			if($scope.styleSelected){
+			/*if($scope.styleSelected){
+				console.log("Style selected",$scope.styleSelected);
 				params.style = $scope.styleSelected.name
-			}
+			}*/
 			if($scope.client.id){
 				params.client_number = $scope.client.sap_number;
 			}
 
-			if($scope.styleSelected)
+			/*if($scope.styleSelected)
 				node = $scope.styleSelected.parent;
-			else
+			else*/
 				node = $scope.nodeSelected;
 
 			$scope.styleSelected = null;
@@ -1037,6 +1038,7 @@
 		};
 
 		$scope.changeJsonLogExecute = function(log){
+			console.log("changeJsonLogExecute",log);
 			var item_selected = _.find($scope.json_logs_executes,function(i){return i.title === log});
 			if(item_selected){
 				$scope.nodeSelected =item_selected.nodeSelected;
