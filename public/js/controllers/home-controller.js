@@ -875,7 +875,7 @@
 		
 			var params = {"endpoint":node.name};
 			var node={};
-			$scope.payload_json = {};
+			$scope.payload_json = {json: null, options: {mode: 'tree'}};
 			$scope.json_logs_executes_title=null;
 			$scope.mode_run = true;
 			/*if($scope.styleSelected){
