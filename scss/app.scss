@@ -197,3 +197,58 @@ footer a:hover {
 }
 
 
+.tree,
+.tree ul {
+  margin:0 0 0 1em; /* indentation */
+  padding:0;
+  list-style:none;
+  color:#1f1f1f;
+  position:relative;
+}
+
+.tree ul {margin-left:.5em} 
+
+.tree:before,
+.tree ul:before {
+  content:"";
+  display:block;
+  width:0;
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  border-left:2px dotted #cccccc;
+}
+
+.tree li {
+  margin:0;
+  padding:0 12px;  /*indentation + .5em */
+  line-height:2em; /* default list item's `line-height` */
+  font-weight:bold;
+  position:relative;
+}
+
+.tree li:before {
+  content:"";
+  display:block;
+  width:10px; /* same with indentation */
+  height:0;
+  border-top:2px dotted #cccccc;
+  margin-top:-1px; /* border top width */
+  position:absolute;
+  top:1em; /* (line-height/2) */
+  left:0;
+}
+
+.tree li:last-child:before {
+  background:#fff; /* same with body background */
+  height:auto;
+  top:1em; /* (line-height/2) */
+  bottom:0;
+}
+
+.original-tree ul:first-child:before {
+	border-left:2px dotted #cccccc;
+}
+
+
