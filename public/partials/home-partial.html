@@ -151,7 +151,7 @@
             </div>
           </md-card-title-text>
         <md-actions>
-          <md-button class="md-icon-button" aria-label="Refresh" title="Show Tree"
+          <md-button class="md-icon-button" aria-label="Refresh" title="Show"
                       ng-click="show_tree_execute()" style="padding: 0px; margin: 0px; width: 22px">
                      <md-icon ng-bind="'navigate_next'"></md-icon>
                   </md-button>
@@ -162,7 +162,7 @@
       </md-card>
   </div>
     
-    <div flex-xs flex-gt-xs="{{sizeView()}}" layout="column" ng-show="nodeSelected" ng-if="!tree_collapsible_execute">
+    <div flex-xs flex-gt-xs="{{sizeView()}}" layout="column" ng-show="nodeSelected && !tree_collapsible_execute" >
 
       <md-card style="height: 700px"  ng-if="!mode_run">
         <md-card-title style="-webkit-flex:none;padding-bottom: 23px;">
@@ -178,7 +178,7 @@
                           <th md-column style="width: 100px">Property</th>
                           <th md-column>Value</th>
                           <th md-column style="width: 50px"> 
-                            <md-button hide-xs class="md-icon-button" aria-label="Refresh" title="Hide Tree"
+                            <md-button hide-xs class="md-icon-button" aria-label="Refresh" title="Hide Properties"
                                 ng-click="hide_tree_execute()" style="padding: 0px; margin: 0px; width: 22px">
                                <md-icon ng-bind="'navigate_before'"></md-icon>
                             </md-button>
@@ -250,7 +250,7 @@
             <md-button class="md-raised"  ng-if="payload_json.json" ng-disabled="!payload_json.json_test" ng-click="execute_details($event)" >
               Execute Call
             </md-button>
-            <md-button hide-xs class="md-icon-button" aria-label="Refresh" title="Hide Tree"
+            <md-button hide-xs class="md-icon-button" aria-label="Refresh" title="Hide Syntax"
                       ng-click="hide_tree_execute()" style="padding: 0px; margin: 0px; width: 22px">
                      <md-icon ng-bind="'navigate_before'"></md-icon>
             </md-button>
