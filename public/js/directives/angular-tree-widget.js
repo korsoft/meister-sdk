@@ -80,7 +80,7 @@
             return {
                 restrict: "E",
                 scope: { nodes: '=', tree: '=', options: '=?' },
-                template: '<ul class="tree" oncontextmenu="return false" >'
+                template: '<ul ng-class="{\'tree\':nodes[0].parent,\'special-tree\':!nodes[0].parent}" oncontextmenu="return false" >'
                 + '<li ng-repeat="node in nodes | nodeFilter:options.filter track by node.nodeId"class="node" id="{{::node.nodeId}}">'
                 + '<i class="tree-node-ico pointer" ng-if="node.children && node.children.length>0" ng-class="{\'tree-node-expanded\': node.expanded && (node.children | nodeFilter:options.filter).length > 0,\'tree-node-collapsed\':!node.expanded && (node.children | nodeFilter:options.filter).length > 0}" ng-click="toggleNode(node)"></i>'
                 + '<span class="node-title pointer" ng-click="selectNode(node, $event)" ng-class="{\'disabled\':node.disabled}">'
