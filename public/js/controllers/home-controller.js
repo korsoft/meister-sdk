@@ -1,7 +1,7 @@
 (function(app) {
 	app.controller('HomeController', ['$scope','$rootScope','$mdMenu','$mdToast','$mdDialog','MessageUtil',
-		'GatewayService','$filter','$window','GatewayClientService',
-		function($scope, $rootScope, $mdMenu, $mdToast,$mdDialog,MessageUtil,GatewayService,$filter,$window,GatewayClientService) {
+		'GatewayService','$filter','$window','GatewayClientService','$timeout',
+		function($scope, $rootScope, $mdMenu, $mdToast,$mdDialog,MessageUtil,GatewayService,$filter,$window,GatewayClientService,$timeout) {
 
 		$scope.promise = null;
 		$scope.gateways = [];
@@ -39,11 +39,12 @@
 		$scope.json_logs_executes_content_obj = null;
 
 		$scope.tree_collapsible = false;
+		$scope.tree_collapsible_execute =  false;
 
 		$scope.url_details = "";
-
-		$scope.current_long_text="";
-		$scope.current_description="";
+        $scope.edit={};
+		$scope.edit.current_long_text="";
+		$scope.edit.current_description="";
 
 
 		$scope.style_template = {};
@@ -68,6 +69,14 @@
 
 		$scope.show_tree = function(){
 			$scope.tree_collapsible = false;
+		}
+
+		$scope.hide_tree_execute = function(){
+			$scope.tree_collapsible_execute = true;
+		}
+
+		$scope.show_tree_execute = function(){
+			$scope.tree_collapsible_execute = false;
 		}
 
 		$scope.mode_run = false;
@@ -138,7 +147,7 @@
 				    	&& !isMeister){
 				    	return;
 				    }	
-
+				   
 					var nodeItem = {
 						name:node.PROJECT,
 						source:node,
@@ -158,10 +167,21 @@
 					 		parent: node,
 					 		children: []
 					 }
+
+					 var deletedStyle_template={
+							name:"Logically Deleted",
+							source:nodeItem,
+							image: '/public/images/trash.png',
+							disabled:true,
+							parent:node,
+							is_deleted:"",
+							children:[]
+						};		
 					 
 					 _.forEach(node.STYLE_LIB, function(styleSrc){
 					 	var name = styleSrc.DESCRIPTION.length==0 ? 
 					 	    styleSrc.PKY : styleSrc.DESCRIPTION;
+					 	
 						 var style = {
 							name:name,
 							source:styleSrc,
@@ -170,7 +190,16 @@
 							is_deleted:  styleSrc.LOGICAL_DELETE,
 							parent: style_template
 						 }
-						 style_template.children.push(style);
+
+						if(style.is_deleted){
+						    deletedStyle_template.children.push(style);
+							if(deletedStyle_template.children.length==1){
+	                          style_template.children.unshift(deletedStyle_template);
+							}
+						}else{
+							style_template.children.push(style);
+						}
+						 
 					});
 					 
 					 
@@ -234,21 +263,8 @@
 						    }
 							endpoints_names.push(endpoint.NAMESPACE);
 							endpoints_main.push(endpoint.ENDPOINT_MAIN);
-							var icon = "";
-							//console.log("endpoint",endpoint);
-							if(endpoint.LOCKED && endpoint.LOCKED==="X")
-							{
-								if(endpoint.TYPE == "L")
-									icon = '/public/images/dendpoint_l.png';
-								else
-									icon = '/public/images/dendpoint.png';
-							}else{
-								if(endpoint.TYPE == "L")
-									icon = '/public/images/endpoint_l.png';
-								else
-									icon = '/public/images/endpoint.png';
-								
-							}
+							var icon = imageEndpoint(endpoint);
+							
 							var endpointItem = {
 								name: endpoint.NAMESPACE,
 								source: endpoint,
@@ -368,11 +384,15 @@
 	        $scope.nodeSelected = node;
 	        if(node.source.STYLES && node.source.STYLES.length>0){
 	        	console.log("Styles",node.source.STYLES);
-	        	$scope.styles = node.children;
-	        	$scope.styleSelected = node.children[0];
-	        	$scope.styleSelected.parent = node;
+	        	$scope.styles = _.filter(node.children,function(n){
+	        		return n.DIRECTION =="O";
+	        	} );
+	        	/*if($scope.styles.length>0){
+	        		$scope.styleSelected = $scope.styles[0];
+	        	    $scope.styleSelected.parent = node;
+	        	}*/	        	
 	        }
-	        
+	        $scope.clear_log_json_result();
 	        if($scope.nodeSelected.source.hasOwnProperty("JSON")){
 	        	$scope.json_global_string=JSON.stringify(JSON.parse($scope.nodeSelected.source.JSON),null,"\t");
 	        }
@@ -499,6 +519,10 @@
 	              );
     	});
 
+    	$scope.formatKey = function(key){
+    		var keyFormat = key.replace("_"," ");
+    		return keyFormat.charAt(0).toUpperCase() + keyFormat.slice(1).toLowerCase();
+    	};
 
 		$scope.$on('undelete-project-selected', function (e, obj) {
 	        console.log("undelete-project-selected",obj);
@@ -559,6 +583,8 @@
     	$scope.$on('undelete-endpoint-deleted', function (e, obj) {
 	        console.log("undelete-endpoint-deleted",obj);
 	        var json_to_send =  GatewayService.buildJsonByNewEndpoint($scope.json, obj.node.parent.source, obj.node.source);
+          	//if(json_to_send.MODULES[0].ENDPOINTS[0].STYLES.length==0)
+          	delete json_to_send.MODULES[0].ENDPOINTS[0].STYLES;
           	console.log("json_to_send",json_to_send);
 	          var params = {
 	            json: angular.toJson(json_to_send),
@@ -583,7 +609,8 @@
     	$scope.$on('delete-endpoint-deleted', function (e, obj) {
 	        console.log("delete-endpoint-deleted",obj);
 	        var json_to_send =  GatewayService.buildJsonByNewEndpoint($scope.json, obj.node.parent.source, obj.node.source);
-          	//json_to_send.MODULES[0].ENDPOINTS[0].STYLES = [];
+          	//if(json_to_send.MODULES[0].ENDPOINTS[0].STYLES.length==0)
+          	delete json_to_send.MODULES[0].ENDPOINTS[0].STYLES;
           	
              console.log("json_to_send",json_to_send);
 	          var params = {
@@ -610,7 +637,9 @@
 	        console.log("lock-endpoint",obj);
 	        
 	        var json_to_send =  GatewayService.buildJsonByNewEndpoint($scope.json, obj.node.parent.source, obj.node.source);
-          	//json_to_send.MODULES[0].ENDPOINTS[0].STYLES = [];
+          	
+	        //if(json_to_send.MODULES[0].ENDPOINTS[0].STYLES.length==0)
+          	delete json_to_send.MODULES[0].ENDPOINTS[0].STYLES;
           	
              console.log("json_to_send",json_to_send);
 	          var params = {
@@ -626,7 +655,9 @@
 	                function(result){
 	                  console.log("result",result);
 	                  MessageUtil.showInfo("Endpoint locked");
-	                  $scope.executeGateway();
+	                  obj.node.source.LOCKED="X";
+	                  obj.node.image = imageEndpoint(obj.node.source);
+	                  obj.node.is_lock=true;
 	                  },
 	                function(error){
 	                  console.log("error",error);
@@ -642,8 +673,11 @@
 	        obj.node.is_lock=false;
 
 	        var json_to_send =  GatewayService.buildJsonByNewEndpoint($scope.json, obj.node.parent.source, obj.node.source);
-          	delete json_to_send.MODULES[0].ENDPOINTS[0].STYLES;
+          	//json_to_send.MODULES[0].ENDPOINTS[0].STYLES = [];
           	
+          	 //if(json_to_send.MODULES[0].ENDPOINTS[0].STYLES.length==0)
+          	delete json_to_send.MODULES[0].ENDPOINTS[0].STYLES;
+
              console.log("json_to_send",json_to_send);
 	          var params = {
 	            json: angular.toJson(json_to_send),
@@ -658,7 +692,8 @@
 	                function(result){
 	                  console.log("result",result);
 	                  MessageUtil.showInfo("Endpoint unlocked");
-	                  $scope.executeGateway();
+	                  obj.node.source.LOCKED="";
+	                  obj.node.image = imageEndpoint(obj.node.source);
 	                  },
 	                function(error){
 	                  console.log("error",error);
@@ -709,9 +744,13 @@
 	     	$scope.nodeSelected = node;
 	        if(node.source.STYLES && node.source.STYLES.length>0){
 	        	console.log("Styles",node.source.STYLES);
-	        	$scope.styles = node.children;
-	        	$scope.styleSelected = node.children[0];
-	        	$scope.styleSelected.parent = node;
+	        	$scope.styles = _.filter(node.children,function(n){
+	        		return n.source.DIRECTION =="O";
+	        	} );
+	        	/*if($scope.styles.length>0){
+	        		$scope.styleSelected = $scope.styles[0];
+	        	    $scope.styleSelected.parent = node;
+	        	}*/	 
 	        }
 	    });
 
@@ -841,16 +880,17 @@
 			$scope.payload_json = {};
 			$scope.json_logs_executes_title=null;
 			$scope.mode_run = true;
-			if($scope.styleSelected){
+			/*if($scope.styleSelected){
+				console.log("Style selected",$scope.styleSelected);
 				params.style = $scope.styleSelected.name
-			}
+			}*/
 			if($scope.client.id){
 				params.client_number = $scope.client.sap_number;
 			}
 
-			if($scope.styleSelected)
+			/*if($scope.styleSelected)
 				node = $scope.styleSelected.parent;
-			else
+			else*/
 				node = $scope.nodeSelected;
 
 			$scope.styleSelected = null;
@@ -1007,6 +1047,7 @@
 		};
 
 		$scope.changeJsonLogExecute = function(log){
+			console.log("changeJsonLogExecute",log);
 			var item_selected = _.find($scope.json_logs_executes,function(i){return i.title === log});
 			if(item_selected){
 				$scope.nodeSelected =item_selected.nodeSelected;
@@ -1061,20 +1102,26 @@
         }
         
         $scope.editLongText = function(node,index){
-        	$scope.current_long_text= node.source.LONG_TEXT;
+        	if(node.source.LOCKED)
+        		return;
+        	$scope.edit.current_long_text= node.source.LONG_TEXT;
         	node.source["LONG_TEXT"+index]={"$edit":true};
+
+        	$timeout(function(){
+        		$window.document.getElementById('elementF').focus();
+        	});        
         }
 
         $scope.cancelLongText = function(node,index){
-        	node.source["LONG_TEXT"+index]={"$edit":false};
+        	delete node.source["LONG_TEXT"+index];
         }
 
         $scope.saveLongText = function(node,index,current_long_text){
-        	console.log(current_long_text);
+        	var original=node.source.LONG_TEXT;
         	node.source.LONG_TEXT = current_long_text;
         	delete node.source["LONG_TEXT"+index];
         	var json_to_send =  GatewayService.buildJsonByNewEndpoint($scope.json, node.parent.source, node.source);
-          
+            delete json_to_send.MODULES[0].ENDPOINTS[0].STYLES;
             console.log("json_to_send",json_to_send);
 	        var params = {
 	            json: angular.toJson(json_to_send),
@@ -1084,11 +1131,11 @@
 	        $scope.promise.then(
 	                function(result){
 	                  console.log("result",result);
-	                 // MessageUtil.showInfo("Endpoint deleted");
-	               //   $scope.executeGateway();
+	                  
 	                  },
 	                function(error){
 	                  console.log("error",error);
+	                  node.source.LONG_TEXT=original;
 	                  MessageUtil.showError(error.data.message);
 	                }
 	              );
@@ -1096,8 +1143,11 @@
 
 
         $scope.editDescription = function(node){
-        	$scope.current_description= node.source.DESCRIPTION;
+        	$scope.edit.current_description= node.source.DESCRIPTION;
         	node.$edit=true;
+        	$timeout(function(){
+        		$window.document.getElementById('elementF').focus();
+        	});        	
         }
 
         $scope.cancelDescription = function(node,index){
@@ -1105,7 +1155,7 @@
         }
 
         $scope.saveDescription = function(node,current_description){
-        	console.log(node);
+        	var original = node.source.DESCRIPTION;
         	node.source.DESCRIPTION = current_description;
 
         	delete node["$edit"];
@@ -1119,17 +1169,54 @@
 			$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	        $scope.promise.then(
 	                function(result){
-	                  console.log("result",result);
-	                 // MessageUtil.showInfo("Endpoint deleted");
-	               //   $scope.executeGateway();
+	                   console.log("result",result);
+	                   node.name = current_description;
+	               
 	                  },
 	                function(error){
 	                  console.log("error",error);
+	                  node.source.DESCRIPTION = original;
 	                  MessageUtil.showError(error.data.message);
 	                }
 	              );
         }
         
+        var imageEndpoint = function(e){
+        	if(e.LOCKED && e.LOCKED==="X")
+			{
+				if(e.TYPE == "L")
+					return '/public/images/dendpoint_l.png';
+				else
+					return '/public/images/dendpoint.png';
+			}else{
+				if(e.TYPE == "L")
+					return '/public/images/endpoint_l.png';
+				else
+					return '/public/images/endpoint.png';					
+			}
+        }
+
+        $scope.sizeView = function(){
+        	if(!$scope.mode_run || $scope.json_logs.length==0 ){
+        		return $scope.tree_collapsible ? 95 : 70;
+        	}else{
+        		return $scope.tree_collapsible ? 45 : 35;
+        	}
+
+        }
+
+        $scope.sizeViewExecute = function(){
+        	if($scope.tree_collapsible && $scope.tree_collapsible_execute ){
+        		return 90;
+        	}else if($scope.tree_collapsible && !$scope.tree_collapsible_execute ) {
+        		return 50;
+        	}if(!$scope.tree_collapsible && $scope.tree_collapsible_execute){
+                return 70;
+        	}else{
+                return 35;
+        	}
+
+        }
 
 	}]);
 })(meister);

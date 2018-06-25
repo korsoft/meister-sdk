@@ -169,7 +169,7 @@
                 + '     <md-icon ng-bind="\'send\'"></md-icon> Execute'
                 + '  </md-button>'
                 + '         </md-menu-item>'
-                + '         <md-menu-item ng-if="node && node.parent && node.source.STYLES && !node.is_deleted && $root.isMeisterUser(node) && node.source.LOCKED && node.source.LOCKED!==\'X\'">'
+                + '         <md-menu-item ng-if="node && node.parent && node.source.STYLES && !node.is_deleted && $root.isMeisterUser(node)">'
                 + ' <md-button  '
                 + '      ng-click="emitDeleteEndPointSelected(\'delete_endpoint_deleted\',node,$event)" '
                 + ' >'
@@ -190,14 +190,6 @@
                 + '     <md-icon ng-bind="\'delete\'"></md-icon> Delete'
                 + '  </md-button>'
                 + '</md-menu-item>'
-                + '         <md-menu-item ng-if="node.parent && !node.source.MODULES && !node.source.ENDPOINTS && !node.source.STYLES && node.is_deleted && $root.isMeisterUser(node)">'
-                + ' <md-button  '
-                + '      ng-click="emitUndeleteStyleSelected(\'undeleting_node\',node,$event)" '
-                + ' >'
-                + '     <md-icon ng-bind="\'restore_from_trash\'""></md-icon> Undelete'
-                + '  </md-button>'
-                + '         </md-menu-item>'
-                + '</md-menu-item>'
                 + '<md-menu-item ng-if="node  && node.type && node.type==\'STYLE_TEMPLATE_PARENT\' ">'
                 + ' <md-button'
                 + '      ng-click="emitActionNodeSelected(\'add_style_lib\',node,$event)" '
@@ -207,7 +199,7 @@
                 + '</md-menu-item>'
                 + '<md-menu-item ng-if="node && node.parent && node.type && node.type==\'style_template\' && !node.is_deleted && canBeDeleted(node) && $root.isMeisterUser(node)">'
                 + ' <md-button'
-                + '      ng-click="emitDeleteStyleLibSelected(\'delete_style_lib_\',node,$event)" '
+                + '      ng-click="emitDeleteStyleLibSelected(\'delete_style_lib_selected\',node,$event)" '
                 + ' >'
                 + '     <md-icon ng-bind="\'delete\'"></md-icon> Delete'
                 + '  </md-button>'
@@ -247,10 +239,6 @@
 
                         scope.emitDeleteStyleSelected = function(actionName,node,event){
                             scope.$emit('delete-node-style-selected', {"actionName":actionName,"node":node,"sourceEvent":event});
-                        }
-
-                        scope.emitUndeleteStyleSelected = function(actionName,node,event){
-                            scope.$emit('undelete-node-style-selected', {"actionName":actionName,"node":node,"sourceEvent":event});
                         }
 
                         scope.emitUndeleteEndPointSelected = function(actionName,node,event){
