@@ -392,7 +392,7 @@
 	        	    $scope.styleSelected.parent = node;
 	        	}*/	        	
 	        }
-	        
+	        $scope.clear_log_json_result();
 	        if($scope.nodeSelected.source.hasOwnProperty("JSON")){
 	        	$scope.json_global_string=JSON.stringify(JSON.parse($scope.nodeSelected.source.JSON),null,"\t");
 	        }
