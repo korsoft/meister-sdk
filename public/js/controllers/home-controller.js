@@ -415,6 +415,10 @@
 
     	});
 
+	     $scope.$on('ondrop-node-style-to-library', function(e, obj){
+	     	console.log("ondrop-node-style-to-library",obj);
+	     });
+
 	    $scope.$on('undelete-style-lib', function (e, obj) {
 	        
             var json_to_send =  GatewayService.buildJsonByNewStyleTemplate($scope.json, obj.node.parent.parent, obj.node.source);

@@ -7,7 +7,7 @@
 (function (angular) {
     'use strict';
 
-    angular.module('TreeWidget', ['ngAnimate', 'RecursionHelper'])
+    angular.module('TreeWidget', ['ngAnimate', 'RecursionHelper','ang-drag-drop'])
         .directive('tree', [  function () {
             return {
                 restrict: "E",
@@ -81,9 +81,9 @@
                 restrict: "E",
                 scope: { nodes: '=', tree: '=', options: '=?' },
                 template: '<ul ng-class="{\'tree\':nodes[0].parent,\'special-tree\':!nodes[0].parent}" oncontextmenu="return false" >'
-                + '<li ng-repeat="node in nodes | nodeFilter:options.filter track by node.nodeId"class="node" id="{{::node.nodeId}}">'
+                + '<li ng-repeat="node in nodes | nodeFilter:options.filter track by node.nodeId"class="node" id="{{::node.nodeId}}" >'
                 + '<i class="tree-node-ico pointer" ng-if="node.children && node.children.length>0" ng-class="{\'tree-node-expanded\': node.expanded && (node.children | nodeFilter:options.filter).length > 0,\'tree-node-collapsed\':!node.expanded && (node.children | nodeFilter:options.filter).length > 0}" ng-click="toggleNode(node)"></i>'
-                + '<span class="node-title pointer" ng-click="selectNode(node, $event)" ng-class="{\'disabled\':node.disabled}">'
+                + '<span class="node-title pointer" ng-click="selectNode(node, $event)" ng-class="{\'disabled\':node.disabled}" ui-draggable="node.parent && !node.type && !node.source.MODULES && !node.source.ENDPOINTS && !node.source.STYLES && !node.is_deleted" drag="node.source" ui-on-Drop="onDrop($event,$data,node)">'
                 + '<span><i class="tree-node-ico" ng-if="options.showIcon" ng-class="{\'tree-node-image\':node.children, \'tree-node-leaf\':!node.children}" ng-style="node.image && {\'background-image\':\'url(\'+node.image+\')\'}"></i>'
                 + '     <span class="node-name" tabindex="{{::(node.focusable ? 0 : -1)}}" ng-class="{selected: node.selected&& !node.disabled}">'
                 + ' <span ng-if="!showMenu(node)">{{node.name}}</span>'
@@ -233,6 +233,13 @@
                             return scope.tree.filter(function (item) { return item.selected; });
                         }
 
+                        scope.onDrop = function($event,$data,node){
+                            console.log("onDrop",$data);
+                            if(node.type=='STYLE_TEMPLATE_PARENT' ){
+                                console.log("it's supported STYLE LIBRARY");
+                                scope.$emit('ondrop-node-style-to-library', {"actionName":'ondrop-node-style-to-library',"library":node,"style":$data,"sourceEvent":$event});
+                            }
+                        }
                         scope.emitActionNodeSelected = function(actionName,node,event){
                             scope.$emit('action-node-selected', {"actionName":actionName,"node":node,"sourceEvent":event});
                         }
