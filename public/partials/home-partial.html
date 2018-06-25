@@ -59,7 +59,7 @@
 
  <md-content layout-xs="column" layout="row" ng-if="gatewaySelected!=null">
   <div flex-xs flex-gt-xs="5" layout="column" ng-if="tree_collapsible">
-    <md-card >
+    <md-card  >
         <md-card-title style="-webkit-flex:none">
           <md-card-title-text>
             <div layout="row">
@@ -77,9 +77,9 @@
        </md-card-content>
       </md-card>
   </div>
- <div id="treeCointaner" flex-xs flex-gt-xs="35" layout="column" ng-if="!tree_collapsible">
+ <div id="treeCointaner" flex-xs flex-gt-xs="30" layout="column" ng-if="!tree_collapsible">
    
-       <md-card >
+       <md-card  style="height: 700px">
         <md-card-title style="-webkit-flex:none">
           <md-card-title-text>
             <div layout="row">
@@ -141,10 +141,30 @@
       </md-card>
    
    </div>
-    
-    <div flex-xs flex-gt-xs="{{tree_collapsible ? 95 : 65}}" layout="column" ng-show="nodeSelected">
 
-      <md-card  ng-if="!mode_run">
+  <div flex-xs flex-gt-xs="5" layout="column" ng-if="tree_collapsible_execute">
+    <md-card >
+        <md-card-title style="-webkit-flex:none">
+          <md-card-title-text>
+            <div layout="row">
+                
+            </div>
+          </md-card-title-text>
+        <md-actions>
+          <md-button class="md-icon-button" aria-label="Refresh" title="Show Tree"
+                      ng-click="show_tree_execute()" style="padding: 0px; margin: 0px; width: 22px">
+                     <md-icon ng-bind="'navigate_next'"></md-icon>
+                  </md-button>
+        </md-actions>
+        <md-card-content>
+        
+       </md-card-content>
+      </md-card>
+  </div>
+    
+    <div flex-xs flex-gt-xs="{{sizeView()}}" layout="column" ng-show="nodeSelected" ng-if="!tree_collapsible_execute">
+
+      <md-card style="height: 700px"  ng-if="!mode_run">
         <md-card-title style="-webkit-flex:none;padding-bottom: 23px;">
           <md-card-title-text>
             <span class="md-headline">Properties</span>
@@ -157,7 +177,12 @@
                       <tr md-row >
                           <th md-column style="width: 100px">Property</th>
                           <th md-column>Value</th>
-                          <th md-column style="width: 50px"></th>
+                          <th md-column style="width: 50px"> 
+                            <md-button hide-xs class="md-icon-button" aria-label="Refresh" title="Hide Tree"
+                                ng-click="hide_tree_execute()" style="padding: 0px; margin: 0px; width: 22px">
+                               <md-icon ng-bind="'navigate_before'"></md-icon>
+                            </md-button>
+                          </th>
                       </tr>
                     </thead>
                     <tbody md-body>
@@ -216,7 +241,7 @@
         </md-card-content>
       </md-card>
 
-      <md-card ng-if="mode_run">
+      <md-card style="height: 700px" ng-if="mode_run">
         <md-card-title style="padding-bottom: 9px;">
           <md-card-title-text>
             <span class="md-headline">Call Syntax with Endpoint</span>
@@ -224,6 +249,10 @@
           <md-actions  ng-if="!loading_tree">
             <md-button class="md-raised"  ng-if="payload_json.json" ng-disabled="!payload_json.json_test" ng-click="execute_details($event)" >
               Execute Call
+            </md-button>
+            <md-button hide-xs class="md-icon-button" aria-label="Refresh" title="Hide Tree"
+                      ng-click="hide_tree_execute()" style="padding: 0px; margin: 0px; width: 22px">
+                     <md-icon ng-bind="'navigate_before'"></md-icon>
             </md-button>
             <!--<md-button class="md-raised">
               Call Details
@@ -302,10 +331,8 @@
       </md-card>
 
    </div>
- </md-content>
-
- <md-content ng-if="mode_run && json_logs.length>0">
-   <md-card >
+   <div flex-xs flex-gt-xs="{{sizeViewExecute()}}" ng-if="mode_run && json_logs.length>0" >
+      <md-card style="height: 700px" >
         <md-card-title>
           <md-card-title-text>
             <span class="md-subheadline">RESULT</span>
@@ -316,7 +343,7 @@
             </md-button>
           </md-actions>
         </md-card-title>
-        <md-card-content  >
+        <md-card-content style="height: 600px" >
           <md-select ng-model="json_logs_title" placeholder="Select the JSON Result" 
             style="width:80%" ng-change="changeJsonLog(json_logs_title)">
              <md-option ng-repeat="g in json_logs" ng-value="g.title">
@@ -337,7 +364,10 @@
           </md-tabs>
         </md-card-content>
       </md-card>
-</md-content>
+   </div>
+ </md-content>
+
+
 </md-content>
 </div>
 
