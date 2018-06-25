@@ -39,6 +39,7 @@
 		$scope.json_logs_executes_content_obj = null;
 
 		$scope.tree_collapsible = false;
+		$scope.tree_collapsible_execute =  false;
 
 		$scope.url_details = "";
         $scope.edit={};
@@ -68,6 +69,14 @@
 
 		$scope.show_tree = function(){
 			$scope.tree_collapsible = false;
+		}
+
+		$scope.hide_tree_execute = function(){
+			$scope.tree_collapsible_execute = true;
+		}
+
+		$scope.show_tree_execute = function(){
+			$scope.tree_collapsible_execute = false;
 		}
 
 		$scope.mode_run = false;
@@ -383,7 +392,7 @@
 	        	    $scope.styleSelected.parent = node;
 	        	}*/	        	
 	        }
-	        
+	        $scope.clear_log_json_result();
 	        if($scope.nodeSelected.source.hasOwnProperty("JSON")){
 	        	$scope.json_global_string=JSON.stringify(JSON.parse($scope.nodeSelected.source.JSON),null,"\t");
 	        }
@@ -1185,6 +1194,28 @@
 				else
 					return '/public/images/endpoint.png';					
 			}
+        }
+
+        $scope.sizeView = function(){
+        	if(!$scope.mode_run || $scope.json_logs.length==0 ){
+        		return $scope.tree_collapsible ? 95 : 70;
+        	}else{
+        		return $scope.tree_collapsible ? 45 : 35;
+        	}
+
+        }
+
+        $scope.sizeViewExecute = function(){
+        	if($scope.tree_collapsible && $scope.tree_collapsible_execute ){
+        		return 90;
+        	}else if($scope.tree_collapsible && !$scope.tree_collapsible_execute ) {
+        		return 50;
+        	}if(!$scope.tree_collapsible && $scope.tree_collapsible_execute){
+                return 70;
+        	}else{
+                return 35;
+        	}
+
         }
 
 	}]);
