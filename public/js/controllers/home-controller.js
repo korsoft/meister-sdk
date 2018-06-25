@@ -35,9 +35,7 @@
 
 		$scope.json_logs_executes = [];
 		$scope.json_logs_executes_title = null;
-		$scope.json_logs_executes_content = null;
-		$scope.json_logs_executes_content_obj = null;
-
+		
 		$scope.tree_collapsible = false;
 		$scope.tree_collapsible_execute =  false;
 
@@ -1011,7 +1009,7 @@
 						nodeSelected : node,
 						opt: $scope.opt,
 						selectedIndex: $scope.opt.selectedIndex,
-						payload_json: $scope.payload_json,
+						payload_json: angular.copy( $scope.payload_json),
 						styleSelected: $scope.styleSelected
 					};
 
@@ -1020,9 +1018,6 @@
 					$scope.json_logs_content_obj = result.data.data; //angular.fromJson(result.data.data.d.results[0].Json);
 					$scope.json_logs.push(json_text_item);
 
-					$scope.json_logs_executes_title = json_execute_text_item.title;
-					$scope.json_logs_executes_content = json_text_item.content;
-					$scope.json_logs_excutes_content_obj = result.data.data; //angular.fromJson(result.data.data.d.results[0].Json);
 					$scope.json_logs_executes.push(json_execute_text_item);
 
 					//$scope.json_details += "<span class=\"title-log-result\">" + json_text_title + ": Result</span><br/>";
@@ -1052,9 +1047,9 @@
 			if(item_selected){
 				$scope.nodeSelected =item_selected.nodeSelected;
 				$scope.opt = item_selected.opt;
-				$scope.payload_json = item_selected.payload_json;
+				$scope.payload_json = angular.copy(item_selected.payload_json);
 				$scope.styleSelected = item_selected.styleSelected;
-				console.log($scope.styleSelected);
+				console.log($scope.payload_json);
 			}
 		}
 
