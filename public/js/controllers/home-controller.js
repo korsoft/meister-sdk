@@ -408,7 +408,7 @@
 	        else if(obj.actionName == "addEndpoint")
 	        	$scope.addEndpoint(obj.sourceEvent,obj.node);
 	        else if(obj.actionName == "add_style_lib")
-	        	$scope.addStyle(obj.sourceEvent,obj.node.parent);
+	        	$scope.addStyle(obj.sourceEvent,obj.node.parent, null);
 	        else if(obj.actionName == "execute")
 	        	$scope.execute(obj.sourceEvent,obj.node);
 	        else if(obj.actionName == "execute_by_style")
@@ -418,6 +418,7 @@
 
 	     $scope.$on('ondrop-node-style-to-library', function(e, obj){
 	     	console.log("ondrop-node-style-to-library",obj);
+	     	$scope.addStyle(e, obj.library.parent, obj.style);
 	     });
 
 	    $scope.$on('undelete-style-lib', function (e, obj) {
@@ -836,7 +837,7 @@
               });
 	     };
   
-  		$scope.addStyle = function(ev, parentNode){
+  		$scope.addStyle = function(ev, parentNode, style){
   			$scope.mode_run = false;
 	     	$mdDialog.show({
                 controller: 'StyleDialogController',
@@ -846,7 +847,7 @@
                 clickOutsideToClose:false,
                 escapeToClose: false,
                 locals: {
-                 style: null,
+                 style: style,
                  parentNode: parentNode,
                  gateway: $scope.gatewaySelected,
                  json: $scope.json

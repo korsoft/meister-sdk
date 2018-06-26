@@ -16,9 +16,19 @@
           $scope.style.JSON = "";
         } else {
           $scope.style = angular.copy(style);
+          $scope.style.PKY = "";
+          $scope.style.DESCRIPTION = "";
+          $scope.style.JSON = JSON.stringify(JSON.parse($scope.style.JSON),null,"\t");
+          delete $scope.style.CLASS_NAME;
+          delete $scope.style.DIRECTION;
+          delete $scope.style.FKY;
+          delete $scope.style.LOGICAL_DELETE;
+          delete $scope.style.MEISTER_OWN;
+          delete $scope.style.NAME;
         }
 
-        console.log("Style", parentNode);
+        console.log("Style", $scope.style);
+        console.log("Parent", parentNode);
 
         $scope.changeJSON=function(e){
           try{

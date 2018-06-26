@@ -175,13 +175,10 @@
            <table md-table style="table-layout: fixed">
                     <thead md-head>
                       <tr md-row >
-                          <th md-column style="width: 100px">Property</th>
+                          <th md-column style="width: 120px;padding: 0;">Property</th>
                           <th md-column>Value</th>
                           <th md-column style="width: 50px"> 
-                            <md-button hide-xs class="md-icon-button" aria-label="Refresh" title="Hide Properties"
-                                ng-click="hide_tree_execute()" style="padding: 0px; margin: 0px; width: 22px">
-                               <md-icon ng-bind="'navigate_before'"></md-icon>
-                            </md-button>
+                           
                           </th>
                       </tr>
                     </thead>
@@ -250,7 +247,7 @@
             <md-button class="md-raised"  ng-if="payload_json.json" ng-disabled="!payload_json.json_test" ng-click="execute_details($event)" >
               Execute Call
             </md-button>
-            <md-button hide-xs class="md-icon-button" aria-label="Refresh" title="Hide Syntax"
+            <md-button hide-xs class="md-icon-button" aria-label="Refresh" title="Hide Syntax" ng-show="mode_run && json_logs.length>0 && !hide_results"
                       ng-click="hide_tree_execute()" style="padding: 0px; margin: 0px; width: 22px">
                      <md-icon ng-bind="'navigate_before'"></md-icon>
             </md-button>
@@ -331,7 +328,7 @@
       </md-card>
 
    </div>
-   <div flex-xs flex-gt-xs="{{sizeViewExecute()}}" ng-if="mode_run && json_logs.length>0" >
+   <div flex-xs flex-gt-xs="{{sizeViewExecute()}}" ng-if="mode_run && json_logs.length>0" ng-show="!hide_results ">
       <md-card style="height: 700px" >
         <md-card-title>
           <md-card-title-text>
@@ -340,6 +337,10 @@
            <md-actions >
             <md-button class="md-raised"  ng-click="clear_log_json_result()" >
               Clear log
+            </md-button>
+            <md-button hide-xs class="md-icon-button" aria-label="Close" title="Close"
+                      ng-click="hideResults()">
+                     <md-icon ng-bind="'close'"></md-icon>
             </md-button>
           </md-actions>
         </md-card-title>

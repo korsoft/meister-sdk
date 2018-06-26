@@ -38,6 +38,7 @@
 		
 		$scope.tree_collapsible = false;
 		$scope.tree_collapsible_execute =  false;
+		$scope.hide_results =  false;
 
 		$scope.url_details = "";
         $scope.edit={};
@@ -407,7 +408,7 @@
 	        else if(obj.actionName == "addEndpoint")
 	        	$scope.addEndpoint(obj.sourceEvent,obj.node);
 	        else if(obj.actionName == "add_style_lib")
-	        	$scope.addStyle(obj.sourceEvent,obj.node.parent);
+	        	$scope.addStyle(obj.sourceEvent,obj.node.parent, null);
 	        else if(obj.actionName == "execute")
 	        	$scope.execute(obj.sourceEvent,obj.node);
 	        else if(obj.actionName == "execute_by_style")
@@ -417,6 +418,7 @@
 
 	     $scope.$on('ondrop-node-style-to-library', function(e, obj){
 	     	console.log("ondrop-node-style-to-library",obj);
+	     	$scope.addStyle(e, obj.library.parent, obj.style);
 	     });
 
 	    $scope.$on('undelete-style-lib', function (e, obj) {
@@ -835,7 +837,7 @@
               });
 	     };
   
-  		$scope.addStyle = function(ev, parentNode){
+  		$scope.addStyle = function(ev, parentNode, style){
   			$scope.mode_run = false;
 	     	$mdDialog.show({
                 controller: 'StyleDialogController',
@@ -845,7 +847,7 @@
                 clickOutsideToClose:false,
                 escapeToClose: false,
                 locals: {
-                 style: null,
+                 style: style,
                  parentNode: parentNode,
                  gateway: $scope.gatewaySelected,
                  json: $scope.json
@@ -940,7 +942,7 @@
 
 		$scope.execute_details = function(event){
 			var node = null;
-			
+			$scope.hide_results = false;
 			if($scope.styleSelected)
 				node = $scope.styleSelected.parent;
 			else
@@ -1196,7 +1198,7 @@
         }
 
         $scope.sizeView = function(){
-        	if(!$scope.mode_run || $scope.json_logs.length==0 ){
+        	if(!$scope.mode_run || $scope.json_logs.length==0 || $scope.hide_results){
         		return $scope.tree_collapsible ? 95 : 70;
         	}else{
         		return $scope.tree_collapsible ? 45 : 35;
@@ -1215,6 +1217,10 @@
                 return 35;
         	}
 
+        }
+
+        $scope.hideResults= function(){
+        	$scope.hide_results = true;
         }
 
 	}]);
