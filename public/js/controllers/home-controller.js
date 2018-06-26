@@ -38,6 +38,7 @@
 		
 		$scope.tree_collapsible = false;
 		$scope.tree_collapsible_execute =  false;
+		$scope.hide_results =  false;
 
 		$scope.url_details = "";
         $scope.edit={};
@@ -936,7 +937,7 @@
 
 		$scope.execute_details = function(event){
 			var node = null;
-			
+			$scope.hide_results = false;
 			if($scope.styleSelected)
 				node = $scope.styleSelected.parent;
 			else
@@ -1192,7 +1193,7 @@
         }
 
         $scope.sizeView = function(){
-        	if(!$scope.mode_run || $scope.json_logs.length==0 ){
+        	if(!$scope.mode_run || $scope.json_logs.length==0 || $scope.hide_results){
         		return $scope.tree_collapsible ? 95 : 70;
         	}else{
         		return $scope.tree_collapsible ? 45 : 35;
@@ -1211,6 +1212,10 @@
                 return 35;
         	}
 
+        }
+
+        $scope.hideResults= function(){
+        	$scope.hide_results = true;
         }
 
 	}]);
