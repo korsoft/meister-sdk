@@ -416,6 +416,10 @@
 
     	});
 
+	     $scope.$on('ondrop-node-style-to-library', function(e, obj){
+	     	console.log("ondrop-node-style-to-library",obj);
+	     });
+
 	    $scope.$on('undelete-style-lib', function (e, obj) {
 	        
             var json_to_send =  GatewayService.buildJsonByNewStyleTemplate($scope.json, obj.node.parent.parent, obj.node.source);
@@ -876,7 +880,7 @@
 		
 			var params = {"endpoint":node.name};
 			var node={};
-			$scope.payload_json = {};
+			$scope.payload_json = {json: null, options: {mode: 'tree'}};
 			$scope.json_logs_executes_title=null;
 			$scope.mode_run = true;
 			/*if($scope.styleSelected){
