@@ -257,10 +257,19 @@
                             $scope.canBeDeleted = function(node){
                                 var canbe = true;
                                 _.forEach(node.children,function(itm){
-                                    if(itm.source && itm.source.LOGICAL_DELETE!="X")
+                                    if(itm.source && itm.source.LOGICAL_DELETE!="X" && itm.disabled!=true)
                                     {
                                         canbe=false;
                                         return false;
+                                    }
+                                    if(itm.type && itm.type == "STYLE_TEMPLATE_PARENT"){
+                                        var style_not_deleted = _.find(itm.children,function(s){
+                                            return s.disabled!=true && s.source.LOGICAL_DELETE!="X";
+                                        });
+                                        if(style_not_deleted){
+                                            canbe = false;
+                                            return false;
+                                        }
                                     }
                                 });
                                 
