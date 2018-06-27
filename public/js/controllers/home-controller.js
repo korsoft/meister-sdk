@@ -423,8 +423,14 @@
 
 	    $scope.$on('undelete-style-lib', function (e, obj) {
 	        
-            var json_to_send =  GatewayService.buildJsonByNewStyleTemplate($scope.json, obj.node.parent.parent, obj.node.source);
-          
+            var json_to_send =  {}; //GatewayService.buildJsonByNewStyleTemplate($scope.json, obj.node.parent.parent, obj.node.source);
+          	//delete json_to_send.STYLE_LIB[0].DESCRIPTION;
+          	//delete json_to_send.STYLE_LIB[0].JSON;
+          	//delete json_to_send.STYLE_LIB[0].LOGICAL_DELETE;
+          	//delete json_to_send.STYLE_LIB[0].MEISTER_OWN;
+          	json_to_send.PKY = obj.node.source.PKY;
+          	json_to_send.FKY = obj.node.source.FKY;
+
             var params = {
              json: JSON.stringify(json_to_send),
              SDK_HINT:"RLD"
@@ -447,13 +453,13 @@
     	});
 
     	$scope.$on('delete-style-lib', function (e, obj) {
-	       var json_to_send =  GatewayService.buildJsonByNewStyleTemplate($scope.json, obj.node.parent.parent, obj.node.source);
-          	delete json_to_send.STYLE_LIB[0].DESCRIPTION;
-          	delete json_to_send.STYLE_LIB[0].JSON;
-          	delete json_to_send.STYLE_LIB[0].LOGICAL_DELETE;
-          	delete json_to_send.STYLE_LIB[0].MEISTER_OWN;
-          	//json_to_send.PKY = obj.node.source.PKY;
-          	//json_to_send.FKY = obj.node.source.FKY;
+	       var json_to_send =  {}; //GatewayService.buildJsonByNewStyleTemplate($scope.json, obj.node.parent.parent, obj.node.source);
+          	//delete json_to_send.STYLE_LIB[0].DESCRIPTION;
+          	//delete json_to_send.STYLE_LIB[0].JSON;
+          	//delete json_to_send.STYLE_LIB[0].LOGICAL_DELETE;
+          	//delete json_to_send.STYLE_LIB[0].MEISTER_OWN;
+          	json_to_send.PKY = obj.node.source.PKY;
+          	json_to_send.FKY = obj.node.source.FKY;
             var params = {
              json: JSON.stringify(json_to_send),
              SDK_HINT:"SLD"
