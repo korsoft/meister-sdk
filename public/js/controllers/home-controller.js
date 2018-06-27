@@ -44,6 +44,7 @@
         $scope.edit={};
 		$scope.edit.current_long_text="";
 		$scope.edit.current_description="";
+		$scope.add_endpoint = false;
 
 
 		$scope.style_template = {};
@@ -51,6 +52,7 @@
 		var endpoints_names=[];
 		var endpoints_main=[];
 		$scope.node = null;
+		$scope.parentNode = null;
 
         var stopMenu =function(e) {
         	if(e.target.getAttribute('class') !== "ace_text-input")
@@ -87,6 +89,8 @@
 
 			$scope.promise = GatewayService.index();
 
+			$scope.add_endpoint = false;
+
 			$scope.promise.then(
 				function(result){
 					console.log("result",result);
@@ -111,7 +115,7 @@
 		}
 
 		$scope.build_tree = function(){
-
+			$scope.add_endpoint = false;
 			$scope.basicTree = [];
 			var isMeister= $rootScope.isMeister();
 			
@@ -311,6 +315,7 @@
 			$scope.mode_run = false;
 			$scope.url_details = "";
 			$scope.styleSelected = null;
+			$scope.add_endpoint = false;
 			if($scope.gatewaySelected.id){
 				params={};
 				if($scope.client.id){
@@ -337,6 +342,7 @@
 
 		$scope.changeGateway = function(id){
 			$scope.gatewaySelectedId = id;
+			$scope.add_endpoint = false;
 			console.log("Gateway selected", $scope.gatewaySelectedId);
 			$scope.gatewaySelected = _.find($scope.gateways,function(g){
 				return id == g.id;
@@ -371,6 +377,8 @@
 
 	     $scope.$on('selection-changed', function (e, node) {
 	     	console.log("Node selected",node);
+	     	if(!node.type || (node.type !== "style_template" && (node.type !== "STYLE_TEMPLATE_PARENT")))
+	     		$scope.add_endpoint = false;
 	     	$scope.node = node;
 	        $scope.payload_json = {json: null, options: {mode: 'tree'}};
 	        $scope.url_details = "";
@@ -746,31 +754,6 @@
 	        });
     	});
 
-	     $scope.$on('selection-changed', function (e, node) {
-	        console.log("Node selected",node);
-	        $scope.payload_json = {json: null, options: {mode: 'tree'}};
-	        $scope.url_details = "";
-	        $scope.nodeSelected = node;
-	        $scope.styles = [];
-	        $scope.mode_run = false;
-	        $scope.styleSelected = null;
-	        if(!node.source){
-	     		$scope.nodeSelected = null;
-	     		return;
-	     	}
-	     	$scope.nodeSelected = node;
-	        if(node.source.STYLES && node.source.STYLES.length>0){
-	        	console.log("Styles",node.source.STYLES);
-	        	$scope.styles = _.filter(node.children,function(n){
-	        		return n.source.DIRECTION =="O";
-	        	} );
-	        	/*if($scope.styles.length>0){
-	        		$scope.styleSelected = $scope.styles[0];
-	        	    $scope.styleSelected.parent = node;
-	        	}*/	 
-	        }
-	    });
-
 	     $scope.addModule = function(ev, parentNode){
 	     	$scope.mode_run = false;
 	     	$mdDialog.show({
@@ -819,8 +802,9 @@
 	              });
 		     };
 
-	     $scope.addEndpoint = function(ev, parentNode){
+	     /*$scope.addEndpoint = function(ev, parentNode){
 	     	$scope.mode_run = false;
+	     	$scope.add_endpoint = true;
 	     	$scope.style_template = _.find(parentNode.parent.children, function(item){
 	     		return item.type === "STYLE_TEMPLATE_PARENT";
 	     	});
@@ -848,8 +832,49 @@
               }, function() {
                
               });
+	     };*/
+
+	     $scope.$on('add-endpoint-closed', function (e, data) {
+	     	console.log("add-endpoint-closed",data);
+	        $scope.add_endpoint = false;
+	    });
+
+	     $scope.$on('add-endpoint-saved', function (e, data) {
+	     	console.log("add-endpoint-saved",data);
+	        $scope.add_endpoint = false;
+	        MessageUtil.showInfo("Endpoint was created");
+            $scope.executeGateway();
+	    });
+
+	     $scope.addEndpoint = function(ev, parentNode){
+	     	$scope.mode_run = false;
+	     	$scope.add_endpoint = true;
+	     	$scope.parentNode  =parentNode;
+	     	console.log("style Library",$scope.style_template);
+	     	/*$mdDialog.show({
+                controller: 'EndpointDialogController',
+                templateUrl: 'templates/endpoint-dialog-form.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:false,
+                escapeToClose: false,
+                locals: {
+                 endpoint: null,
+                 parentNode: parentNode,
+                 gateway: $scope.gatewaySelected,
+                 json: $scope.json,
+                 endpoints_names: endpoints_names,
+                 endpoints_main: endpoints_main,
+                 
+               }
+              })
+              .then(function(result) {
+                MessageUtil.showInfo("Endpoint was created");
+                $scope.executeGateway();
+              }, function() {
+               
+              });*/
 	     };
-  
   		$scope.addStyle = function(ev, parentNode, style){
   			$scope.mode_run = false;
 	     	$mdDialog.show({

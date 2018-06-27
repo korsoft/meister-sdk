@@ -126,7 +126,7 @@
     
     <div flex-xs flex-gt-xs="{{sizeView()}}" layout="column" ng-show="node && !tree_collapsible_execute" >
 
-      <md-card style="height: 700px"  ng-if="!mode_run">
+      <md-card style="height: 700px"  ng-if="!mode_run && !add_endpoint">
       <md-list  layout-align="left center">
         <tree-actions flex layout="row"></tree-actions>
       </md-list>
@@ -204,7 +204,155 @@
         </md-card-content>
       </md-card>
 
-      <md-card style="height: 700px" ng-if="mode_run">
+      <md-card style="height: 700px"  ng-if="!mode_run && add_endpoint" ng-controller="EndpointController" >
+     
+        <md-card-title style="-webkit-flex:none;padding-bottom: 23px;">
+          
+          <md-card-title-text>
+            <span class="md-headline">Add Endpoint</span>
+          </md-card-title-text>
+         
+        </md-card-title>
+        <md-card-content style="height: 600px; overflow-y: auto" 
+          ng-init="init(null,parentNode,gatewaySelected,json,endpoints_names,endpoints_main)">
+           <form  id="frmEndpoint" name="frmEndpoint" ng-cloak>
+        <div class="md-dialog-content" ng-show="page==1">
+               <md-input-container class="md-block">
+                <label>Namespace</label>
+                <input ng-model="endpoint.NAMESPACE"  name="endpoint" required>
+                 <div ng-messages="frmEndpoint.endpoint.$error">
+              <div ng-message="required">This is required.</div>
+             </div>
+              </md-input-container>
+               <md-input-container class="md-block">
+                <label>Long Text</label>
+                <input ng-model="endpoint.LONG_TEXT">
+              </md-input-container>
+               <md-input-container class="md-block">
+                <label>Endpoint Main</label>
+                <input name="endpoint_main" ng-model="endpoint.ENDPOINT_MAIN" required maxlength="30" md-maxlength="30"
+                  pattern="[A-Za-z_\/]{1,30}">
+                <div ng-messages="frmEndpoint.endpoint_main.$error">
+              <div ng-message="required">This is required.</div>
+              <div ng-message="md-maxlength">This field must be 30 characters max.</div>
+              <div ng-message="pattern">Endpoint Main does not conform with SAP syntax.</div>
+             </div>
+              </md-input-container>
+               <md-input-container class="md-block">
+                <label>Handler</label>
+                <input name="handler" ng-model="endpoint.HANDLER" required>
+                <div ng-messages="frmEndpoint.handler.$error">
+              <div ng-message="required">This is required.</div>
+            </div>
+              </md-input-container>
+               <md-input-container class="md-block">
+                <label>Bus Name</label>
+                <input ng-model="endpoint.BUS_NAME" >
+              </md-input-container>
+               <md-input-container class="md-block">
+                <label>Type</label>
+                <md-select name="type" ng-model="endpoint.TYPE" required>
+                  <md-option value="D">Dynamic</md-option>
+                  <md-option value="L">Static</md-option>
+                </md-select>
+                 <div ng-messages="frmEndpoint.type.$error">
+              <div ng-message="required">You must select an option.</div>
+            </div>
+              </md-input-container>
+              <md-input-container class="md-block">
+                <label>Version</label>
+                <input ng-model="endpoint.VERSION">
+              </md-input-container>
+              <md-input-container class="md-block">
+                <md-checkbox ng-model="endpoint.LOCKED" ng-true-value="'true'" ng-false-value="'false'"  >Locked</md-checkbox>             
+              </md-input-container>
+              <md-input-container class="md-block">
+                <label>Package</label>
+                <input name="package" ng-model="endpoint.PACKAGE" pattern="(\$TMP|((Y|Z)[1-9A-Za-z]+(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?)|(\/[1-9A-Za-z]+(\/[1-9A-Za-z]+)?(\/[1-9A-Za-z]+)?(\/[1-9A-Za-z]+)?))" required>
+                 <div ng-messages="frmEndpoint.package.$error">
+              <div ng-message="required">This is required.</div>
+              <div ng-message="pattern">Package does not conform with SAP syntax</div>
+             </div>
+              </md-input-container>
+              <md-input-container class="md-block">
+                <label>Transport</label>
+                <input ng-model="endpoint.TRANSPORT">
+              </md-input-container>
+        </div>
+      </form>
+      <form  id="frmEndpointStyle" name="frmEndpointStyle" ng-cloak>
+        <div class="md-dialog-content" ng-show="page==2" layout-gt-sm="row" layout="column">
+    <md-table-container>
+              <table md-table>
+                <thead md-head>
+                  <tr md-row>
+                    <th md-column> Name </th>
+                    <th md-column> Direction</th>
+                    <th md-column> json</th>
+                    <th md-column><md-button class="md-icon-button" ng-click="addStyle()"><md-icon ng-bind="'add_box'"></md-icon></md-button></th>
+                  </tr>
+                </thead>
+                <tbody md-body dnd-list="endpoint.STYLES">
+                  <tr md-row ng-repeat="style in endpoint.STYLES " >
+                    <td md-cell>
+                      <md-input-container ng-show="style.DIRECTION==='I'" md-no-float>
+                          <input ng-show="style.DIRECTION==='I'" ng-disabled="!style.BAND" ng-model="style.NAME"  required placeholder="Name" style="width: 80px">
+                      </md-input-container>
+                      <md-input-container ng-show="style.DIRECTION==='O'"  md-no-float>
+                          <input ng-show="style.DIRECTION==='O'" ng-disabled="!style.BAND" ng-model="style.NAME"  required placeholder="Name" style="width: 80px">
+                      </md-input-container>
+                    </td>
+                    <td md-cell>
+                      <md-input-container md-no-float>
+                          <md-select ng-model="style.DIRECTION" required placeholder="Direction" ng-change="directionChanged(style)">
+                            <md-option value="I">inbound</md-option>
+                            <md-option value="O">outbound</md-option>
+                          </md-select>
+                      </md-input-container>
+                    </td>
+                    <td md-cell>
+                      <md-input-container md-no-float 
+                      >
+                        <div  ui-ace="{ onChange: changeJSON,mode: 'json'}" style="width: 250px; height: 100px;" 
+                          ng-model="style.JSON"
+                          ui-on-Drop="onDrop($event,$data,style)"
+                          drop-validate="dropValidate(style,$data)"
+                            ></div>
+
+                        <!-- <div ng-jsoneditor ng-model="style.JSON" options="{mode: 'tree'}" style="width: 300px; height: 215px;"  prefer-text="true" ></div> -->
+                      </md-input-container>
+                    </td>
+                     <td md-cell>
+                      <md-button class="md-icon-button" ng-click="deleteStyle($index)" ng-if="$index>1"><md-icon ng-bind="'delete_sweep'"></md-icon></md-button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </md-table-container>
+ 
+  </div>
+
+
+      </form>
+        </md-card-content>
+        <md-actions layout="row">
+          <md-button class="md-raised" ng-click="changePage(1)" ng-show="page==2" >
+           Back
+          </md-button>
+          <md-button class="md-raised md-primary" ng-click="changePage(2)" ng-show="page==1" ng-disabled="frmEndpoint.$invalid || !uniqueName  || !uniqueMain">
+           Next
+          </md-button>
+          
+          <md-button class="md-raised md-primary" ng-click="save()" ng-show="page==2" ng-disabled="frmEndpointStyle.$invalid || checkUniqueName() || !valid || !uniqueName || !uniqueMain">
+           Save
+          </md-button>
+          <md-button class="md-warn" ng-click="cancel()">
+            Cancel
+          </md-button>
+        </md-actions>
+      </md-card>
+
+      <md-card style="height: 700px" ng-if="mode_run && !add_endpoint">
         <md-card-title style="padding-bottom: 9px;">
           <md-card-title-text>
             <span class="md-headline">Call Syntax with Endpoint</span>
