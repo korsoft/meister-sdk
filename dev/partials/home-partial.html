@@ -95,44 +95,6 @@
                       ng-click="hide_tree()" style="padding: 0px; margin: 0px; width: 22px">
                      <md-icon ng-bind="'navigate_before'"></md-icon>
                   </md-button>
-               
-                  <!--
-                  <md-button class="md-icon-button" aria-label="Refresh" 
-                      title="Add Module" 
-                      ng-if="nodeSelected && nodeSelected.source.MODULES"
-                      ng-click="addModule($event, nodeSelected)" 
-                      style="padding: 0px; margin: 0px; width: 22px">
-                     <md-icon ng-bind="'note_add'"></md-icon>
-                  </md-button>
-                  <md-button class="md-icon-button" aria-label="Refresh" 
-                      title="Add Endpoint" 
-                      ng-if="nodeSelected && nodeSelected.source.ENDPOINTS"
-                      ng-click="addEndpoint($event, nodeSelected)" 
-                      style="padding: 0px; margin: 0px; width: 22px">
-                     <md-icon ng-bind="'note_add'"></md-icon>
-                  </md-button>
-                  <md-button class="md-icon-button" aria-label="Refresh" 
-                      title="Add Style" 
-                      ng-if="nodeSelected && nodeSelected.source.STYLES"
-                      ng-click="addStyle($event, nodeSelected)" 
-                      style="padding: 0px; margin: 0px; width: 22px">
-                     <md-icon ng-bind="'note_add'"></md-icon>
-                  </md-button>
-                  <md-button class="md-icon-button" aria-label="Refresh" 
-                      title="Execute" 
-                      ng-if="nodeSelected && nodeSelected.source.STYLES"
-                      ng-click="execute($event, nodeSelected)" 
-                      style="padding: 0px; margin: 0px; width: 22px">
-                     <md-icon ng-bind="'send'"></md-icon>
-                  </md-button>
-                   <md-button class="md-icon-button" aria-label="Refresh" 
-                      title="Execute" 
-                      ng-if="nodeSelected && nodeSelected.source && !nodeSelected.source.MODULES && !nodeSelected.source.ENDPOINTS && !nodeSelected.source.STYLES"
-                      ng-click="execute_by_style($event, nodeSelected)" 
-                      style="padding: 0px; margin: 0px; width: 22px">
-                     <md-icon ng-bind="'send'"></md-icon>
-                  </md-button>
-                -->
         </md-actions>
         </md-card-title>
        <md-card-content style="height: 600px; overflow-y: auto;padding-left: 0px" ng-if="!loading_tree">
@@ -162,10 +124,14 @@
       </md-card>
   </div>
     
-    <div flex-xs flex-gt-xs="{{sizeView()}}" layout="column" ng-show="nodeSelected && !tree_collapsible_execute" >
+    <div flex-xs flex-gt-xs="{{sizeView()}}" layout="column" ng-show="node && !tree_collapsible_execute" >
 
       <md-card style="height: 700px"  ng-if="!mode_run">
+      <md-list  layout-align="left center">
+        <tree-actions flex layout="row"></tree-actions>
+      </md-list>
         <md-card-title style="-webkit-flex:none;padding-bottom: 23px;">
+          
           <md-card-title-text>
             <span class="md-headline">Properties</span>
           </md-card-title-text>
