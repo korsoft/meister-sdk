@@ -318,9 +318,9 @@
 				
 				
 			}
-			if($scope.nodeSelected){
-				$scope.$emit('selection-changed', $scope.nodeSelected);
-			}
+
+			$scope.$emit('selection-changed', $scope.nodeSelected);
+			
 		};
 
 		$scope.executeGateway = function(selectNodeConfig){
@@ -393,20 +393,22 @@
 
 	     $scope.$on('selection-changed', function (e, node) {
 	     	console.log("Node selected",node);
-	     	if(!node.type || (node.type !== "style_template" && (node.type !== "STYLE_TEMPLATE_PARENT")))
-	     		$scope.add_endpoint = false;
+
 	     	$scope.node = node;
+	     	$scope.nodeSelected = node;
 	        $scope.payload_json = {json: null, options: {mode: 'tree'}};
 	        $scope.url_details = "";
-	        $scope.nodeSelected = node;
 	        $scope.mode_run = false;
 	        $scope.styles = [];
 	        $scope.styleSelected = null;
-	        if(!node.source){
-	     		$scope.nodeSelected = null;
+
+	     	if(!node || !node.source){
 	     		return;
 	     	}
-	        $scope.nodeSelected = node;
+
+	     	if(!node.type || (node.type !== "style_template" && (node.type !== "STYLE_TEMPLATE_PARENT")))
+	     		$scope.add_endpoint = false;
+	      
 	        if(node.source.STYLES && node.source.STYLES.length>0){
 	        	console.log("Styles",node.source.STYLES);
 	        	$scope.styles = _.filter(node.children,function(n){
