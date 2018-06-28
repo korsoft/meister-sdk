@@ -114,7 +114,7 @@
 			    return Object.prototype.toString.call(what) === '[object Array]';
 		}
 
-		$scope.build_tree = function(){
+		$scope.build_tree = function(selectNodeConfig){
 			$scope.add_endpoint = false;
 			$scope.basicTree = [];
 			var isMeister= $rootScope.isMeister();
@@ -265,6 +265,14 @@
 						    	&& !isMeister){
 						    	return;
 						    }
+						    var is_selected = false;
+						    console.log("selectNodeConfig",selectNodeConfig);
+						    if(selectNodeConfig){
+						    	if(selectNodeConfig.type == "ENDPOINT"){
+						    		is_selected = selectNodeConfig.value === endpoint.NAMESPACE;
+						    	}
+						    }
+						    console.log("is selected",is_selected);
 							endpoints_names.push(endpoint.NAMESPACE);
 							endpoints_main.push(endpoint.ENDPOINT_MAIN);
 							var icon = imageEndpoint(endpoint);
@@ -274,6 +282,7 @@
 								source: endpoint,
 								image: icon,
 								expanded: false,
+								selected:is_selected,
 								parent:moduleItem,
 								is_deleted:  endpoint.LOGICAL_DELETE,
 								children: []
@@ -286,7 +295,10 @@
 								}
 							}else{
 								moduleItem.children.push(endpointItem);
-							}							
+							}	
+							if(endpointItem.selected){
+								$scope.nodeSelected = endpointItem;
+							}						
 							_.forEach(endpoint.STYLES, function(style){
 								var styleItem = {
 									name: style.NAME,
@@ -307,7 +319,7 @@
 			}
 		};
 
-		$scope.executeGateway = function(){
+		$scope.executeGateway = function(selectNodeConfig){
 			$scope.loading_tree = true;
 			$scope.nodeSelected = null;
 			$scope.nodeExpanded = null;
@@ -329,7 +341,7 @@
 						console.log("result",result);
 	                     gatewayResponse = result.data;
 	                      MessageUtil.showInfo("Gateway data loaded");
-	                     $scope.build_tree();
+	                     $scope.build_tree(selectNodeConfig);
 					},
 					function(error){
 						$scope.loading_tree = false;
@@ -843,7 +855,11 @@
 	     	console.log("add-endpoint-saved",data);
 	        $scope.add_endpoint = false;
 	        MessageUtil.showInfo("Endpoint was created");
-            $scope.executeGateway();
+	        var nodeSelectedConfig = {
+	        	type: "ENDPOINT",
+	        	value: data.endpoint.NAMESPACE
+	        };
+            $scope.executeGateway(nodeSelectedConfig);
 	    });
 
 	     $scope.addEndpoint = function(ev, parentNode){

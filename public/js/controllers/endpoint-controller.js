@@ -146,7 +146,7 @@
             $scope.promise.then(
                 function(result){
                   console.log("result",result);
-                  $scope.$emit('add-endpoint-saved', result);
+                  $scope.$emit('add-endpoint-saved', {"parentNode":parentNode,"endpoint":$scope.endpoint});
                   },
                 function(error){
                   console.log("error",error);
