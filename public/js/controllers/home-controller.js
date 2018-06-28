@@ -298,6 +298,7 @@
 							}	
 							if(endpointItem.selected){
 								$scope.nodeSelected = endpointItem;
+
 							}						
 							_.forEach(endpoint.STYLES, function(style){
 								var styleItem = {
@@ -316,6 +317,9 @@
 				});
 				
 				
+			}
+			if($scope.nodeSelected){
+				$scope.$emit('selection-changed', $scope.nodeSelected);
 			}
 		};
 
