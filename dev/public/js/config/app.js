@@ -72,7 +72,12 @@ meister.constant('COOKIE_MAX_TIMEOUT_REQUEST',60); //in minutes
             url: '/gateways',
             templateUrl: 'partials/client-gateways-partial.html',
             controller: 'ClientGatewayController'
-        });
+        })
+        .state('requests-logs', {
+            url: '/requestlogs',
+            templateUrl: 'partials/request-logs-partial.html',
+            controller: 'RequestLogsController'
+        });;
 
     }]).run(['$rootScope', '$location','$mdToast','OAuth', 
     function ($rootScope, $location,$mdToast,OAuth) {
