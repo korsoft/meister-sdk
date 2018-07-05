@@ -133,8 +133,14 @@
         }
 
         $scope.save = function(){
+          var localEndpoint = angular.copy($scope.endpoint);
+          _.each(localEndpoint.STYLES,function(s){
+              delete s.BAND;
+              var obj = angular.fromJson(s.JSON);
+              s.JSON = angular.toJson(obj);
+          });
 
-          var json_to_send =  GatewayService.buildJsonByNewEndpoint(json, parentNode.source, $scope.endpoint);
+          var json_to_send =  GatewayService.buildJsonByNewEndpoint(json, parentNode.source, localEndpoint);
           
           var params = {
             json: angular.toJson(json_to_send)
@@ -146,7 +152,7 @@
             $scope.promise.then(
                 function(result){
                   console.log("result",result);
-                  $scope.$emit('add-endpoint-saved', {"parentNode":parentNode,"endpoint":$scope.endpoint});
+                  $scope.$emit('add-endpoint-saved', {"parentNode":parentNode,"endpoint":localEndpoint});
                   },
                 function(error){
                   console.log("error",error);
