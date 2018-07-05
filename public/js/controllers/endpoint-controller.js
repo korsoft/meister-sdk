@@ -168,7 +168,7 @@
 
         $scope.addStyle = function () {
           $scope.band_i++;
-          $scope.endpoint.STYLES.push({PKY:"",DIRECTION:"I",NAME:"",JSON:"",CLASS_NAME:"",BAND: $scope.band_i>1});
+          $scope.endpoint.STYLES.push({PKY:"",DIRECTION:"O",NAME:"",JSON:"",CLASS_NAME:"",BAND: $scope.band_i>1});
         }
 
         $scope.deleteStyle = function (index) {
