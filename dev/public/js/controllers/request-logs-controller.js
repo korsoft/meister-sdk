@@ -45,6 +45,23 @@
                    }
               );
          };
+
+         $scope.deleteAll = function(){
+          console.log("Delete all...");
+           $scope.promise = RequestLogService.deleteAll();
+
+           $scope.promise.then(
+                   function(result) { 
+                     console.log("result",result);
+                      $scope.init();
+                      MessageUtil.showInfo("Log errors deleted");
+                   },
+                   function(errorPayload) {
+                       console.log('failure', errorPayload);
+                       MessageUtil.showError(errorPayload.data.message);
+                   }
+              );
+         };
         
     }]);
 })(meister);

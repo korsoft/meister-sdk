@@ -8,6 +8,12 @@
             return $http.get(SERVER_BASE_URL + '/api/requestlogs',{"params":params});
         };
 
+
+        service.deleteAll = function () {
+            return $http.delete(SERVER_BASE_URL + '/api/requestlogs/all');
+        };
+
+
         return service;
     }]);
 })(meister);
