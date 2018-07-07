@@ -133,8 +133,17 @@
         }
 
         $scope.save = function(){
+          var localEndpoint = angular.copy($scope.endpoint);
+          _.each(localEndpoint.STYLES,function(s){
+              delete s.BAND;
+              //remove spaces in keys
+              var obj = angular.fromJson(s.JSON.replace(/"([\w\s]+)":/g, function (m) {
+                  return m.replace(/\s+/g, '');
+              }));
+              s.JSON = angular.toJson(obj);
+          });
 
-          var json_to_send =  GatewayService.buildJsonByNewEndpoint(json, parentNode.source, $scope.endpoint);
+          var json_to_send =  GatewayService.buildJsonByNewEndpoint(json, parentNode.source, localEndpoint);
           
           var params = {
             json: angular.toJson(json_to_send)
@@ -146,7 +155,7 @@
             $scope.promise.then(
                 function(result){
                   console.log("result",result);
-                  $scope.$emit('add-endpoint-saved', {"parentNode":parentNode,"endpoint":$scope.endpoint});
+                  $scope.$emit('add-endpoint-saved', {"parentNode":parentNode,"endpoint":localEndpoint});
                   },
                 function(error){
                   console.log("error",error);
@@ -162,7 +171,7 @@
 
         $scope.addStyle = function () {
           $scope.band_i++;
-          $scope.endpoint.STYLES.push({PKY:"",DIRECTION:"I",NAME:"",JSON:"",CLASS_NAME:"",BAND: $scope.band_i>1});
+          $scope.endpoint.STYLES.push({PKY:"",DIRECTION:"O",NAME:"",JSON:"",CLASS_NAME:"",BAND: $scope.band_i>1});
         }
 
         $scope.deleteStyle = function (index) {

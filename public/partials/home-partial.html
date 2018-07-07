@@ -303,17 +303,18 @@
                       </md-input-container>
                     </td>
                     <td md-cell>
-                      <md-input-container md-no-float>
+                      <md-input-container md-no-float  ng-if="$index < 2">
                           <md-select ng-model="style.DIRECTION" required placeholder="Direction" ng-change="directionChanged(style)">
                             <md-option value="I">inbound</md-option>
                             <md-option value="O">outbound</md-option>
                           </md-select>
                       </md-input-container>
+                      <span ng-if="$index > 1">outbound</span>
                     </td>
                     <td md-cell>
                       <md-input-container md-no-float 
                       >
-                        <div  ui-ace="{ onChange: changeJSON,mode: 'json'}" style="width: 250px; height: 100px;" 
+                        <div  ui-ace="{ onChange: changeJSON,mode: 'json'}" style="width: 450px; height: 250px;" 
                           ng-model="style.JSON"
                           ui-on-Drop="onDrop($event,$data,style)"
                           drop-validate="dropValidate(style,$data)"

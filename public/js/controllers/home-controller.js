@@ -412,7 +412,7 @@
 	        if(node.source.STYLES && node.source.STYLES.length>0){
 	        	console.log("Styles",node.source.STYLES);
 	        	$scope.styles = _.filter(node.children,function(n){
-	        		return n.DIRECTION =="O";
+	        		return n.source.DIRECTION =="O";
 	        	} );
 	        	/*if($scope.styles.length>0){
 	        		$scope.styleSelected = $scope.styles[0];
@@ -926,9 +926,13 @@
 			if($scope.payload_json.json_string)
 			{
 				try{
-					$scope.payload_json.json = JSON.parse($scope.payload_json.json_string);
+					//remove space in keys
+					var str_obj = $scope.payload_json.json_string.replace(/"([\w\s]+)":/g, function (m) {
+					    return m.replace(/\s+/g, '');
+					});
+					$scope.payload_json.json = JSON.parse(str_obj);
 					$scope.payload_json.json_test=true;
-					console.log(JSON.parse($scope.payload_json.json_string));
+					console.log(JSON.parse(str_obj));
 
 				}catch (e) {
 					$scope.payload_json.json_test=false;
@@ -1012,12 +1016,15 @@
 			var params = {
 				"endpoint": node.name,
 				"json": JSON.stringify($scope.payload_json.json,null,""),
-				"style": $scope.styleSelected ? $scope.styleSelected.name : 'DEFAULT',
 				"Test_Run":"",
 				"Asynch":"",
 				"Queued":"",
 				"BPM":"",
 			};
+
+			if($scope.styleSelected){
+				params["style"] = $scope.styleSelected.name;
+			}
 			
 			if($scope.wrap.compression!="N")
 				params.compression=$scope.wrap.compression;
