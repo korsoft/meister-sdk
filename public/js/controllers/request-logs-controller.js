@@ -16,7 +16,16 @@
          $scope.limitOptions = [5, 10, 25, 50, 100];
          
          $scope.format = function(json){
-        	 return json.replace(/\\/g,'');
+        	 json.replace('\"','"');
+        	 try{
+        		 
+        		 var obj = JSON.parse(json);
+        		 return  str =  JSON.stringify(obj,null).replace(/\\/g,"");
+
+        	 }catch (e)
+        	 {
+        		 return json;
+        	 }
          }
 
 
