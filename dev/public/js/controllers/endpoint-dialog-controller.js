@@ -1,23 +1,26 @@
 (function(app) {
 	app.controller('EndpointDialogController',
-    ['$scope','$mdDialog','endpoint','parentNode','gateway','json','GatewayService','MessageUtil','endpoints_names','endpoints_main',
-    function ($scope, $mdDialog, endpoint, parentNode, gateway,json, GatewayService, MessageUtil,endpoints_names,endpoints_main) {
+    ['$scope','$mdDialog','endpoint','parentNode','gateway','json','GatewayService','MessageUtil','endpoints_names','endpoints_main','style_library',
+    function ($scope, $mdDialog, endpoint, parentNode, gateway,json, GatewayService, MessageUtil,endpoints_names,endpoints_main,style_library) {
         $scope.endpoint = {};
         $scope.parentNode = {};
         $scope.page=1;
         $scope.valid = false;
         $scope.uniqueName=false;
+        $scope.band_i=1;
+        $scope.band_o=1;
+        $scope.style_library = angular.copy(style_library);
 
         $scope.promise = null;
          $scope.cancel = function() {
            $mdDialog.cancel();
         };
 
+        console.log("style_library",style_library);
         $scope.$watch('endpoint.NAMESPACE',  function () {
           var band = true;
           $scope.uniqueName=true;
           _.forEach(endpoints_names,function(item){
-            console.log("item "+item + " value "+ $scope.endpoint.NAMESPACE + " logic ", item==$scope.endpoint.NAMESPACE);
             if(item==$scope.endpoint.NAMESPACE){
               $scope.uniqueName=false;
             }
@@ -36,6 +39,15 @@
           });
 
         });
+
+         $scope.format_json = function(style){
+          style.source.$JSON = JSON.stringify(JSON.parse(style.source.JSON),null,"\t");
+        };
+
+       $scope.onDrop = function($event,$data, style){
+        console.log("onDrop",$data);
+        style.JSON = $data.$JSON;
+       };
 
         $scope.changeJSON=function(e){
           for(var i=0; i<$scope.endpoint.STYLES.length;i++)
@@ -76,7 +88,7 @@
           $scope.endpoint.LOCKED = "";
           $scope.endpoint.PACKAGE = "";
           $scope.endpoint.TRANSPORT = "";
-          $scope.endpoint.STYLES = [{PKY:"",DIRECTION:"I",NAME:"Default",JSON:"",CLASS_NAME:""}];
+          $scope.endpoint.STYLES = [{PKY:"",DIRECTION:"I",NAME:"Default",JSON:"",CLASS_NAME:"",BAND:false},{PKY:"",DIRECTION:"O",NAME:"Default",JSON:"",CLASS_NAME:"",BAND:false} ];
         } else {
           $scope.endpoint = angular.copy(endpoint);
         }
@@ -102,6 +114,7 @@
             json: angular.toJson(json_to_send)
           };
 
+          console.log(json);
             $scope.promise = GatewayService.execute_changes(gateway.id, params);
             
             $scope.promise.then(
@@ -130,11 +143,50 @@
         }
 
         $scope.addStyle = function () {
-          $scope.endpoint.STYLES.push({PKY:"",DIRECTION:"",NAME:"",JSON:"",CLASS_NAME:""});
+          $scope.band_i++;
+          $scope.endpoint.STYLES.push({PKY:"",DIRECTION:"I",NAME:"",JSON:"",CLASS_NAME:"",BAND: $scope.band_i>1});
         }
 
         $scope.deleteStyle = function (index) {
+          if($scope.endpoint.STYLES[i].DIRECTION==="I"){
+        	  $scope.band_i--;
+          }
+          if($scope.endpoint.STYLES[i].DIRECTION==="O"){
+        	  $scope.band_o--;
+          }
           $scope.endpoint.STYLES.splice(index, 1);
+        }
+        
+        $scope.verifyStyles = function(){
+    		var band_o=false, band_i=false;
+    		_foreach($scope.endpoint.STYLES,function(itm){
+    			if(itm.DIRECTION==="I"){
+    				$scope.band_i=true;
+    			}
+    			if(itm.DIRECTION==="O"){
+    				$scope.band_o=true;
+    			}
+    		});
+    		
+    		console.log("Verifyng value" )
+    	
+        }
+        
+        $scope.directionChanged = function(style){
+        	var i=0,o=0;
+        	_foreach($scope.endpoint.STYLES,function(itm){
+        		if(itm.DIRECTION==="I"){
+        			i++;
+        		}
+        		
+        		if(itm.DIRECTION==="O"){
+        			o++;
+        		}
+        	});
+        	
+        	$scope.band_i=i;
+        	$scope.band_o=o;
+        	console.log("Style Direction: " +style.DIRECTION + "$scope.band_o: " + $scope.band_o + "$scope.band_i" + $scope.band_i);
         }
 
 

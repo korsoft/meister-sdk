@@ -1,4 +1,4 @@
-<md-dialog aria-label="Endpoints" style="width:800px">
+<md-dialog aria-label="Endpoints" style="width:1000px;height: 600px">
     <md-toolbar>
       <div class="md-toolbar-tools">
         <h2>Add/Edit a Endpoint</h2>
@@ -14,7 +14,10 @@
         <div class="md-dialog-content" ng-show="page==1">
                <md-input-container class="md-block">
                 <label>Namespace</label>
-                <input ng-model="endpoint.NAMESPACE" required>
+                <input ng-model="endpoint.NAMESPACE"  name="endpoint" required>
+                 <div ng-messages="frmEndpoint.endpoint.$error">
+		          <div ng-message="required">This is required.</div>
+		         </div>
               </md-input-container>
                <md-input-container class="md-block">
                 <label>Long Text</label>
@@ -22,11 +25,20 @@
               </md-input-container>
                <md-input-container class="md-block">
                 <label>Endpoint Main</label>
-                <input ng-model="endpoint.ENDPOINT_MAIN" required maxlength="30">
+                <input name="endpoint_main" ng-model="endpoint.ENDPOINT_MAIN" required maxlength="30" md-maxlength="30"
+                  pattern="[A-Za-z_\/]{1,30}">
+                <div ng-messages="frmEndpoint.endpoint_main.$error">
+		          <div ng-message="required">This is required.</div>
+		          <div ng-message="md-maxlength">This field must be 30 characters max.</div>
+		          <div ng-message="pattern">Endpoint Main does not conform with SAP syntax.</div>
+		         </div>
               </md-input-container>
                <md-input-container class="md-block">
                 <label>Handler</label>
-                <input ng-model="endpoint.HANDLER" required>
+                <input name="handler" ng-model="endpoint.HANDLER" required>
+                <div ng-messages="frmEndpoint.handler.$error">
+		          <div ng-message="required">This is required.</div>
+		        </div>
               </md-input-container>
                <md-input-container class="md-block">
                 <label>Bus Name</label>
@@ -34,10 +46,13 @@
               </md-input-container>
                <md-input-container class="md-block">
                 <label>Type</label>
-                <md-select ng-model="endpoint.TYPE" required>
+                <md-select name="type" ng-model="endpoint.TYPE" required>
                   <md-option value="D">Dynamic</md-option>
                   <md-option value="L">Static</md-option>
                 </md-select>
+                 <div ng-messages="frmEndpoint.type.$error">
+		          <div ng-message="required">You must select an option.</div>
+		        </div>
               </md-input-container>
               <md-input-container class="md-block">
                 <label>Version</label>
@@ -48,7 +63,11 @@
               </md-input-container>
               <md-input-container class="md-block">
                 <label>Package</label>
-                <input ng-model="endpoint.PACKAGE">
+                <input name="package" ng-model="endpoint.PACKAGE" pattern="(\$TMP|((Y|Z)[1-9A-Za-z]+(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?)|(\/[1-9A-Za-z]+(\/[1-9A-Za-z]+)?(\/[1-9A-Za-z]+)?(\/[1-9A-Za-z]+)?))" required>
+                 <div ng-messages="frmEndpoint.package.$error">
+		          <div ng-message="required">This is required.</div>
+		          <div ng-message="pattern">Package does not conform with SAP syntax</div>
+		         </div>
               </md-input-container>
               <md-input-container class="md-block">
                 <label>Transport</label>
@@ -57,9 +76,13 @@
         </div>
       </form>
       <form  id="frmEndpointStyle" name="frmEndpointStyle" ng-cloak>
-        <div class="md-dialog-content" ng-show="page==2">
-            <h2>Add styles</h2>
-            <md-table-container>
+        <div class="md-dialog-content" ng-show="page==2" layout-gt-sm="row" layout="column">
+
+      <div flex-gt-sm="70" flex>
+
+    <md-content>
+    
+        <md-table-container>
               <table md-table>
                 <thead md-head>
                   <tr md-row>
@@ -69,35 +92,80 @@
                     <th md-column><md-button class="md-icon-button" ng-click="addStyle()"><md-icon ng-bind="'add_box'"></md-icon></md-button></th>
                   </tr>
                 </thead>
-                <tbody md-body >
-                  <tr md-row ng-repeat="style in endpoint.STYLES ">
+                <tbody md-body dnd-list="endpoint.STYLES">
+                  <tr md-row ng-repeat="style in endpoint.STYLES " >
                     <td md-cell>
-                      <md-input-container md-no-float>
-                          <input ng-model="style.NAME" required placeholder="Name" style="width: 100px">
+                      <md-input-container ng-show="style.DIRECTION==='I'" md-no-float>
+                          <input ng-show="style.DIRECTION==='I'" ng-disabled="!style.BAND" ng-model="style.NAME"  required placeholder="Name" style="width: 80px">
+                      </md-input-container>
+                      <md-input-container ng-show="style.DIRECTION==='O'"  md-no-float>
+                          <input ng-show="style.DIRECTION==='O'" ng-disabled="!style.BAND" ng-model="style.NAME"  required placeholder="Name" style="width: 80px">
                       </md-input-container>
                     </td>
                     <td md-cell>
                       <md-input-container md-no-float>
-                          <md-select ng-model="style.DIRECTION" required placeholder="Direction">
+                          <md-select ng-model="style.DIRECTION" required placeholder="Direction" ng-change="directionChanged(style)">
                             <md-option value="I">inbound</md-option>
                             <md-option value="O">outbound</md-option>
                           </md-select>
                       </md-input-container>
                     </td>
                     <td md-cell>
-                      <md-input-container md-no-float>
-                        <div  ui-ace="{ onChange: changeJSON,mode: 'json'}" style="width: 300px; height: 185px;"  ng-model="style.JSON"></div>
+                      <md-input-container md-no-float 
+                      >
+                        <div  ui-ace="{ onChange: changeJSON,mode: 'json'}" style="width: 250px; height: 100px;" 
+                          ng-model="style.JSON"
+                          ui-on-Drop="onDrop($event,$data,style)"
+                            ></div>
 
                         <!-- <div ng-jsoneditor ng-model="style.JSON" options="{mode: 'tree'}" style="width: 300px; height: 215px;"  prefer-text="true" ></div> -->
                       </md-input-container>
                     </td>
                      <td md-cell>
-                      <md-button class="md-icon-button" ng-click="deleteStyle($index)" ng-if="$index!=0"><md-icon ng-bind="'delete_sweep'"></md-icon></md-button>
+                      <md-button class="md-icon-button" ng-click="deleteStyle($index)" ng-if="$index>1"><md-icon ng-bind="'delete_sweep'"></md-icon></md-button>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </md-table-container>
+ 
+    </md-content>
+  </div>
+
+  <md-divider></md-divider>
+
+  <div flex-gt-sm="30" flex>
+
+    <md-toolbar layout="row">
+      <div class="md-toolbar-tools">
+        <span>Style Library</span>
+      </div>
+    </md-toolbar>
+
+    <md-content style="overflow-y: auto;height: 350px">
+      <div flex-xs flex-gt-xs="100" layout="column" 
+            ng-init="s.$show = false"
+            ng-click="s.$show = !s.$show"  
+            ng-repeat="s in style_library.children"
+            ui-draggable="true" 
+            drag="s.source">
+
+        <md-card md-theme-watch style="padding: 1px;margin: 1px" >
+            <md-card-title style="padding:0px">
+              <md-card-title-text>
+                <span class="md-headline"  style="font-size: 12px;color: gray">{{s.name}}</span>
+              </md-card-title-text>
+            </md-card-title>
+            <md-card-content style="padding: 0px">
+               <div  ng-show="s.$show" ui-ace="{ mode: 'json'}" readonly style="width: 100%; height: 100px; background-color:#cccccc;" ng-init="format_json(s)"  ng-model="s.source.$JSON" ></div>
+            </md-card-content>
+          </md-card>
+    </div>
+    </md-content>
+
+  </div>
+           
+            
         </div>
       </form>
     </md-dialog-content>
@@ -109,6 +177,7 @@
       <md-button class="md-raised md-primary" ng-click="changePage(2)" ng-show="page==1" ng-disabled="frmEndpoint.$invalid || !uniqueName  || !uniqueMain">
        Next
       </md-button>
+      
       <md-button class="md-raised md-primary" ng-click="save()" ng-show="page==2" ng-disabled="frmEndpointStyle.$invalid || checkUniqueName() || !valid || !uniqueName || !uniqueMain">
        Save
       </md-button>

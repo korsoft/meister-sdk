@@ -1,22 +1,56 @@
 (function(app) {
-	app.controller('EndpointDialogController',
-    ['$scope','$mdDialog','endpoint','parentNode','gateway','json','GatewayService','MessageUtil','endpoints_names','endpoints_main','style_library',
-    function ($scope, $mdDialog, endpoint, parentNode, gateway,json, GatewayService, MessageUtil,endpoints_names,endpoints_main,style_library) {
-        $scope.endpoint = {};
-        $scope.parentNode = {};
+	app.controller('EndpointController',
+    ['$scope','GatewayService','MessageUtil',
+    function ($scope, GatewayService, MessageUtil) {
         $scope.page=1;
         $scope.valid = false;
         $scope.uniqueName=false;
         $scope.band_i=1;
         $scope.band_o=1;
-        $scope.style_library = angular.copy(style_library);
+        var gateway = null;
+        var json = null;
+        var endpoints_names = null;
+        var endpoints_main = null;
+        var parentNode = {};
+        $scope.endpoint = {};
+
+        $scope.init = function(endpoint, pn, gtw, jso, endpointsnames,endpointsmain){
+          parentNode = pn;
+          gateway = gtw;
+          json = jso;
+          endpoints_names = endpointsnames;
+          endpoints_main = endpointsmain;
+          console.log("EndpointController-->parentNode",parentNode);
+
+          if(!endpoint){
+            $scope.endpoint.PKY = "";
+            $scope.endpoint.NAMESPACE = "";
+            $scope.endpoint.LONG_TEXT = "";
+            $scope.endpoint.ENDPOINT_MAIN = "";
+            $scope.endpoint.HANDLER = "";
+            $scope.endpoint.BUS_NAME = "";
+            $scope.endpoint.TYPE = "";
+            $scope.endpoint.VERSION = "";
+            $scope.endpoint.LOCKED = "";
+            $scope.endpoint.PACKAGE = "";
+            $scope.endpoint.TRANSPORT = "";
+            $scope.endpoint.STYLES = [{PKY:"",DIRECTION:"I",NAME:"Default",JSON:"",CLASS_NAME:"",BAND:false},{PKY:"",DIRECTION:"O",NAME:"Default",JSON:"",CLASS_NAME:"",BAND:false} ];
+          } else {
+            $scope.endpoint = angular.copy(endpoint);
+          }
+
+          console.log("Endpoint", endpoint);
+        console.log("ParenNode", $scope.parentNode);
+
+        }
 
         $scope.promise = null;
-         $scope.cancel = function() {
-           $mdDialog.cancel();
+        
+        $scope.cancel = function() {
+            $scope.$emit('add-endpoint-closed', {});
         };
 
-        console.log("style_library",style_library);
+       
         $scope.$watch('endpoint.NAMESPACE',  function () {
           var band = true;
           $scope.uniqueName=true;
@@ -44,9 +78,18 @@
           style.source.$JSON = JSON.stringify(JSON.parse(style.source.JSON),null,"\t");
         };
 
+        $scope.dropValidate = function(target, source) {
+          console.log("target",target);
+          console.log("source",source);
+          return !source.NAME;
+      };
+
        $scope.onDrop = function($event,$data, style){
         console.log("onDrop",$data);
-        style.JSON = $data.$JSON;
+        if(!$data.DIRECTION)
+          style.JSON = JSON.stringify(JSON.parse($data.JSON),null,"\t");
+        else
+          style.JSON = "";
        };
 
         $scope.changeJSON=function(e){
@@ -76,27 +119,10 @@
 
         }
 
-        if(!endpoint){
-          $scope.endpoint.PKY = "";
-          $scope.endpoint.NAMESPACE = "";
-          $scope.endpoint.LONG_TEXT = "";
-          $scope.endpoint.ENDPOINT_MAIN = "";
-          $scope.endpoint.HANDLER = "";
-          $scope.endpoint.BUS_NAME = "";
-          $scope.endpoint.TYPE = "";
-          $scope.endpoint.VERSION = "";
-          $scope.endpoint.LOCKED = "";
-          $scope.endpoint.PACKAGE = "";
-          $scope.endpoint.TRANSPORT = "";
-          $scope.endpoint.STYLES = [{PKY:"",DIRECTION:"I",NAME:"Default",JSON:"",CLASS_NAME:"",BAND:false},{PKY:"",DIRECTION:"O",NAME:"Default",JSON:"",CLASS_NAME:"",BAND:false} ];
-        } else {
-          $scope.endpoint = angular.copy(endpoint);
-        }
+        
 
-        $scope.parentNode = parentNode;
-        console.log("Endpoint", endpoint);
-        console.log("ParenNode", parentNode);
-
+        
+        
         $scope.check_json = function(){
 
           console.log("json",json);
@@ -107,8 +133,17 @@
         }
 
         $scope.save = function(){
+          var localEndpoint = angular.copy($scope.endpoint);
+          _.each(localEndpoint.STYLES,function(s){
+              delete s.BAND;
+              //remove spaces in keys
+              var obj = angular.fromJson(s.JSON.replace(/"([\w\s]+)":/g, function (m) {
+                  return m.replace(/\s+/g, '');
+              }));
+              s.JSON = angular.toJson(obj);
+          });
 
-          var json_to_send =  GatewayService.buildJsonByNewEndpoint(json, parentNode.source, $scope.endpoint);
+          var json_to_send =  GatewayService.buildJsonByNewEndpoint(json, parentNode.source, localEndpoint);
           
           var params = {
             json: angular.toJson(json_to_send)
@@ -120,15 +155,7 @@
             $scope.promise.then(
                 function(result){
                   console.log("result",result);
-                  /*var endpointItem = {
-                      name: $scope.endpoint.NAMESPACE,
-                      source: $scope.endpoint,
-                      expanded: false,
-                      children: []
-                    };
-                  parentNode.children.push(endpointItem);
-                  */
-                    $mdDialog.hide(result);
+                  $scope.$emit('add-endpoint-saved', {"parentNode":parentNode,"endpoint":localEndpoint});
                   },
                 function(error){
                   console.log("error",error);
@@ -144,14 +171,14 @@
 
         $scope.addStyle = function () {
           $scope.band_i++;
-          $scope.endpoint.STYLES.push({PKY:"",DIRECTION:"I",NAME:"",JSON:"",CLASS_NAME:"",BAND: $scope.band_i>1});
+          $scope.endpoint.STYLES.push({PKY:"",DIRECTION:"O",NAME:"",JSON:"",CLASS_NAME:"",BAND: $scope.band_i>1});
         }
 
         $scope.deleteStyle = function (index) {
-          if($scope.endpoint.STYLES[i].DIRECTION==="I"){
+          if($scope.endpoint.STYLES[index].DIRECTION==="I"){
         	  $scope.band_i--;
           }
-          if($scope.endpoint.STYLES[i].DIRECTION==="O"){
+          if($scope.endpoint.STYLES[index].DIRECTION==="O"){
         	  $scope.band_o--;
           }
           $scope.endpoint.STYLES.splice(index, 1);
@@ -193,6 +220,9 @@
         $scope.checkUniqueName= function () {
           var counts = [];
         //  console.log($scope.endpoint.Payload_styles[0]);
+        if(!$scope.endpoint.STYLES)
+          return false;
+
           for(var i = 0; i < $scope.endpoint.STYLES.length; i++) {
               if(counts[$scope.endpoint.STYLES[i].NAME+$scope.endpoint.STYLES[i].DIRECTION] === undefined) {
                   counts[$scope.endpoint.STYLES[i].NAME+$scope.endpoint.STYLES[i].DIRECTION] = 1;

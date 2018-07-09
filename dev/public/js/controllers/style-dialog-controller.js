@@ -12,23 +12,45 @@
 
         if(!style){
           $scope.style.PKY = "";
-          $scope.style.DIRECTION = "";
-          $scope.style.NAME = "";
+          $scope.style.DESCRIPTION = "";
           $scope.style.JSON = "";
         } else {
           $scope.style = angular.copy(style);
+          $scope.style.PKY = "";
+          $scope.style.DESCRIPTION = "";
+          $scope.style.JSON = JSON.stringify(JSON.parse($scope.style.JSON),null,"\t");
+          delete $scope.style.CLASS_NAME;
+          delete $scope.style.DIRECTION;
+          delete $scope.style.FKY;
+          delete $scope.style.LOGICAL_DELETE;
+          delete $scope.style.MEISTER_OWN;
+          delete $scope.style.NAME;
         }
 
-       console.log("Style", style);
-        console.log("ParenNode", parentNode);
+        console.log("Style", $scope.style);
+        console.log("Parent", parentNode);
 
+        $scope.changeJSON=function(e){
+          try{
+            jj = JSON.parse($scope.style.JSON);
+            if(Object.keys(jj).length>0)
+            {
+              $scope.valid=true;
+            }else{
+              $scope.valid=false;
+            }                  
+          }catch(ee){
+            $scope.valid=false;
+          }
+        }
 
         $scope.save = function(){
 
-          var json_to_send =  GatewayService.buildJsonByNewStyle(json, parentNode.source, $scope.style);
+          var json_to_send =  GatewayService.buildJsonByNewStyleTemplate(json, parentNode, $scope.style);
           
           var params = {
-            json: JSON.stringify(json_to_send)
+            json: JSON.stringify(json_to_send),
+            SDK_HINT:"ADS"
           };
 
             $scope.promise = GatewayService.execute_changes(gateway.id, params);

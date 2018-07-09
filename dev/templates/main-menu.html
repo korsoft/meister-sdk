@@ -32,6 +32,11 @@
             <md-icon ng-bind="'build'"></md-icon> Gateways
           </md-button>
         </md-menu-item>
+        <md-menu-item ng-if="user_type >= CLIENT_ADMIN">
+          <md-button ui-sref=requests-logs>
+            <md-icon ng-bind="'chrome_reader_mode'"></md-icon> Requests Log
+          </md-button>
+        </md-menu-item>
         <md-menu-item>
           <md-button ui-sref="edit-profile">
             <md-icon ng-bind="'account_circle'"></md-icon> Edit your profile

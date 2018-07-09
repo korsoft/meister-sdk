@@ -1,37 +1,39 @@
 (function(app) {
-	app.controller('ModuleDialogController',
-    ['$scope','$mdDialog','module','parentNode','gateway', 'json','GatewayService','MessageUtil',
-    function ($scope, $mdDialog, module, parentNode, gateway, json, GatewayService, MessageUtil) {
+	app.controller('ProjectDialogController',
+    ['$scope','$mdDialog','project','parentNode','gateway', 'json','GatewayService','MessageUtil',
+    function ($scope, $mdDialog, project, parentNode, gateway, json, GatewayService, MessageUtil) {
   
-        $scope.module = {};
+        $scope.project= {};
        
         $scope.promise = null;
          $scope.cancel = function() {
            $mdDialog.cancel();
         };
 
-        if(!module){
-          $scope.module.PKY = "";
-          $scope.module.NAME = "";
-          $scope.module.DATE = new Date();
-          $scope.module.ENDPOINTS = [];
+        if(!project){
+          $scope.project.PKY = "";
+          $scope.project.PROJECT = "";
         } else {
-          $scope.module = angular.copy(module);
+          $scope.project = angular.copy(project);
         }
 
-        console.log("Module", module);
+        console.log("Project", project);
         console.log("ParenNode", parentNode);
 
 
         $scope.save = function(){
 
-          var json_to_send =  GatewayService.buildJsonByNewModule(json, parentNode.source, $scope.module);
+         console.log("Saving Project",$scope.project);
+         
+         var json_to_send =  GatewayService.buildJsonByNewProject(json, $scope.project);
+         
+         delete json_to_send.MODULES;
+         delete json_to_send.STYLE_LIB;
          
           var params = {
             json: JSON.stringify(json_to_send)
           };
-           console.log("json a enviar"+params.json);
-
+           
             $scope.promise = GatewayService.execute_changes(gateway.id, params);
             
             $scope.promise.then(

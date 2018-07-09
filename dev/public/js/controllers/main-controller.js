@@ -68,7 +68,7 @@
 		 	return 0;
 		 };
 
-		 $rootScope.clients = function(){
+		$rootScope.clients = function(){
 		 	var token_data = $cookies.get('meister-sdk-token');
 		 	if(token_data){
 		 		token_data = angular.fromJson(token_data);
@@ -76,7 +76,33 @@
 		 	}
 
 		 	return [];
-		 };
+		};
+
+		$rootScope.isMeisterUser = function(node){
+		 	var token_data = $cookies.get('meister-sdk-token');
+		 	if(token_data && node.source.MEISTER_OWN && node.source.MEISTER_OWN=="X"){
+		 		token_data = angular.fromJson(token_data);
+		 		return  (token_data.user_type==$rootScope.SYSTEM_ADMIN || 
+			 			(token_data.user_email.endsWith("@s4meister.com")
+			 			 || token_data.user_email.endsWith("@gameister.com")
+			 			));
+		 	}
+
+		 	return true;
+		};
+
+		$rootScope.isMeister = function(){
+		 	var token_data = $cookies.get('meister-sdk-token');
+		 	if(token_data ){
+		 		token_data = angular.fromJson(token_data);
+		 		return  (token_data.user_type==$rootScope.SYSTEM_ADMIN || 
+			 			(token_data.user_email.endsWith("@s4meister.com")
+			 			 || token_data.user_email.endsWith("@gameister.com")
+			 			));
+		 	}
+
+		 	return false;
+		};
 
 
 		 $rootScope.setClientAndType = function(client_user){
