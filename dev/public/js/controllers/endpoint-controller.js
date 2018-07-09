@@ -136,7 +136,10 @@
           var localEndpoint = angular.copy($scope.endpoint);
           _.each(localEndpoint.STYLES,function(s){
               delete s.BAND;
-              var obj = angular.fromJson(s.JSON);
+              //remove spaces in keys
+              var obj = angular.fromJson(s.JSON.replace(/"([\w\s]+)":/g, function (m) {
+                  return m.replace(/\s+/g, '');
+              }));
               s.JSON = angular.toJson(obj);
           });
 

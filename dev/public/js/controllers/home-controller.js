@@ -926,9 +926,13 @@
 			if($scope.payload_json.json_string)
 			{
 				try{
-					$scope.payload_json.json = JSON.parse($scope.payload_json.json_string);
+					//remove space in keys
+					var str_obj = $scope.payload_json.json_string.replace(/"([\w\s]+)":/g, function (m) {
+					    return m.replace(/\s+/g, '');
+					});
+					$scope.payload_json.json = JSON.parse(str_obj);
 					$scope.payload_json.json_test=true;
-					console.log(JSON.parse($scope.payload_json.json_string));
+					console.log(JSON.parse(str_obj));
 
 				}catch (e) {
 					$scope.payload_json.json_test=false;

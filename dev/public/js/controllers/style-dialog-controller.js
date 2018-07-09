@@ -46,14 +46,21 @@
 
         $scope.save = function(){
 
+          $scope.style.JSON = $scope.style.JSON.replace(/"([\w\s]+)":/g, function (m) {
+                  return m.replace(/\s+/g, '');
+              });
+
           var json_to_send =  GatewayService.buildJsonByNewStyleTemplate(json, parentNode, $scope.style);
-          
+           console.log("json_to_send",json_to_send);
+
           var params = {
-            json: JSON.stringify(json_to_send),
+            json: JSON.stringify(json_to_send,null,""),
             SDK_HINT:"ADS"
           };
 
-            $scope.promise = GatewayService.execute_changes(gateway.id, params);
+          console.log("params",params);
+
+          $scope.promise = GatewayService.execute_changes(gateway.id, params);
             
             $scope.promise.then(
                 function(result){
