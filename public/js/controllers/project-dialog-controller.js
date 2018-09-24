@@ -33,6 +33,8 @@
           var params = {
             json: JSON.stringify(json_to_send)
           };
+
+          console.log("Params",params);
            
             $scope.promise = GatewayService.execute_changes(gateway.id, params);
             

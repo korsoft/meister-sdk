@@ -266,13 +266,13 @@
 						    	return;
 						    }
 						    var is_selected = false;
-						    console.log("selectNodeConfig",selectNodeConfig);
+						    //console.log("selectNodeConfig",selectNodeConfig);
 						    if(selectNodeConfig){
 						    	if(selectNodeConfig.type == "ENDPOINT"){
 						    		is_selected = selectNodeConfig.value === endpoint.NAMESPACE;
 						    	}
 						    }
-						    console.log("is selected",is_selected);
+						    //console.log("is selected",is_selected);
 							endpoints_names.push(endpoint.NAMESPACE);
 							endpoints_main.push(endpoint.ENDPOINT_MAIN);
 							var icon = imageEndpoint(endpoint);
