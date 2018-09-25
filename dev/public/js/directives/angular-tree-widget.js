@@ -106,7 +106,7 @@
                 + '     <md-icon ng-bind="\'delete\'"></md-icon> Delete'
                 + '  </md-button>'
                 + '</md-menu-item>'
-                + '<md-menu-item ng-if="node  && node.type && node.type==\'STYLE_TEMPLATE_PARENT\' ">'
+                + '<md-menu-item ng-if="node  && node.type && node.type==\'STYLE_TEMPLATE_PARENT\' && node.parent.LOGICAL_DELETE != \'X\'">'
                 + ' <md-button'
                 + '      ng-click="emitActionNodeSelected(\'add_style_lib\',node,$event)" '
                 + ' >'
