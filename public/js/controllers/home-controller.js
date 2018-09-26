@@ -160,6 +160,16 @@
 						is_deleted:  node.LOGICAL_DELETE,
 						children: []
 					};
+
+					var bapi={
+						name:"BAPI Processor",
+						source:node,
+						image: '/public/images/bapi.png',
+						parent:rootNode,
+						disabled:true,
+						is_deleted:"",
+						children:[]
+					};
 					
 					 /************************
 					  * Data Style Simulator
@@ -207,6 +217,7 @@
 					});
 					 
 					 
+					rootNode.children.push(bapi);
 					nodeItem.children.push(style_template);
 					if(nodeItem.is_deleted){
 						deletedProjects.children.push(nodeItem);
