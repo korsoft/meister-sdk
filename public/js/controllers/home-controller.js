@@ -145,6 +145,18 @@
 					is_deleted:"",
 					children:[]
 				};
+
+				var bapi={
+						name:"BAPI Processor",
+						source:rootNode,
+						image: '/public/images/bapi.png',
+						parent:rootNode,
+						disabled:true,
+						is_deleted:"",
+						children:[]
+					};
+
+				rootNode.children.push(bapi);
 				_.forEach($scope.json, function(node){		
 				    if(node.MEISTER_OWN && 
 				    	node.MEISTER_OWN=="X"
@@ -161,15 +173,7 @@
 						children: []
 					};
 
-					var bapi={
-						name:"BAPI Processor",
-						source:node,
-						image: '/public/images/bapi.png',
-						parent:rootNode,
-						disabled:true,
-						is_deleted:"",
-						children:[]
-					};
+					
 					
 					 /************************
 					  * Data Style Simulator
@@ -217,8 +221,8 @@
 					});
 					 
 					 
-					rootNode.children.push(bapi);
 					nodeItem.children.push(style_template);
+
 					if(nodeItem.is_deleted){
 						deletedProjects.children.push(nodeItem);
 						if(deletedProjects.children.length==1){
