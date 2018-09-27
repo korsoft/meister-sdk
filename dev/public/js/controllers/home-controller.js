@@ -47,6 +47,7 @@
 		$scope.add_endpoint = false;
 
 
+		$scope.bapi = {};
 		$scope.style_template = {};
 		$scope.client = {};
 		var endpoints_names=[];
@@ -146,7 +147,7 @@
 					children:[]
 				};
 
-				var bapi={
+				$scope.bapi={
 						name:"BAPI Processor",
 						source:rootNode,
 						image: '/public/images/bapi.png',
@@ -157,7 +158,7 @@
 						children:[]
 					};
 
-				rootNode.children.push(bapi);
+				rootNode.children.push($scope.bapi);
 				_.forEach($scope.json, function(node){		
 				    if(node.MEISTER_OWN && 
 				    	node.MEISTER_OWN=="X"
@@ -419,7 +420,8 @@
               escapeToClose: false,
               locals: {
                   GatewayService: GatewayService,
-                  gatewayId: $scope.gatewaySelectedId
+                  gatewayId: $scope.gatewaySelectedId,
+                  bapi: $scope.bapi
                }
 		    })
 		    .then(function(answer) {
