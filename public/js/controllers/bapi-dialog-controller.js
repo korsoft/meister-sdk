@@ -1,7 +1,7 @@
 (function(app) {
   app.controller('BapiDialogController',
-    ['$scope','$mdDialog','gatewayId','GatewayService','MessageUtil',
-    function ($scope, $mdDialog,gatewayId,GatewayService,MessageUtil) {
+    ['$scope','$mdDialog','gatewayId','bapi','GatewayService','MessageUtil',
+    function ($scope, $mdDialog,gatewayId,bapi,GatewayService,MessageUtil) {
 
       $scope.selector="O";
       $scope.selection="";
@@ -34,7 +34,44 @@
             
             $scope.promise.then(
                 function(result){
+                  bapi.children.splice(0,bapi.children.length);
                   console.log("result",result);
+                  if(result.data && result.data.data){
+                    _.each(result.data.data,function(row){
+                      if(row.EXPLORER){
+                        _.each(row.EXPLORER,function(item){
+                          var node = false;
+                          _.each(item, function(value, key, obj){
+                              if(node === false){
+                                  node = {
+                                      name:'"'+ key + '":"' + value + '"',
+                                      source:item,
+                                      //image: '/public/images/bapi.png',
+                                      parent:bapi,
+                                      disabled:false,
+                                      type: "BAPI_NODE",
+                                      children:[]
+                                 };
+                                 bapi.children.push(node);
+                              } else if(value != ""){
+                                var subnode = {
+                                    name:'"'+ key + '":"' + value + '"',
+                                    source:item,
+                                    //image: '/public/images/bapi.png',
+                                    parent:node,
+                                    disabled:false,
+                                    type: "BAPI_SUBNODE",
+                                    children:[]
+                                };
+                                node.children.push(subnode);
+                              }
+                          });
+
+                        });
+                      }
+                      return;
+                    });
+                  }
                   $mdDialog.cancel(); 
                   },
                 function(error){
