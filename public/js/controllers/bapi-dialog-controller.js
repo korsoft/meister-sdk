@@ -17,12 +17,14 @@
       };
 
       $scope.send = function() {
-           var params = {
-            "endpoint":"Meister.SDK.Bapi.Lookup",
-            "json":{
+           var json = {
                 "SELECTOR":$scope.selector,
                 "SELECTION":$scope.selection
-              }
+              };
+
+           var params = {
+            "endpoint":"Meister.SDK.Bapi.Lookup",
+            "json": JSON.stringify(json)
             }
 
             console.log("gatewayId",gatewayId);
