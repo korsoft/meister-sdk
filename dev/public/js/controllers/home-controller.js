@@ -1,7 +1,7 @@
 (function(app) {
 	app.controller('HomeController', ['$scope','$rootScope','$mdMenu','$mdToast','$mdDialog','MessageUtil',
 		'GatewayService','$filter','$window','GatewayClientService','$timeout',
-		function($scope, $rootScope, $mdMenu, $mdToast,$mdDialog,MessageUtil,GatewayService,$filter,$window,GatewayClientService,$timeout) {
+		function($scope, $rootScope, $mdMenu, $mdToast,$mdDialog,MessageUtil,GatewayService,$filter,$window,GatewayClientService,$timeout,bapiDialogController) {
 
 		$scope.promise = null;
 		$scope.gateways = [];
@@ -145,6 +145,19 @@
 					is_deleted:"",
 					children:[]
 				};
+
+				var bapi={
+						name:"BAPI Processor",
+						source:rootNode,
+						image: '/public/images/bapi.png',
+						parent:rootNode,
+						disabled:false,
+						is_deleted:"",
+						type: "BAPI_BUTTON",
+						children:[]
+					};
+
+				rootNode.children.push(bapi);
 				_.forEach($scope.json, function(node){		
 				    if(node.MEISTER_OWN && 
 				    	node.MEISTER_OWN=="X"
@@ -160,6 +173,8 @@
 						is_deleted:  node.LOGICAL_DELETE,
 						children: []
 					};
+
+					
 					
 					 /************************
 					  * Data Style Simulator
@@ -208,6 +223,7 @@
 					 
 					 
 					nodeItem.children.push(style_template);
+
 					if(nodeItem.is_deleted){
 						deletedProjects.children.push(nodeItem);
 						if(deletedProjects.children.length==1){
@@ -390,6 +406,28 @@
 			$scope.json_logs_content = null;
 			$scope.json_logs_content_obj = null;
 		};
+
+		$scope.$on('bapi-selected', function (e,node) {
+	     	console.log("BAPI",node);
+
+
+	     	$mdDialog.show({
+		      controller: 'BapiDialogController',
+		      templateUrl: 'templates/bapi-dialog.html',
+		      parent: angular.element(document.body),
+		      clickOutsideToClose:false,
+              escapeToClose: false,
+              locals: {
+                  GatewayService: GatewayService,
+                  gatewayId: $scope.gatewaySelectedId
+               }
+		    })
+		    .then(function(answer) {
+		      $scope.status = 'You said the information was "' + answer + '".';
+		    }, function() {
+		      $scope.status = 'You cancelled the dialog.';
+		    });
+	    });
 
 	     $scope.$on('selection-changed', function (e, node) {
 	     	console.log("Node selected",node);

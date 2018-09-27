@@ -1,0 +1,53 @@
+<md-dialog aria-label="Clients" style="width: 800px">
+  <form id="bapiFormId" name="bapiForm" novalidate ng-cloak >
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Bapi Procesor</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="close()" title="close">
+          <md-icon ng-bind="'highlight_off'"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content >
+      <md-content layout="column">
+        <md-content layout="row" flex >
+          <div layout="row" layout-margin flex="100" >
+              <div layout="row" flex="100" layout-wrap>
+                <div layout="column" flex="100" >
+                  <label for="selector_name" style="margin-bottom: 1em; font-weight: bolder;">Selector</label>
+                  <md-divider></md-divider>
+                  <md-radio-group  layout="column" flex="100" style="margin-top: 1em;" name="selector_name" ng-model="selector">
+                    <md-radio-button value="O" class="md-primary">Business Objects</md-radio-button>
+                    <md-radio-button value="B"> Bapi </md-radio-button>
+                    <md-radio-button value="F">Function Modules</md-radio-button>
+                    <md-radio-button value="P">Packages</md-radio-button>
+                    <md-radio-button value="C">Catalog</md-radio-button>
+                  </md-radio-group>
+                  <md-divider></md-divider>
+                </div>
+                <div layout="row" flex="100" layout-wrap>
+                  <div layout="column" flex="50">
+                    <md-input-container>
+                      <label>Selection</label>
+                      <input name="selection" ng-model="selection" required ng-pattern="/^[^*]?(\w|\d)+[^*]?$/">
+                    </md-input-container>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </md-content>
+      </md-content>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button class="md-raised" ng-click="send()" ng-disabled="bapiForm.$invalid">
+        Send
+      </md-button>
+      <md-button class="md-raised  md-primary" ng-click="close()">
+        Close
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
