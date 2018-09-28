@@ -48,6 +48,7 @@
 
 
 		$scope.bapi = {};
+		$scope.bapi_node_is_selected = false;
 		$scope.style_template = {};
 		$scope.client = {};
 		var endpoints_names=[];
@@ -410,9 +411,13 @@
 
 		$scope.$on('bapi-selected', function (e,node) {
 	     	console.log("BAPI",node);
+	     	$scope.mode_run = false;
+	     	$scope.add_endpoint = false;
+	     	$scope.bapi_node_is_selected = true;
+	     	$scope.node = node;
+	     	
 
-
-	     	$mdDialog.show({
+	     	/*$mdDialog.show({
 		      controller: 'BapiDialogController',
 		      templateUrl: 'templates/bapi-dialog.html',
 		      parent: angular.element(document.body),
@@ -428,12 +433,12 @@
 		      $scope.status = 'You said the information was "' + answer + '".';
 		    }, function() {
 		      $scope.status = 'You cancelled the dialog.';
-		    });
+		    });*/
 	    });
 
 	     $scope.$on('selection-changed', function (e, node) {
 	     	console.log("Node selected",node);
-
+	     	$scope.bapi_node_is_selected = false;
 	     	$scope.node = node;
 	     	$scope.nodeSelected = node;
 	        $scope.payload_json = {json: null, options: {mode: 'tree'}};

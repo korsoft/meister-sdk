@@ -1,21 +1,20 @@
 (function(app) {
   app.controller('BapiDialogController',
-    ['$scope','$mdDialog','gatewayId','bapi','GatewayService','MessageUtil',
-    function ($scope, $mdDialog,gatewayId,bapi,GatewayService,MessageUtil) {
+    ['$scope','GatewayService','MessageUtil',
+    function ($scope, GatewayService,MessageUtil) {
 
       $scope.selector="O";
       $scope.selection="";
+
+     var upperCaseFirstLetterEachWord = function(string){
+      var words = string.toLowerCase().split(" ");
+      var result  = "";
+      _.each(words,function(word){
+        result += word.charAt(0).toUpperCase() + word.slice(1) + " ";
+      });
+      return result;
+    };
       
-      $scope.cancel = function(e,c){
-        console.log("cancel");
-        c.$edit=false;
-      }
-
-      $scope.close = function() {
-           console.log("close");
-           $mdDialog.cancel();
-      };
-
       $scope.send = function() {
            var json = {
                 "SELECTOR":$scope.selector,
@@ -27,14 +26,14 @@
             "json": JSON.stringify(json)
             }
 
-            console.log("gatewayId",gatewayId);
+            console.log("gatewayId",$scope.gatewaySelectedId);
             console.log("params",params);
 
-            $scope.promise = GatewayService.execute_endpoint(gatewayId, params);
+            $scope.promise = GatewayService.execute_endpoint($scope.gatewaySelectedId, params);
             
             $scope.promise.then(
                 function(result){
-                  bapi.children.splice(0,bapi.children.length);
+                  $scope.bapi.children.splice(0,$scope.bapi.children.length);
                   console.log("result",result);
                   if(result.data && result.data.data){
                     _.each(result.data.data,function(row){
@@ -44,18 +43,19 @@
                           _.each(item, function(value, key, obj){
                               if(node === false){
                                   node = {
-                                      name:'"'+ key + '":"' + value + '"',
+                                      name:value,
                                       source:item,
                                       //image: '/public/images/bapi.png',
-                                      parent:bapi,
+                                      parent:$scope.bapi,
                                       disabled:false,
                                       type: "BAPI_NODE",
                                       children:[]
                                  };
-                                 bapi.children.push(node);
+                                 $scope.bapi.children.push(node);
                               } else if(value != ""){
+                                var key_words = key.split("_").join(" ");
                                 var subnode = {
-                                    name:'"'+ key + '":"' + value + '"',
+                                    name: upperCaseFirstLetterEachWord(key_words) + ':"' + value + '"',
                                     source:item,
                                     //image: '/public/images/bapi.png',
                                     parent:node,
@@ -72,7 +72,6 @@
                       return;
                     });
                   }
-                  $mdDialog.cancel(); 
                   },
                 function(error){
                   console.log("error",error);

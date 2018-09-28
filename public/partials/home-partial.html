@@ -126,7 +126,7 @@
     
     <div flex-xs flex-gt-xs="{{sizeView()}}" layout="column" ng-show="node && !tree_collapsible_execute" >
 
-      <md-card style="height: 700px"  ng-if="!mode_run && !add_endpoint">
+      <md-card style="height: 700px"  ng-if="!mode_run && !add_endpoint && !bapi_node_is_selected">
       <md-list  layout-align="left center">
         <tree-actions flex layout="row"></tree-actions>
       </md-list>
@@ -204,7 +204,45 @@
         </md-card-content>
       </md-card>
 
-      <md-card style="height: 700px"  ng-if="!mode_run && add_endpoint" ng-controller="EndpointController" >
+      <md-card style="height: 700px"  ng-show="!mode_run && !add_endpoint && bapi_node_is_selected">
+      <md-list  layout-align="left center">
+        <tree-actions flex layout="row"></tree-actions>
+      </md-list>
+        <md-card-title style="-webkit-flex:none;padding-bottom: 23px;">
+          
+          <md-card-title-text>
+            <span class="md-headline">BAPI Processor</span>
+          </md-card-title-text>
+         
+        </md-card-title>
+        <md-card-content >
+          <form id="bapiFormId" name="bapiForm" novalidate ng-cloak ng-controller="BapiDialogController">
+            <md-input-container class="md-block">
+                  <label>Selector</label><br/><br/>
+                         
+                          <md-radio-group  layout="column" name="selector_name" ng-model="selector">
+                            <md-radio-button value="O" class="md-primary">Business Objects</md-radio-button>
+                            <md-radio-button value="B"> Bapi </md-radio-button>
+                            <md-radio-button value="F">Function Modules</md-radio-button>
+                            <md-radio-button value="P">Packages</md-radio-button>
+                            <md-radio-button value="C">Catalog</md-radio-button>
+                          </md-radio-group>
+                         
+            </md-input-container>
+              <md-input-container class="md-block">
+                              <label>Selection</label>
+                              <input name="selection" ng-model="selection" required ng-pattern="/^[^*]?(\w|\d|\*)+[^*]?$/">
+              </md-input-container>
+               <md-input-container class="md-block">
+                           <md-button class="md-raised md-primary" ng-click="send()" ng-disabled="bapiForm.$invalid">
+                            Send
+                          </md-button>
+             </md-input-container>
+          </form>
+        </md-card-content>
+      </md-card>
+
+      <md-card style="height: 700px"  ng-if="!mode_run && add_endpoint && !bapi_node_is_selected" ng-controller="EndpointController" >
      
         <md-card-title style="-webkit-flex:none;padding-bottom: 23px;">
           

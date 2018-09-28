@@ -346,12 +346,7 @@
                         scope.selectNode = function (node, $event) {
                             if (node.disabled) { return; }
 
-                            if(node.type=="BAPI_BUTTON"){
-                                scope.$emit('bapi-selected', node);
-                                return; 
-                            }
 
-                            
                             var selectedNode;
                             if (scope.options.multipleSelect === true) {
                                 node.selected = !node.selected;
@@ -369,6 +364,13 @@
                                 cleanAllSelectedExcept(node);
                                 selectedNode = node;
                             }
+
+                            if(node.type=="BAPI_BUTTON"){
+                                node.selected = true;
+                                scope.$emit('bapi-selected', node);
+                                return; 
+                            }
+
                             scope.$emit('selection-changed', selectedNode);
                             if (scope.options.onSelectNode) {
                                 scope.options.onSelectNode(selectedNode);
