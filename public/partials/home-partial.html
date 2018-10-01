@@ -511,7 +511,7 @@
                 <span class="content-log-result"> <code><pre>{{json_logs_content}}</pre></code></span>
               </md-content>
             </md-tab>
-            <md-tab label="Tree format">
+            <md-tab label="Tree format" ng-if="json_logs_content.length<1000000">
               <br/><span class="title-log-result">{{json_logs_title}}: Result</span><br/>
                 <div ng-jsoneditor="onLoadJson" ng-model="json_logs_content_obj" options="payload_json.options" style="width: 100%; height: 300px;"></div>
             </md-tab>
