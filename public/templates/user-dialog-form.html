@@ -24,6 +24,17 @@
               <label>Last Name</label>
               <input ng-model="user.last_name" type="text" required>
             </md-input-container>
+
+            <md-input-container class="md-block">
+              <label>Password</label>
+              <input ng-model="user.password" minlength="5" type="password" ng-required="!user.id">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+              <label>Re-Password</label>
+              <input ng-model="repassword" minlength="5" type="password" ng-required="!user.id">
+            </md-input-container>
+
             <md-input-container class="md-block" ng-if="!user.id">
               <label>Type</label>
               <md-select ng-model="user.type">
@@ -44,7 +55,7 @@
     </md-dialog-content>
 
     <md-dialog-actions layout="row">
-      <md-button class="md-raised md-primary" ng-click="save()" ng-disabled="frmUser.$invalid">
+      <md-button class="md-raised md-primary" ng-click="save()" ng-disabled="frmUser.$invalid || user.password != repassword">
        Save
       </md-button>
       <md-button class="md-raised" ng-click="cancel()">

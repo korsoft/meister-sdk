@@ -16,10 +16,15 @@
           $scope.user.email = "";
           $scope.user.first_name = "";
           $scope.user.last_name = "";
+          $scope.user.password = "";
+          $scope.repassword = "";
           $scope.user.type = $rootScope.CLIENT_USER;
           $scope.user.client_id = null;
-        } else
+        } else {
             $scope.user = angular.copy(user);
+            $scope.user.password = "";
+            $scope.repassword = "";
+          }
 
            console.log("User", user);
 
@@ -57,8 +62,11 @@
 
         $scope.save = function(){
           
-            if($scope.user.id)
+            if($scope.user.id){
+              if($scope.user.password == "")
+                delete $scope.user.password;
               $scope.promise = UserService.update($scope.user.id, $scope.user);
+            }
             else
               $scope.promise = UserService.store($scope.user);
 
