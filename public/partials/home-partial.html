@@ -482,7 +482,7 @@
 
    </div>
    <div flex-xs flex-gt-xs="{{sizeViewExecute()}}" ng-if="mode_run && json_logs.length>0" ng-show="!hide_results ">
-      <md-card style="height: 700px" >
+      <md-card style="height: auto" >
         <md-card-title>
           <md-card-title-text>
             <span class="md-subheadline">RESULT</span>
@@ -497,7 +497,7 @@
             </md-button>
           </md-actions>
         </md-card-title>
-        <md-card-content style="height: 600px" >
+        <md-card-content >
           <md-select ng-model="json_logs_title" placeholder="Select the JSON Result" 
             style="width:80%" ng-change="changeJsonLog(json_logs_title)">
              <md-option ng-repeat="g in json_logs" ng-value="g.title">
@@ -508,10 +508,24 @@
             <md-tab label="Plain Format">
               <br/><span class="title-log-result">{{json_logs_title}}: Result</span><br/>
               <md-content class="md-padding">
-                <span class="content-log-result"> <code><pre>{{json_logs_content}}</pre></code></span>
+                <!--<span class="content-log-result"> <code><pre>{{json_logs_content}}</pre></code></span>
+                  -->
+                  <md-table-container>
+
+                  <table md-table >
+                        <tbody style="background-color:white">
+                                <tr ng-repeat="item in json_logs_content  | limitTo: query.limit: (query.page - 1) * query.limit">
+                                  <td><pre>{{item | json}}</pre></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                  
+                </md-table-container>
+
+                <md-table-pagination md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page" md-total="{{json_logs_content.length}}" md-page-select></md-table-pagination>
               </md-content>
             </md-tab>
-            <md-tab label="Tree format" ng-if="json_logs_content.length<1000000">
+            <md-tab label="Tree format" ng-if="json_logs_content.length<1000">
               <br/><span class="title-log-result">{{json_logs_title}}: Result</span><br/>
                 <div ng-jsoneditor="onLoadJson" ng-model="json_logs_content_obj" options="payload_json.options" style="width: 100%; height: 300px;"></div>
             </md-tab>

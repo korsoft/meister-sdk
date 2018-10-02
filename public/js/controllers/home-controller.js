@@ -56,6 +56,13 @@
 		$scope.node = null;
 		$scope.parentNode = null;
 
+		$scope.query = {
+          limit: 10,
+          page: 1
+        };
+
+        $scope.limitOptions = [10, 25, 50, 100];
+
         var stopMenu =function(e) {
         	if(e.target.getAttribute('class') !== "ace_text-input")
 	      		e.preventDefault();
@@ -1110,12 +1117,14 @@
 					    // Convert gunzipped byteArray back to ascii string:
 					    
 						json=(String.fromCharCode.apply(null, new Uint16Array(data)));
-						json_text_content = $filter('json')(angular.fromJson(json));
+						json_text_content = angular.fromJson(json); //$filter('json')(angular.fromJson(json));
 					    
 					}
 					else{
-			   		   json_text_content = $filter('json')(result.data.data, 2);
+			   		   json_text_content = result.data.data;//$filter('json')(result.data.data, 2);
 					}
+
+					console.log("json_text_content",json_text_content);
 
 					var json_text_item = {
 						title:json_text_title + " - Time Execution: " + (difference/1000) + " seconds" ,
@@ -1168,6 +1177,10 @@
 				$scope.payload_json = angular.copy(item_selected.payload_json);
 				$scope.styleSelected = item_selected.styleSelected;
 				console.log($scope.payload_json);
+				$scope.query = {
+		          limit: 10,
+		          page: 1
+		        };
 			}
 		}
 
@@ -1178,6 +1191,10 @@
 			if(item_selected){
 				$scope.json_logs_content = item_selected.content;
 				$scope.json_logs_content_obj = angular.fromJson(item_selected.content);
+				$scope.query = {
+		          limit: 10,
+		          page: 1
+		        };
 			}
 		}
 
