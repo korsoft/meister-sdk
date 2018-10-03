@@ -126,6 +126,13 @@
                 + ' >'
                 + '     <md-icon ng-bind="\'restore_from_trash\'"></md-icon> Undelete'
                 + '  </md-button>'
+                + '</md-menu-item>'
+                + '<md-menu-item ng-if="node && (node.type == \'BAPI_SUBNODE\' || node.type == \'BAPI_NODE\') ">'
+                + ' <md-button  '
+                + '      ng-click="emitExecuteBAPINode(node,$event)" '
+                + ' >'
+                + '<md-icon ng-bind="\'send\'"></md-icon> Execute'
+                + '  </md-button>'
                 + '</md-menu-item>';
 
     angular.module('TreeWidget', ['ngAnimate', 'RecursionHelper','ang-drag-drop'])
@@ -234,6 +241,10 @@
                             $scope.emitUndeleteStyleLibSelected = function(actionName,node,event){
                                 $scope.$emit('undelete-style-lib', {"actionName":actionName,"node":node,"sourceEvent":event});
                             }
+
+                            $scope.emitExecuteBAPINode  = function(node, event){
+                                $scope.$emit('execute-bapi-node', node);
+                            };
 
                             $scope.emitUndeleteModuleSelected = function(actionName,node,event){
                                 $scope.$emit('undelete-module-selected', {"actionName":actionName,"node":node,"sourceEvent":event});
@@ -368,6 +379,12 @@
                             if(node.type=="BAPI_BUTTON"){
                                 node.selected = true;
                                 scope.$emit('bapi-selected', node);
+                                return; 
+                            }
+
+                            if(node.type == "BAPI_SUBNODE"){
+                                node.selected = true;
+                                scope.$emit('bapi-subnode-selected', node);
                                 return; 
                             }
 

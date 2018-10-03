@@ -72,6 +72,7 @@
                       return;
                     });
                   }
+                  $scope.$emit('hide_bapi_node', {});
                   },
                 function(error){
                   console.log("error",error);

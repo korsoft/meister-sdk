@@ -416,6 +416,24 @@
 			$scope.json_logs_content_obj = null;
 		};
 
+		$scope.$on('hide_bapi_node', function (e,params) {
+			$scope.bapi_node_is_selected = false;
+		});
+
+		$scope.$on('execute-bapi-node', function(e, node){
+			console.log("execute-bapi-node",node);
+			$scope.execute(e, node, node.source.FUNCTION_NAME);
+		});
+
+		$scope.$on('bapi-subnode-selected', function(e, node){
+			console.log("BAPI Subnode selected",node);
+			$scope.mode_run = false;
+	     	$scope.add_endpoint = false;
+	     	$scope.bapi_node_is_selected = false;
+	     	$scope.node = node;
+
+		});
+
 		$scope.$on('bapi-selected', function (e,node) {
 	     	console.log("BAPI",node);
 	     	$scope.mode_run = false;
@@ -993,9 +1011,12 @@
 			}
 		 });
 
-	     $scope.execute = function(event, node){
+	     $scope.execute = function(event, node, name){
 		
 			var params = {"endpoint":node.name};
+			if(name)
+				params.endpoint = name;
+
 			var node={};
 			$scope.payload_json = {json: null, options: {mode: 'tree'}};
 			$scope.json_logs_executes_title=null;
@@ -1053,6 +1074,14 @@
 			console.log("execute_by_style",$scope.basicTree);
 			$scope.styleSelected = node;
 			$scope.execute(event, node.parent);
+		};
+
+		$scope.downloadJSON = function () {
+			var blob = new Blob([$filter('json')($scope.json_logs_content, 2)], { type:"application/json;charset=utf-8;" });			
+			var downloadLink = angular.element('<a></a>');
+            downloadLink.attr('href',window.URL.createObjectURL(blob));
+            downloadLink.attr('download', 'result.json');
+			downloadLink[0].click();
 		};
 
 

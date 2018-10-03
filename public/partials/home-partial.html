@@ -132,13 +132,13 @@
       </md-list>
         <md-card-title style="-webkit-flex:none;padding-bottom: 23px;">
           
-          <md-card-title-text>
+          <md-card-title-text ng-if="nodeSelected.source">
             <span class="md-headline">Properties</span>
           </md-card-title-text>
          
         </md-card-title>
         <md-card-content style="height: 600px; overflow-y: auto" >
-           <table md-table style="table-layout: fixed">
+           <table md-table style="table-layout: fixed" ng-if="nodeSelected.source">
                     <thead md-head>
                       <tr md-row >
                           <th md-column style="width: 120px;padding: 0;">Property</th>
@@ -235,7 +235,7 @@
               </md-input-container>
                <md-input-container class="md-block">
                            <md-button class="md-raised md-primary" ng-click="send()" ng-disabled="bapiForm.$invalid">
-                            Send
+                            Search
                           </md-button>
              </md-input-container>
           </form>
@@ -510,6 +510,9 @@
               <md-content class="md-padding">
                 <!--<span class="content-log-result"> <code><pre>{{json_logs_content}}</pre></code></span>
                   -->
+                  <md-button class="md-primary"  ng-click="downloadJSON()" >
+                    Download JSON
+                  </md-button>
                   <md-table-container>
 
                   <table md-table >
@@ -521,7 +524,9 @@
                             </table>
                   
                 </md-table-container>
-
+                <md-button class="md-primary"  ng-click="downloadJSON()" >
+                    Download JSON
+                  </md-button>
                 <md-table-pagination md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page" md-total="{{json_logs_content.length}}" md-page-select></md-table-pagination>
               </md-content>
             </md-tab>
