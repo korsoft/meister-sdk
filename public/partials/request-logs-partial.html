@@ -19,18 +19,26 @@
 				<table md-table ng-model="selected" md-progress="promise" style="table-layout: fixed">
 				  <thead md-head md-order="query.order">
 	                <tr md-row >
+	                  <th md-column style="width: 5%"></th>
 	                  <th md-column style="width: 15%">User</th>
 	                  <th md-column style="width: 10%">Date/Time</th>
 	                  <th md-column style="width: 35%">Url Request</th>
-	                  <th md-column style="width: 40%">Body Content/Error Reason</th>
+	                  <th md-column style="width: 35%">Body Content/Error Reason</th>
 	                </tr>
 	              </thead>
 	              <tbody md-body style="font-weight: bold">
 	                <tr md-row class="with-hover" ng-repeat="l in logs" md-auto-select>
+	                  <td md-cell>
+	                  	<button ng-show="!l.$show_full_body" ng-click="l.$show_full_body = true" title="See more">[+]</button>
+	                  	<button ng-show="l.$show_full_body" ng-click="l.$show_full_body = false" title="See less">[-]</button>
+	                  </td>		
 	                  <td md-cell>{{l.user.name}}</td>
 	                  <td md-cell>{{l.created_at}}</td>
 	                  <td md-cell><span style="word-break: break-all;">{{l.url}}</span></td>
-	                  <td md-cell><span style="word-break: break-all;">{{format(l.body)}}</span></td>
+	                  <td md-cell>
+	                  		<span style="word-break: break-all;" ng-show="!l.$show_full_body">{{format(l.body) | limitTo : 500}} </span>
+	                  		<span style="word-break: break-all;" ng-show="l.$show_full_body">{{format(l.body)}}</span>
+	                  </td>
 	                </tr>
 	              </tbody>
 				</table>

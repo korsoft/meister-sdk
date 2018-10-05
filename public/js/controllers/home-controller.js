@@ -193,6 +193,7 @@
 					 		image: '/public/images/template.png',
 					 		type: "STYLE_TEMPLATE_PARENT",
 					 		parent: node,
+					 		expanded: false,
 					 		children: []
 					 }
 

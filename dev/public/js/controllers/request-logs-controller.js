@@ -14,9 +14,14 @@
          };
 
          $scope.limitOptions = [5, 10, 25, 50, 100];
-         
+        
+        String.prototype.replaceAll = function(search, replacement) {
+            var target = this;
+            return target.split(search).join(replacement);
+        };
+
          $scope.format = function(json){
-        	 json.replace('\"','"');
+        	 //json = json.replace('\"','"');
         	 try{
         		 var obj = JSON.parse(json);
         		 return JSON.stringify(obj,null,"\t").replace(/\\/g,"");
@@ -25,6 +30,7 @@
         	 {
         		 return json;
         	 }
+           //return json.replaceAll("\\t","").replaceAll("\\\"","\"");
          }
 
 
