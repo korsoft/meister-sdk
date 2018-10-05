@@ -426,12 +426,23 @@
 			$scope.execute(e, node, node.source.FUNCTION_NAME);
 		});
 
+		$scope.$on('bapi-node-selected', function(e, node){
+			console.log("BAPI node selected",node);
+			$scope.mode_run = false;
+	     	$scope.add_endpoint = false;
+	     	$scope.bapi_node_is_selected = false;
+	     	$scope.nodeSelected = node;
+	     	$scope.node = node;
+
+		});
+
 		$scope.$on('bapi-subnode-selected', function(e, node){
 			console.log("BAPI Subnode selected",node);
 			$scope.mode_run = false;
 	     	$scope.add_endpoint = false;
 	     	$scope.bapi_node_is_selected = false;
 	     	$scope.node = node;
+	     	$scope.nodeSelected = node;
 
 		});
 
@@ -1013,7 +1024,7 @@
 		 });
 
 	     $scope.execute = function(event, node, name){
-		
+
 			var params = {"endpoint":node.name};
 			if(name)
 				params.endpoint = name;

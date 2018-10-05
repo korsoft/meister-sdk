@@ -39,11 +39,8 @@
                     _.each(result.data.data,function(row){
                       if(row.EXPLORER){
                         _.each(row.EXPLORER,function(item){
-                          var node = false;
-                          _.each(item, function(value, key, obj){
-                              if(node === false){
-                                  node = {
-                                      name:value,
+                          node = {
+                                      name:item.FUNCTION_NAME,
                                       source:item,
                                       //image: '/public/images/bapi.png',
                                       parent:$scope.bapi,
@@ -52,7 +49,8 @@
                                       children:[]
                                  };
                                  $scope.bapi.children.push(node);
-                              } else if(value != ""){
+                          _.each(item, function(value, key, obj){
+                              if(value != "" && key != 'FUNCTION_NAME' &&key != 'FUNCTION_GROUP'){
                                 var key_words = key.split("_").join(" ");
                                 var subnode = {
                                     name: upperCaseFirstLetterEachWord(key_words) + ':"' + value + '"',

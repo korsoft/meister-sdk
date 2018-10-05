@@ -382,6 +382,12 @@
                                 return; 
                             }
 
+                            if(node.type == "BAPI_NODE"){
+                                node.selected = true;
+                                scope.$emit('bapi-node-selected', node);
+                                return; 
+                            }
+
                             if(node.type == "BAPI_SUBNODE"){
                                 node.selected = true;
                                 scope.$emit('bapi-subnode-selected', node);
