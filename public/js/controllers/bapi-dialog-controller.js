@@ -50,7 +50,7 @@
                                  };
                                  $scope.bapi.children.push(node);
                           _.each(item, function(value, key, obj){
-                              if(value != "" && key != 'FUNCTION_NAME' &&key != 'FUNCTION_GROUP'){
+                              if(value != "" && key != 'FUNCTION_NAME' && key != 'FUNCTION_GROUP'){
                                 var key_words = key.split("_").join(" ");
                                 var subnode = {
                                     name: upperCaseFirstLetterEachWord(key_words) + ':"' + value + '"',
