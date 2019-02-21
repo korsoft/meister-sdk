@@ -3,7 +3,7 @@ var meister = angular.module('meister', ['ngMaterial', 'ngAnimate','ngSanitize',
  'ng.jsoneditor','angular-loading-bar','ui.ace','ang-drag-drop']);
 
 meister.constant('SERVER_BASE_URL', "http://localhost:8000");
-meister.constant('CLIENT_SECRET_KEY',"GzkU62Ruwo29riFgJHVDPw377k8hYu5dXXYxgYSR");
+meister.constant('CLIENT_SECRET_KEY',"Q2pVBQWl28tCjdbrLE4xincVv5itvPM6zA1e1NaK");
 meister.constant('SYSTEM_ADMIN',99);
 meister.constant('SYSTEM_INTEGRATOR',89);
 meister.constant('CLIENT_ADMIN',49);
