@@ -306,7 +306,7 @@
               </md-input-container>
               <md-input-container class="md-block">
                 <label>Package</label>
-                <input name="package" ng-model="endpoint.PACKAGE" pattern="(\$TMP|((Y|Z)[1-9A-Za-z]+(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?)|(\/[1-9A-Za-z]+(\/[1-9A-Za-z]+)?(\/[1-9A-Za-z]+)?(\/[1-9A-Za-z]+)?))" required>
+                <input name="package" ng-model="endpoint.PACKAGE" pattern="(\$TMP|((Y|Z)[1-9A-Za-z]+(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?)|(\/[1-9A-Za-z]+(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?))" required>
                  <div ng-messages="frmEndpoint.package.$error">
               <div ng-message="required">This is required.</div>
               <div ng-message="pattern">Package does not conform with SAP syntax</div>
