@@ -158,7 +158,7 @@
 
           console.log("json_to_send",params);
 
-          /*
+        
             $scope.promise = GatewayService.execute_changes(gateway.id, params);
             
             $scope.promise.then(
@@ -171,7 +171,7 @@
                   MessageUtil.showError(error.data.message);
                 }
               );
-         */
+         
         };
 
         $scope.changePage = function (page){
