@@ -133,6 +133,7 @@
         }
 
         $scope.save = function(){
+          console.log("Save",$scope.endpoint);
           var localEndpoint = angular.copy($scope.endpoint);
           _.each(localEndpoint.STYLES,function(s){
               delete s.BAND;
@@ -143,13 +144,21 @@
               s.JSON = angular.toJson(obj);
           });
 
+          console.log("localEndpoint",localEndpoint);
+
+          localEndpoint.HANDLER = localEndpoint.HANDLER.toUpperCase();
+          localEndpoint.ENDPOINT_MAIN = localEndpoint.ENDPOINT_MAIN.toUpperCase();
+          localEndpoint.PACKAGE = localEndpoint.PACKAGE.toUpperCase();
+
           var json_to_send =  GatewayService.buildJsonByNewEndpoint(json, parentNode.source, localEndpoint);
           
           var params = {
             json: angular.toJson(json_to_send)
           };
 
-          console.log(json);
+          console.log("json_to_send",params);
+
+          /*
             $scope.promise = GatewayService.execute_changes(gateway.id, params);
             
             $scope.promise.then(
@@ -162,7 +171,7 @@
                   MessageUtil.showError(error.data.message);
                 }
               );
-         
+         */
         };
 
         $scope.changePage = function (page){

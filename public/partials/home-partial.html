@@ -269,7 +269,7 @@
                <md-input-container class="md-block">
                 <label>Endpoint Main</label>
                 <input name="endpoint_main" ng-model="endpoint.ENDPOINT_MAIN" required maxlength="30" md-maxlength="30"
-                  pattern="[A-Za-z_\/]{1,30}">
+                  pattern="[A-Za-z_\/]{1,30}" style="text-transform: uppercase;">
                 <div ng-messages="frmEndpoint.endpoint_main.$error">
               <div ng-message="required">This is required.</div>
               <div ng-message="md-maxlength">This field must be 30 characters max.</div>
@@ -278,7 +278,7 @@
               </md-input-container>
                <md-input-container class="md-block">
                 <label>Handler</label>
-                <input name="handler" ng-model="endpoint.HANDLER" required>
+                <input name="handler" ng-model="endpoint.HANDLER" required style="text-transform: uppercase;">
                 <div ng-messages="frmEndpoint.handler.$error">
               <div ng-message="required">This is required.</div>
             </div>
@@ -306,7 +306,9 @@
               </md-input-container>
               <md-input-container class="md-block">
                 <label>Package</label>
-                <input name="package" ng-model="endpoint.PACKAGE" pattern="(\$TMP|((Y|Z)[1-9A-Za-z]+(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?)|(\/[1-9A-Za-z]+(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?))" required>
+                <input name="package" ng-model="endpoint.PACKAGE" 
+                    style="text-transform: uppercase;"
+                    pattern="(\$TMP|((Y|Z)[1-9A-Za-z]+(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?)|(\/[1-9A-Za-z]+(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?))" required>
                  <div ng-messages="frmEndpoint.package.$error">
               <div ng-message="required">This is required.</div>
               <div ng-message="pattern">Package does not conform with SAP syntax</div>
