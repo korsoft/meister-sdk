@@ -39,6 +39,7 @@
 		$scope.tree_collapsible = false;
 		$scope.tree_collapsible_execute =  false;
 		$scope.hide_results =  false;
+		$scope.json_invalid = null;
 
 		$scope.url_details = "";
         $scope.edit={};
@@ -353,6 +354,7 @@
 			$scope.loading_tree = true;
 			$scope.nodeSelected = null;
 			$scope.nodeExpanded = null;
+			$scope.json_invalid = null;
 			$scope.show_select_gateway = false;
 			$scope.mode_run = false;
 			$scope.url_details = "";
@@ -385,6 +387,7 @@
 		$scope.changeGateway = function(id){
 			$scope.gatewaySelectedId = id;
 			$scope.add_endpoint = false;
+			$scope.json_invalid = null;
 			console.log("Gateway selected", $scope.gatewaySelectedId);
 			$scope.gatewaySelected = _.find($scope.gateways,function(g){
 				return id == g.id;
@@ -433,22 +436,26 @@
 	     	$scope.bapi_node_is_selected = false;
 	     	$scope.nodeSelected = node;
 	     	$scope.node = node;
-
+	     	$scope.json_invalid = null;
+	     	
 		});
 
 		$scope.$on('bapi-subnode-selected', function(e, node){
 			console.log("BAPI Subnode selected",node);
 			$scope.mode_run = false;
+			$scope.json_invalid = null;
 	     	$scope.add_endpoint = false;
 	     	$scope.bapi_node_is_selected = false;
 	     	$scope.node = node;
 	     	$scope.nodeSelected = node;
+
 
 		});
 
 		$scope.$on('bapi-selected', function (e,node) {
 	     	console.log("BAPI",node);
 	     	$scope.mode_run = false;
+	     	$scope.json_invalid = null;
 	     	$scope.add_endpoint = false;
 	     	$scope.bapi_node_is_selected = true;
 	     	$scope.node = node;
@@ -481,6 +488,7 @@
 	        $scope.payload_json = {json: null, options: {mode: 'tree'}};
 	        $scope.url_details = "";
 	        $scope.mode_run = false;
+	        $scope.json_invalid = null;
 	        $scope.styles = [];
 	        $scope.styleSelected = null;
 
@@ -856,6 +864,7 @@
 
 	     $scope.addModule = function(ev, parentNode){
 	     	$scope.mode_run = false;
+	     	$scope.json_invalid = null;
 	     	$mdDialog.show({
                 controller: 'ModuleDialogController',
                 templateUrl: 'templates/module-dialog-form.html',
@@ -880,6 +889,7 @@
 	     
 	     $scope.addProject= function(ev, parentNode){
 		     	$scope.mode_run = false;
+		     	$scope.json_invalid = null;
 		     	$mdDialog.show({
 	                controller: 'ProjectDialogController',
 	                templateUrl: 'templates/project-dialog-form.html',
@@ -952,6 +962,7 @@
 
 	     $scope.addEndpoint = function(ev, parentNode){
 	     	$scope.mode_run = false;
+	     	$scope.json_invalid = null;
 	     	$scope.add_endpoint = true;
 	     	$scope.parentNode  =parentNode;
 	     	console.log("style Library",$scope.style_template);
@@ -981,6 +992,7 @@
 	     };
   		$scope.addStyle = function(ev, parentNode, style){
   			$scope.mode_run = false;
+  			$scope.json_invalid = null;
 	     	$mdDialog.show({
                 controller: 'StyleDialogController',
                 templateUrl: 'templates/style-dialog-form.html',
@@ -1100,6 +1112,7 @@
 		$scope.execute_details = function(event){
 			var node = null;
 			$scope.hide_results = false;
+			$scope.json_invalid = null;
 			if($scope.styleSelected)
 				node = $scope.styleSelected.parent;
 			else
@@ -1203,8 +1216,12 @@
 		              });*/
 				},
 				function(error){
+
 					console.log('failure', error);
                     MessageUtil.showError(error.data.message);
+                    if(error.data.Json){
+                    	$scope.json_invalid = error.data.Json; //angular.fromJson(result.data.data.d.results[0].Json);
+					}
 				}
 			);
 		};

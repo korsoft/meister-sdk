@@ -483,7 +483,7 @@
       </md-card>
 
    </div>
-   <div flex-xs flex-gt-xs="{{sizeViewExecute()}}" ng-if="mode_run && json_logs.length>0" ng-show="!hide_results ">
+   <div flex-xs flex-gt-xs="{{sizeViewExecute()}}" ng-if="mode_run && (json_logs.length>0 || json_invalid!=null)" ng-show="!hide_results ">
       <md-card style="height: auto" >
         <md-card-title>
           <md-card-title-text>
@@ -499,7 +499,10 @@
             </md-button>
           </md-actions>
         </md-card-title>
-        <md-card-content >
+        <md-card-content ng-show="json_invalid!=null">
+          <textarea rows="28">{{json_invalid}}</textarea>
+        </md-card-content>
+         <md-card-content ng-show="json_invalid==null">
           <md-select ng-model="json_logs_title" placeholder="Select the JSON Result" 
             style="width:80%" ng-change="changeJsonLog(json_logs_title)">
              <md-option ng-repeat="g in json_logs" ng-value="g.title">
