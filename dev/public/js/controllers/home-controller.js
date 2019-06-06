@@ -314,6 +314,22 @@
 								is_deleted:  endpoint.LOGICAL_DELETE,
 								children: []
 							};
+
+							/*
+							var params = {
+								"endpoint":endpoint.NAMESPACE,
+								"client_number":$scope.client.sap_numbers,
+								"Json":""
+							};
+
+							GatewayService.execute_endpoint($scope.gatewaySelected.id,params).then(
+								function(result){
+									//console.log("'"+endpoint.NAMESPACE+"'",result);
+								},
+								function(error){
+									console.log("ERROR:" + endpoint.NAMESPACE, error);
+								}
+							);*/
 							
 							if(endpointItem.is_deleted){
 								deletedEndpoints.children.push(endpointItem);
