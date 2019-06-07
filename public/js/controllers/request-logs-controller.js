@@ -13,7 +13,7 @@
            page: 1,
          };
 
-         $scope.limitOptions = [5, 10, 25, 50, 100];
+         $scope.limitOptions = [5, 10,15,20];
         
         String.prototype.replaceAll = function(search, replacement) {
             var target = this;
