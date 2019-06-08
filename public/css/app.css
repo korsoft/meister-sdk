@@ -227,3 +227,6 @@ footer a:hover {
   top: 0.5em;
   /* (line-height/2) */
   bottom: 0; }
+
+.block-ui-message {
+  background-color: transparent !important; }

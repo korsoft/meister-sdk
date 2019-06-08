@@ -36,8 +36,8 @@
 	                  <td md-cell>{{l.created_at}}</td>
 	                  <td md-cell><span style="word-break: break-all;">{{l.url}}</span></td>
 	                  <td md-cell>
-	                  		<span style="word-break: break-all;" ng-show="!l.$show_full_body">{{format(l.body) | limitTo : 500}} </span>
-	                  		<span style="word-break: break-all;" ng-show="l.$show_full_body">{{format(l.body)}}</span>
+	                  		<span style="word-break: break-all;" ng-show="!l.$show_full_body">{{l.body | limitTo : 500}} </span>
+	                  		<span style="word-break: break-all;" ng-show="l.$show_full_body">{{l.body}}</span>
 	                  </td>
 	                </tr>
 	              </tbody>
