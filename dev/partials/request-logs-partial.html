@@ -34,10 +34,10 @@
 	                  </td>		
 	                  <td md-cell>{{l.user.name}}</td>
 	                  <td md-cell>{{l.created_at}}</td>
-	                  <td md-cell><span style="word-break: break-all;">{{l.url}}</span></td>
+	                  <td md-cell><span class="hardBreak">{{l.url}}</span></td>
 	                  <td md-cell>
-	                  		<span style="word-break: break-all;" ng-show="!l.$show_full_body">{{l.body | limitTo : 500}} </span>
-	                  		<span style="word-break: break-all;" ng-show="l.$show_full_body">{{l.body}}</span>
+	                  		<span class="hardBreak" ng-show="!l.$show_full_body">{{l.body | limitTo : 500}} </span>
+	                  		<span class="hardBreak" ng-show="l.$show_full_body">{{l.body}}</span>
 	                  </td>
 	                </tr>
 	              </tbody>
