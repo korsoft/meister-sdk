@@ -64,7 +64,7 @@
 
         $scope.limitOptions = [10, 25, 50, 100];
 
-        var PACKAGE_PATTERN_DEFAULT = /(\$TMP|((Y|Z)[1-9A-Za-z]+(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?)|(\/[1-9A-Za-z]+(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?))/i;
+        var PACKAGE_PATTERN_DEFAULT = /(^\$TMP$)|((^(Z|Y)[1-9A-Za-z]+(_[1-9A-Za-z]+)?))|((\/[1-9A-Za-z]+(\/[1-9A-Za-z_]+)(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?)){1,30}/i;
         $scope.PACKAGE_PATTERN = PACKAGE_PATTERN_DEFAULT;
         $scope.CLASSNAME_PATTERN = /((^(Z|Y)[1-9A-Za-z]+(_[1-9A-Za-z]+)?))|((\/[1-9A-Za-z]+(\/[1-9A-Za-z_]+)(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?)){1,30}/i;
 
