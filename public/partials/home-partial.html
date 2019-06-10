@@ -269,7 +269,7 @@
                <md-input-container class="md-block">
                 <label>Endpoint Main</label>
                 <input name="endpoint_main" ng-model="endpoint.ENDPOINT_MAIN" required maxlength="30" md-maxlength="30"
-                  pattern="[A-Za-z_\/]{1,30}" style="text-transform: uppercase;" ng-change="endpointMainChanged(endpoint.ENDPOINT_MAIN)">
+                  ng-pattern="CLASSNAME_PATTERN" style="text-transform: uppercase;" ng-change="endpointMainChanged(endpoint.ENDPOINT_MAIN)">
                 <div ng-messages="frmEndpoint.endpoint_main.$error">
               <div ng-message="required">This is required.</div>
               <div ng-message="md-maxlength">This field must be 30 characters max.</div>

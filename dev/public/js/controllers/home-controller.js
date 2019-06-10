@@ -66,6 +66,7 @@
 
         var PACKAGE_PATTERN_DEFAULT = /(\$TMP|((Y|Z)[1-9A-Za-z]+(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?)|(\/[1-9A-Za-z]+(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?))/i;
         $scope.PACKAGE_PATTERN = PACKAGE_PATTERN_DEFAULT;
+        $scope.CLASSNAME_PATTERN = /((^(Z|Y)[1-9A-Za-z]+(_[1-9A-Za-z]+)?))|((\/[1-9A-Za-z]+(\/[1-9A-Za-z_]+)(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?)){1,30}/i;
 
         var stopMenu =function(e) {
         	if(e.target.getAttribute('class') !== "ace_text-input")
