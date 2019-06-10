@@ -64,6 +64,9 @@
 
         $scope.limitOptions = [10, 25, 50, 100];
 
+        var PACKAGE_PATTERN_DEFAULT = /(\$TMP|((Y|Z)[1-9A-Za-z]+(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?)|(\/[1-9A-Za-z]+(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?))/;
+        $scope.PACKAGE_PATTERN = PACKAGE_PATTERN_DEFAULT;
+
         var stopMenu =function(e) {
         	if(e.target.getAttribute('class') !== "ace_text-input")
 	      		e.preventDefault();
@@ -89,6 +92,31 @@
 
 		$scope.show_tree_execute = function(){
 			$scope.tree_collapsible_execute = false;
+		}
+
+		$scope.endpointMainChanged = function(className){
+			console.log("endpointMainChanged",className);
+			if(className){
+				if(className.toUpperCase().startsWith("Z")){
+					$scope.PACKAGE_PATTERN = /(^\$TMP$|(^(Z)[1-9A-Za-z]+(_[1-9A-Za-z]+)?))/;
+				} else if(className.toUpperCase().startsWith("Y")){
+					$scope.PACKAGE_PATTERN = /(^\$TMP$|(^(Y)[1-9A-Za-z]+(_[1-9A-Za-z]+)?))/;
+				} else if(className.toUpperCase().startsWith("/")){
+					var sections = className.toUpperCase().split("/");
+					var pattern_prefix = "";
+					console.log("Split",sections);
+					for(var i=0;i<(sections.length-1);i++){
+						if(sections[i] && sections[i].length>0)
+							pattern_prefix += "\\/" + sections[i];
+					}
+					$scope.PACKAGE_PATTERN = new RegExp("^(" + pattern_prefix + "\\/)[1-9A-Za-z]+(_[1-9A-Za-z]+)?$") 
+				} else {
+					$scope.PACKAGE_PATTERN = /ZZZZZZZZZZZZZZZZZZZZZZZZZZZZ/; 
+				}
+			} else {
+				$scope.PACKAGE_PATTERN = PACKAGE_PATTERN_DEFAULT;
+			}
+			console.log("Package PATTERN",$scope.PACKAGE_PATTERN);
 		}
 
 		$scope.mode_run = false;
