@@ -64,7 +64,7 @@
 
         $scope.limitOptions = [10, 25, 50, 100];
 
-        var PACKAGE_PATTERN_DEFAULT = /(\$TMP|((Y|Z)[1-9A-Za-z]+(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?)|(\/[1-9A-Za-z]+(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?))/;
+        var PACKAGE_PATTERN_DEFAULT = /(\$TMP|((Y|Z)[1-9A-Za-z]+(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?(_[1-9A-Za-z]+)?)|(\/[1-9A-Za-z]+(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?(\/[1-9A-Za-z_]+)?))/i;
         $scope.PACKAGE_PATTERN = PACKAGE_PATTERN_DEFAULT;
 
         var stopMenu =function(e) {
@@ -98,9 +98,9 @@
 			console.log("endpointMainChanged",className);
 			if(className){
 				if(className.toUpperCase().startsWith("Z")){
-					$scope.PACKAGE_PATTERN = /(^\$TMP$|(^(Z)[1-9A-Za-z]+(_[1-9A-Za-z]+)?))/;
+					$scope.PACKAGE_PATTERN = /(^\$TMP$|(^(Z)[1-9A-Za-z]+(_[1-9A-Za-z]+)?))/i;
 				} else if(className.toUpperCase().startsWith("Y")){
-					$scope.PACKAGE_PATTERN = /(^\$TMP$|(^(Y)[1-9A-Za-z]+(_[1-9A-Za-z]+)?))/;
+					$scope.PACKAGE_PATTERN = /(^\$TMP$|(^(Y)[1-9A-Za-z]+(_[1-9A-Za-z]+)?))/i;
 				} else if(className.toUpperCase().startsWith("/")){
 					var sections = className.toUpperCase().split("/");
 					var pattern_prefix = "";
@@ -109,7 +109,7 @@
 						if(sections[i] && sections[i].length>0)
 							pattern_prefix += "\\/" + sections[i];
 					}
-					$scope.PACKAGE_PATTERN = new RegExp("^(" + pattern_prefix + "\\/)[1-9A-Za-z]+(_[1-9A-Za-z]+)?$") 
+					$scope.PACKAGE_PATTERN = new RegExp("^(" + pattern_prefix + "\\/)[1-9A-Za-z]+(_[1-9A-Za-z]+)?$","i") 
 				} else {
 					$scope.PACKAGE_PATTERN = /ZZZZZZZZZZZZZZZZZZZZZZZZZZZZ/; 
 				}
