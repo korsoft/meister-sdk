@@ -1173,6 +1173,10 @@
 				"BPM":"",
 			};
 
+			if($scope.client.id){
+				params.client_number = $scope.client.sap_number;
+			}
+
 			if($scope.styleSelected){
 				params["style"] = $scope.styleSelected.name;
 			}
