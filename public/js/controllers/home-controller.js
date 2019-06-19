@@ -599,6 +599,11 @@
              SDK_HINT:"RLD"
             };
 
+            if($scope.client.id){
+				params.client_number = $scope.client.sap_number;
+			}
+
+
             $scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
             
             $scope.promise.then(
@@ -628,6 +633,11 @@
              SDK_HINT:"SLD"
             };
 
+            if($scope.client.id){
+				params.client_number = $scope.client.sap_number;
+			}
+
+
             $scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
             
             $scope.promise.then(
@@ -652,6 +662,11 @@
 	            json: angular.toJson(json_to_send),
 	            SDK_HINT:"RLD"
 	          };
+
+	          if($scope.client.id){
+				params.client_number = $scope.client.sap_number;
+			}
+
 				$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	            
 	            $scope.promise.then(
@@ -682,6 +697,12 @@
 	            json: angular.toJson(json_to_send),
 	            SDK_HINT:"SLD"
 	          };
+
+	          if($scope.client.id){
+				params.client_number = $scope.client.sap_number;
+			}
+
+
 				$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	            
 	            $scope.promise.then(
@@ -714,6 +735,11 @@
 	            SDK_HINT:"RLD"
 	          };
 
+	          if($scope.client.id){
+				params.client_number = $scope.client.sap_number;
+			}
+
+
 				$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	            
 	            $scope.promise.then(
@@ -742,6 +768,11 @@
 	            SDK_HINT:"SLD"
 	          };
 
+	          if($scope.client.id){
+				params.client_number = $scope.client.sap_number;
+			}
+
+
 				$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	            
 	            $scope.promise.then(
@@ -768,6 +799,11 @@
 	            json: angular.toJson(json_to_send),
 	            SDK_HINT:"RLD"
 	          };
+
+	          if($scope.client.id){
+				params.client_number = $scope.client.sap_number;
+			}
+
 				$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	            
 	            $scope.promise.then(
@@ -795,6 +831,12 @@
 	            json: angular.toJson(json_to_send),
 	            SDK_HINT:"SLD"
 	          };
+
+	          if($scope.client.id){
+				params.client_number = $scope.client.sap_number;
+			}
+
+
 				$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	            
 	            $scope.promise.then(
@@ -825,6 +867,9 @@
 	            SDK_HINT:"SLK"
 	          };
 
+	          if($scope.client.id){
+				params.client_number = $scope.client.sap_number;
+			}
 
 
 	            $scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
@@ -862,6 +907,9 @@
 	            SDK_HINT:"RLK"
 	          };
 
+	          if($scope.client.id){
+				params.client_number = $scope.client.sap_number;
+			}
 
 
 	            $scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
@@ -921,7 +969,8 @@
                  module: null,
                  parentNode: parentNode,
                  gateway: $scope.gatewaySelected,
-                 json: $scope.json
+                 json: $scope.json,
+                 client: $scope.client
                }
               })
               .then(function(result) {
@@ -946,7 +995,8 @@
 	                 project: null,
 	                 parentNode: parentNode,
 	                 gateway: $scope.gatewaySelected,
-	                 json: $scope.json
+	                 json: $scope.json,
+	                 client: $scope.client
 	               }
 	              })
 	              .then(function(result) {
@@ -1049,7 +1099,8 @@
                  style: style,
                  parentNode: parentNode,
                  gateway: $scope.gatewaySelected,
-                 json: $scope.json
+                 json: $scope.json,
+                 client:$scope.client
                }
               })
               .then(function(result) {
@@ -1364,6 +1415,10 @@
 	            json: angular.toJson(json_to_send),
 	            SDK_HINT:"ELT"
 	        };
+	        if($scope.client.id){
+				params.client_number = $scope.client.sap_number;
+			}
+
 			$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	        $scope.promise.then(
 	                function(result){
@@ -1403,6 +1458,10 @@
 	            json: angular.toJson(json_to_send),
 	            SDK_HINT:"ELT"
 	        };
+	        if($scope.client.id){
+				params.client_number = $scope.client.sap_number;
+			}
+
 			$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	        $scope.promise.then(
 	                function(result){

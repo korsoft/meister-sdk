@@ -9,17 +9,20 @@
         $scope.band_o=1;
         var gateway = null;
         var json = null;
+        var client = null;
         var endpoints_names = null;
         var endpoints_main = null;
         var parentNode = {};
         $scope.endpoint = {};
 
-        $scope.init = function(endpoint, pn, gtw, jso, endpointsnames,endpointsmain){
+        $scope.init = function(endpoint, pn, gtw, jso,cli, endpointsnames,endpointsmain){
           parentNode = pn;
           gateway = gtw;
           json = jso;
+          client = cli;
           endpoints_names = endpointsnames;
           endpoints_main = endpointsmain;
+          console.log("client",cli);
           console.log("EndpointController-->parentNode",parentNode);
 
           if(!endpoint){
@@ -156,7 +159,11 @@
             json: angular.toJson(json_to_send)
           };
 
-          console.log("json_to_send",params);
+          if(client && client.id){
+            params.client_number = client.sap_number;
+          }
+
+          console.log("params",params);
 
         
             $scope.promise = GatewayService.execute_changes(gateway.id, params);

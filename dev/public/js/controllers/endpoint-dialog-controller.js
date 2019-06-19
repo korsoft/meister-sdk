@@ -1,7 +1,7 @@
 (function(app) {
 	app.controller('EndpointDialogController',
-    ['$scope','$mdDialog','endpoint','parentNode','gateway','json','GatewayService','MessageUtil','endpoints_names','endpoints_main','style_library',
-    function ($scope, $mdDialog, endpoint, parentNode, gateway,json, GatewayService, MessageUtil,endpoints_names,endpoints_main,style_library) {
+    ['$scope','$mdDialog','endpoint','parentNode','gateway','json','client','GatewayService','MessageUtil','endpoints_names','endpoints_main','style_library',
+    function ($scope, $mdDialog, endpoint, parentNode, gateway,json,client, GatewayService, MessageUtil,endpoints_names,endpoints_main,style_library) {
         $scope.endpoint = {};
         $scope.parentNode = {};
         $scope.page=1;
@@ -114,7 +114,11 @@
             json: angular.toJson(json_to_send)
           };
 
-          console.log(json);
+          if(client && client.id){
+            params.client_number = client.sap_number;
+          }
+
+          console.log("params",params);
             $scope.promise = GatewayService.execute_changes(gateway.id, params);
             
             $scope.promise.then(

@@ -1,7 +1,7 @@
 (function(app) {
 	app.controller('StyleDialogController',
-    ['$scope','$mdDialog','style','parentNode','gateway', 'json','GatewayService','MessageUtil',
-    function ($scope, $mdDialog, style, parentNode, gateway, json, GatewayService, MessageUtil) {
+    ['$scope','$mdDialog','style','parentNode','gateway', 'json','client','GatewayService','MessageUtil',
+    function ($scope, $mdDialog, style, parentNode, gateway, json, client, GatewayService, MessageUtil) {
   
         $scope.style = {};
        
@@ -57,6 +57,10 @@
             json: JSON.stringify(json_to_send,null,""),
             SDK_HINT:"ADS"
           };
+
+          if(client && client.id){
+            params.client_number = client.sap_number;
+          }
 
           console.log("params",params);
 

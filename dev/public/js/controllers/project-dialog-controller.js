@@ -1,7 +1,7 @@
 (function(app) {
 	app.controller('ProjectDialogController',
     ['$scope','$mdDialog','project','parentNode','gateway', 'json','client','GatewayService','MessageUtil',
-    function ($scope, $mdDialog, project, parentNode, gateway, json, client, GatewayService, MessageUtil) {
+    function ($scope, $mdDialog, project, parentNode, gateway, json,client, GatewayService, MessageUtil) {
   
         $scope.project= {};
        
@@ -34,12 +34,10 @@
             json: JSON.stringify(json_to_send)
           };
 
-          console.log("Params",params);
-
           if(client && client.id){
             params.client_number = client.sap_number;
           }
-
+          console.log("Params",params);
            
             $scope.promise = GatewayService.execute_changes(gateway.id, params);
             

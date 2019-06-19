@@ -1,7 +1,7 @@
 (function(app) {
 	app.controller('ModuleDialogController',
-    ['$scope','$mdDialog','module','parentNode','gateway', 'json','GatewayService','MessageUtil',
-    function ($scope, $mdDialog, module, parentNode, gateway, json, GatewayService, MessageUtil) {
+    ['$scope','$mdDialog','module','parentNode','gateway', 'json','client','GatewayService','MessageUtil',
+    function ($scope, $mdDialog, module, parentNode, gateway, json,client, GatewayService, MessageUtil) {
   
         $scope.module = {};
        
@@ -30,7 +30,11 @@
           var params = {
             json: JSON.stringify(json_to_send)
           };
-           console.log("json a enviar"+params.json);
+
+          if(client && client.id){
+            params.client_number = client.sap_number;
+          }
+           console.log("params"+params);
 
             $scope.promise = GatewayService.execute_changes(gateway.id, params);
             

@@ -603,6 +603,7 @@
 				params.client_number = $scope.client.sap_number;
 			}
 
+
             $scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
             
             $scope.promise.then(
@@ -636,6 +637,7 @@
 				params.client_number = $scope.client.sap_number;
 			}
 
+
             $scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
             
             $scope.promise.then(
@@ -662,8 +664,8 @@
 	          };
 
 	          if($scope.client.id){
-					params.client_number = $scope.client.sap_number;
-				}
+				params.client_number = $scope.client.sap_number;
+			}
 
 				$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	            
@@ -695,9 +697,12 @@
 	            json: angular.toJson(json_to_send),
 	            SDK_HINT:"SLD"
 	          };
-	        if($scope.client.id){
+
+	          if($scope.client.id){
 				params.client_number = $scope.client.sap_number;
 			}
+
+
 				$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	            
 	            $scope.promise.then(
@@ -731,8 +736,9 @@
 	          };
 
 	          if($scope.client.id){
-					params.client_number = $scope.client.sap_number;
-				}
+				params.client_number = $scope.client.sap_number;
+			}
+
 
 				$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	            
@@ -763,8 +769,9 @@
 	          };
 
 	          if($scope.client.id){
-					params.client_number = $scope.client.sap_number;
-				}
+				params.client_number = $scope.client.sap_number;
+			}
+
 
 				$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	            
@@ -794,8 +801,9 @@
 	          };
 
 	          if($scope.client.id){
-					params.client_number = $scope.client.sap_number;
-				}
+				params.client_number = $scope.client.sap_number;
+			}
+
 				$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	            
 	            $scope.promise.then(
@@ -825,8 +833,9 @@
 	          };
 
 	          if($scope.client.id){
-					params.client_number = $scope.client.sap_number;
-				}
+				params.client_number = $scope.client.sap_number;
+			}
+
 
 				$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	            
@@ -858,10 +867,10 @@
 	            SDK_HINT:"SLK"
 	          };
 
-
 	          if($scope.client.id){
-					params.client_number = $scope.client.sap_number;
-				}
+				params.client_number = $scope.client.sap_number;
+			}
+
 
 	            $scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	            
@@ -899,8 +908,9 @@
 	          };
 
 	          if($scope.client.id){
-					params.client_number = $scope.client.sap_number;
-				}
+				params.client_number = $scope.client.sap_number;
+			}
+
 
 	            $scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	            
@@ -972,7 +982,6 @@
 	     };
 	     
 	     $scope.addProject= function(ev, parentNode){
-
 		     	$scope.mode_run = false;
 		     	$scope.json_invalid = null;
 		     	$mdDialog.show({
@@ -1091,7 +1100,7 @@
                  parentNode: parentNode,
                  gateway: $scope.gatewaySelected,
                  json: $scope.json,
-                 client: $scope.client
+                 client:$scope.client
                }
               })
               .then(function(result) {
@@ -1407,8 +1416,9 @@
 	            SDK_HINT:"ELT"
 	        };
 	        if($scope.client.id){
-					params.client_number = $scope.client.sap_number;
-				}
+				params.client_number = $scope.client.sap_number;
+			}
+
 			$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	        $scope.promise.then(
 	                function(result){
@@ -1449,8 +1459,9 @@
 	            SDK_HINT:"ELT"
 	        };
 	        if($scope.client.id){
-					params.client_number = $scope.client.sap_number;
-				}
+				params.client_number = $scope.client.sap_number;
+			}
+
 			$scope.promise = GatewayService.execute_changes($scope.gatewaySelectedId, params);
 	        $scope.promise.then(
 	                function(result){
