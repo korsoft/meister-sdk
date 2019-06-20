@@ -489,7 +489,8 @@
           <md-card-title-text>
             <span class="md-subheadline">RESULT</span>
           </md-card-title-text>
-           <md-actions >
+          <md-card-title-media>
+          
             <md-button class="md-raised"  ng-click="clear_log_json_result()" >
               Clear log
             </md-button>
@@ -497,50 +498,50 @@
                       ng-click="hideResults()">
                      <md-icon ng-bind="'close'"></md-icon>
             </md-button>
-          </md-actions>
+        </md-card-title-media>
         </md-card-title>
-        <md-card-content ng-show="json_invalid!=null">
-          <textarea rows="28">{{json_invalid}}</textarea>
+        <md-card-content ng-if="json_invalid!=null">
+          <textarea rows="28" style="width:100%">{{json_invalid}}</textarea>
         </md-card-content>
-         <md-card-content ng-show="json_invalid==null">
-          <md-select ng-model="json_logs_title" placeholder="Select the JSON Result" 
-            style="width:80%" ng-change="changeJsonLog(json_logs_title)">
-             <md-option ng-repeat="g in json_logs" ng-value="g.title">
-                  {{g.title}}
-              </md-option>
-        </md-select>
-          <md-tabs md-dynamic-height md-border-bottom>
-            <md-tab label="Plain Format">
-              <br/><span class="title-log-result">{{json_logs_title}}: Result</span><br/>
-              <md-content class="md-padding">
-                <!--<span class="content-log-result"> <code><pre>{{json_logs_content}}</pre></code></span>
-                  -->
-                  <md-button class="md-primary"  ng-click="downloadJSON()" >
-                    Download JSON
-                  </md-button>
-                  <md-table-container>
+         <md-card-content ng-if="json_invalid==null">
+              <md-select ng-model="json_logs_title" placeholder="Select the JSON Result" 
+                style="width:80%" ng-change="changeJsonLog(json_logs_title)">
+                 <md-option ng-repeat="g in json_logs" ng-value="g.title">
+                      {{g.title}}
+                  </md-option>
+            </md-select>
+              <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="Plain Format">
+                  <br/><span class="title-log-result">{{json_logs_title}}: Result</span><br/>
+                  <md-content class="md-padding">
+                    <!--<span class="content-log-result"> <code><pre>{{json_logs_content}}</pre></code></span>
+                      -->
+                      <md-button class="md-primary"  ng-click="downloadJSON()" >
+                        Download JSON
+                      </md-button>
+                      <md-table-container>
 
-                  <table md-table >
-                        <tbody style="background-color:white">
-                                <tr ng-repeat="item in json_logs_content  | limitTo: query.limit: (query.page - 1) * query.limit">
-                                  <td><pre>{{item | json}}</pre></td>
-                                </tr>
-                              </tbody>
-                            </table>
-                  
-                </md-table-container>
-                <md-button class="md-primary"  ng-click="downloadJSON()" >
-                    Download JSON
-                  </md-button>
-                <md-table-pagination md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page" md-total="{{json_logs_content.length}}" md-page-select></md-table-pagination>
-              </md-content>
-            </md-tab>
-            <md-tab label="Tree format" ng-if="json_logs_content.length<1000">
-              <br/><span class="title-log-result">{{json_logs_title}}: Result</span><br/>
-                <div ng-jsoneditor="onLoadJson" ng-model="json_logs_content_obj" options="payload_json.options" style="width: 100%; height: 300px;"></div>
-            </md-tab>
-          </md-tabs>
-        </md-card-content>
+                      <table md-table >
+                            <tbody style="background-color:white">
+                                    <tr ng-repeat="item in json_logs_content  | limitTo: query.limit: (query.page - 1) * query.limit">
+                                      <td><pre>{{item | json}}</pre></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                      
+                    </md-table-container>
+                    <md-button class="md-primary"  ng-click="downloadJSON()" >
+                        Download JSON
+                      </md-button>
+                    <md-table-pagination md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page" md-total="{{json_logs_content.length}}" md-page-select></md-table-pagination>
+                  </md-content>
+                </md-tab>
+                <md-tab label="Tree format" ng-if="json_logs_content.length<1000">
+                  <br/><span class="title-log-result">{{json_logs_title}}: Result</span><br/>
+                    <div ng-jsoneditor="onLoadJson" ng-model="json_logs_content_obj" options="payload_json.options" style="width: 100%; height: 300px;"></div>
+                </md-tab>
+              </md-tabs>
+            </md-card-content>
       </md-card>
    </div>
  </md-content>
