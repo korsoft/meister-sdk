@@ -204,7 +204,7 @@
         </md-card-content>
       </md-card>
 
-      <md-card style="height: 700px"  ng-show="!mode_run && !add_endpoint && bapi_node_is_selected">
+      <md-card style="height: 700px"  ng-if="!mode_run && !add_endpoint && bapi_node_is_selected" ng-controller="BapiDialogController">
       <md-list  layout-align="left center">
         <tree-actions flex layout="row"></tree-actions>
       </md-list>
@@ -215,8 +215,8 @@
           </md-card-title-text>
          
         </md-card-title>
-        <md-card-content >
-          <form id="bapiFormId" name="bapiForm" novalidate ng-cloak ng-controller="BapiDialogController">
+        <md-card-content ng-init="initBAPI(client)">
+          <form id="bapiFormId" name="bapiForm" novalidate ng-cloak >
             <md-input-container class="md-block">
                   <label>Selector</label><br/><br/>
                          

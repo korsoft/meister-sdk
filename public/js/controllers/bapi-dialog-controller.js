@@ -6,6 +6,8 @@
       $scope.selector="O";
       $scope.selection="";
 
+      var client = null; 
+
      var upperCaseFirstLetterEachWord = function(string){
       var words = string.toLowerCase().split(" ");
       var result  = "";
@@ -13,6 +15,11 @@
         result += word.charAt(0).toUpperCase() + word.slice(1) + " ";
       });
       return result;
+    };
+
+    $scope.initBAPI = function(cli){
+      console.log(cli);
+      client = cli;
     };
       
       $scope.send = function() {
@@ -24,6 +31,10 @@
            var params = {
             "endpoint":"Meister.SDK.Bapi.Lookup",
             "json": JSON.stringify(json)
+            }
+
+            if(client && client.id){
+              params.client_number = client.sap_number;
             }
 
             console.log("gatewayId",$scope.gatewaySelectedId);
