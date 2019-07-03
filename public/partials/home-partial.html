@@ -472,7 +472,7 @@
                 </md-select>
              </md-input-container>
           </md-content>
-          <md-tabs md-dynamic-height md-border-bottom md-selected="opt.selectedIndex" ng-show="opt.show">
+          <md-tabs md-dynamic-height md-border-bottom md-selected="opt.selectedIndex" ng-if="opt.show">
             <md-tab label="REQUEST" md-on-select="setRequest()">
             </md-tab>
             <md-tab label="RESPONSE" md-on-select="setResponse()">
