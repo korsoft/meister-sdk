@@ -11,6 +11,21 @@ var imagemin = require('gulp-imagemin');
 var iife = require("gulp-iife");
 var cleanCSS = require('gulp-clean-css');
 var Server = require('karma').Server;
+var gulp = require('gulp');
+var pkg = require('./package.json');
+var gulp = require('gulp');
+var pkg = require('./package.json');
+
+
+require('sia')(gulp, {
+    basePath: __dirname,
+    moduleTitle: 'My Module',
+    modulePrefix: 'myModule',
+    ngVersion: '1.4.6',
+    moduleJs: ['../my-module.js'],
+    moduleCss: ['../my-module.css'],
+    repositoryUrl: pkg.repository && pkg.repository.url.replace(/^git/, 'https').replace(/(\.git)?\/?$/,'')
+  });
 
 gulp.task('default', ['serve']);
 
